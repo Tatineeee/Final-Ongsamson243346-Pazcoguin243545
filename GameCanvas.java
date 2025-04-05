@@ -3,10 +3,12 @@ import java.awt.*;
 
 public class GameCanvas extends JComponent {
 
+    private Image backgroundImage;
+    private Platforms platforms;
     private Player player1, player2;
 
     public GameCanvas() {
-        setPreferredSize(new Dimension(1024, 768));
+        backgroundImage = new ImageIcon(getClass().getResource("/images/background.png")).getImage();
         setupPlayers();
     }
 
@@ -17,13 +19,15 @@ public class GameCanvas extends JComponent {
                 RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
-        player1.testDrawSprite(g2d);
-        player2.testDrawSprite(g2d);
+        g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        platforms = new Platforms(g2d);
+        player1.draw(g2d);
+        player2.draw(g2d);
     }
 
     private void setupPlayers() {
-        player1 = new Player(100, 100, 50, Color.RED);
-        player2 = new Player(200, 200, 50, Color.BLUE);
+        player1 = new Player(80, 68, 50, Color.RED);
+        player2 = new Player(900, 698, 50, Color.BLUE);
     }
 
     public Player getPlayer1() {

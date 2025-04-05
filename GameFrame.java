@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
 import java.io.*;
@@ -11,8 +12,7 @@ public class GameFrame {
     private GameCanvas gameCanvas;
     private Timer timer;
     private Socket socket;
-    private Player player;
-    private Player playerOther;
+    private Player player, playerOther;
     private ReadFromServer playerRFS;
     private WriteToServer playerWTS;
 
@@ -36,11 +36,12 @@ public class GameFrame {
 
     private void setupGUI() {
         frame.add(gameCanvas);
+        gameCanvas.setPreferredSize(new Dimension(width, height));
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(width, height);
         frame.setResizable(false);
         frame.setVisible(true);
+        gameCanvas.repaint();
     }
 
     private void setupTimer() {

@@ -13,7 +13,7 @@ public class Player {
         color = c;
     }
 
-    public void testDrawSprite(Graphics2D g2d) {
+    public void draw(Graphics2D g2d) {
         Rectangle2D.Double player = new Rectangle2D.Double(x, y, size, size);
         g2d.setColor(color);
         g2d.fill(player);
