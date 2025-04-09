@@ -3,11 +3,8 @@ Let's use this for the sources and other reminders
 Storyboard: https://www.canva.com/design/DAGjq5vI1to/TUAA-fGCX2traosHSD_Cyw/edit?utm_content=DAGjq5vI1to&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 Sources:
-
-TODO:
-
-1. Make the server
-2. Make the GUI
-3. Test with initial map layout
-4. Test networking
-5. Make an abstract class/interface to be extended/inherited by 2 other classes
+https://www.youtube.com/watch?v=tABiMTmS3cQ
+https://stackoverflow.com/questions/16867976/how-do-you-add-music-to-a-jframe
+https://stackoverflow.com/questions/34779388/java-tcp-sockets-best-practice-to-reduce-lag
+https://stackoverflow.com/questions/30695144/how-to-implement-a-physics-engine-to-jump-in-game
+https://medium.com/@michael71314/java-lesson-22-inserting-images-onto-the-jframe-a0a0b6540cca
