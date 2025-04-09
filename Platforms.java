@@ -1,24 +1,56 @@
-import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.*;
 
-public class Platforms extends JComponent {
+public class Platforms {
 
-    public Platforms(Graphics2D g2d) {
-        Color color = Color.WHITE;
-        int width = 880;
-        int height = 20;
-        Rectangle[] platforms = {
-                new Rectangle(0, 118, width, height, color),
-                new Rectangle(144, 223, width, height, color),
-                new Rectangle(0, 328, width, height, color),
-                new Rectangle(144, 433, width, height, color),
-                new Rectangle(0, 538, width, height, color),
-                new Rectangle(144, 643, width, height, color),
-                new Rectangle(0, 748, 1024, height, color),
-        };
-        for (Rectangle platform : platforms) {
-            platform.draw(g2d);
+    private double width, height;
+    private Rectangle2D.Double[] platforms;
+
+    public Platforms() {
+        platforms = new Rectangle2D.Double[7];
+        width = 880;
+        height = 20;
+        platforms[0] = new Rectangle2D.Double(144, 223, width, height);
+        platforms[1] = new Rectangle2D.Double(144, 433, width, height);
+        platforms[2] = new Rectangle2D.Double(144, 643, width, height);
+        platforms[3] = new Rectangle2D.Double(0, 118, width, height);
+        platforms[4] = new Rectangle2D.Double(0, 328, width, height);
+        platforms[5] = new Rectangle2D.Double(0, 538, width, height);
+        platforms[6] = new Rectangle2D.Double(0, 748, 1024, height);
+    }
+
+    public void draw(Graphics2D g2d) {
+        g2d.setColor(Color.WHITE);
+        for (Rectangle2D.Double platform : platforms) {
+            g2d.fill(platform);
         }
     }
 
+    public double getPlatformX(int index) {
+        return platforms[index].getX();
+    }
+
+    public double getPlatformY(int index) {
+        return platforms[index].getY();
+
+    }
+
+    public double getPlatformWidth(int index) {
+        return platforms[index].getWidth();
+
+    }
+
+    public double getPlatformHeight(int index) {
+        return platforms[index].getHeight();
+
+    }
+
+    public Rectangle2D.Double getPlatform(int index) {
+        return platforms[index];
+
+    }
+
+    public int getPlatformCount() {
+        return platforms.length;
+    }
 }

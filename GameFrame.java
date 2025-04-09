@@ -1,8 +1,10 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.*;
+import java.awt.geom.*;
 import java.io.*;
+import java.net.*;
+import javax.sound.sampled.*;
+import javax.swing.*;
 
 public class GameFrame {
 
@@ -16,12 +18,20 @@ public class GameFrame {
     private ReadFromServer playerRFS;
     private WriteToServer playerWTS;
 
-    public GameFrame(int w, int h) {
+    public GameFrame(int width, int height) {
+        this.width = width;
+        this.height = height;
         frame = new JFrame("Final Project");
         gameCanvas = new GameCanvas();
-        width = w;
-        height = h;
         connectToServer();
+        initializePlayer();
+        setupGUI();
+        setupTimer();
+        setupKeyListener();
+        playMusic("/music/scarymusic.wav", 0.5f);
+    }
+
+    private void initializePlayer() {
         if (playerID == 1) {
             player = gameCanvas.getPlayer1();
             playerOther = gameCanvas.getPlayer2();
@@ -29,9 +39,6 @@ public class GameFrame {
             player = gameCanvas.getPlayer2();
             playerOther = gameCanvas.getPlayer1();
         }
-        setupGUI();
-        setupTimer();
-        setupKeyListener();
     }
 
     private void setupGUI() {
@@ -49,12 +56,14 @@ public class GameFrame {
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int speed = 5;
+                int speed = 8;
                 if (left) {
                     player.moveX(-speed);
                 } else if (right) {
                     player.moveX(speed);
                 }
+                player.updateVertical();
+                checkPlatform();
                 gameCanvas.repaint();
             }
         };
@@ -62,38 +71,97 @@ public class GameFrame {
         timer.start();
     }
 
+    private void checkPlatform() {
+        Platforms platforms = gameCanvas.getPlatforms();
+        for (int i = 0; i < platforms.getPlatformCount(); i++) {
+            double platformX = platforms.getPlatformX(i);
+            double platformY = platforms.getPlatformY(i);
+            double platformWidth = platforms.getPlatformWidth(i);
+            double platformHeight = platforms.getPlatformHeight(i);
+            Rectangle2D.Double platformBounds = new Rectangle2D.Double(
+                    platformX, platformY, platformWidth, platformHeight);
+            if (player.getHitbox().intersects(platformBounds)) {
+                handlePlatformCollision(platformY, platformHeight);
+            }
+        }
+    }
+
+    private void handlePlatformCollision(double platformY, double platformHeight) {
+        double playerBottom = player.getY() + player.getSize();
+        double playerTop = player.getY();
+        double platformTop = platformY;
+        double platformBottom = platformY + platformHeight;
+        if (playerBottom > platformTop && playerTop < platformBottom) {
+            if (player.isDropping()) {
+                player.setY(platformTop - player.getSize());
+                player.stopDropping();
+                player.setSpeedY(0);
+            } else if (player.isJumping()) {
+                player.setY(platformBottom);
+                player.stopJumping();
+                player.setSpeedY(0);
+            }
+        }
+    }
+
     private void setupKeyListener() {
         KeyListener keyListener = new KeyListener() {
-
             public void keyTyped(KeyEvent e) {
             }
 
             public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                switch (keyCode) {
-                    case KeyEvent.VK_A:
-                        left = true;
-                        break;
-                    case KeyEvent.VK_D:
-                        right = true;
-                        break;
-                }
+                handleKeyPressed(e.getKeyCode());
             }
 
             public void keyReleased(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                switch (keyCode) {
-                    case KeyEvent.VK_A:
-                        left = false;
-                        break;
-                    case KeyEvent.VK_D:
-                        right = false;
-                        break;
-                }
+                handleKeyReleased(e.getKeyCode());
             }
         };
         frame.addKeyListener(keyListener);
         frame.setFocusable(true);
+    }
+
+    private void handleKeyPressed(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_A:
+                left = true;
+                break;
+            case KeyEvent.VK_D:
+                right = true;
+                break;
+            case KeyEvent.VK_SPACE:
+                player.jump();
+                break;
+        }
+    }
+
+    private void handleKeyReleased(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_A:
+                left = false;
+                break;
+            case KeyEvent.VK_D:
+                right = false;
+                break;
+        }
+    }
+
+    private void playMusic(String filePath, float volume) {
+        try {
+            URL musicUrl = getClass().getResource(filePath);
+            if (musicUrl == null) {
+                throw new IOException("Music file not found: " + filePath);
+            }
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicUrl);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            float dB = 20f * (float) Math.log10(volume);
+            gainControl.setValue(dB);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     private void connectToServer() {
@@ -102,7 +170,7 @@ public class GameFrame {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             playerID = in.readInt();
-            System.out.printf("Player %d has conencted to the server.\n", playerID);
+            System.out.printf("Player %d has connected to the server.\n", playerID);
             playerRFS = new ReadFromServer(in);
             playerWTS = new WriteToServer(out);
             playerRFS.waitForPlayer();
@@ -112,7 +180,6 @@ public class GameFrame {
     }
 
     private class ReadFromServer implements Runnable {
-
         private DataInputStream dataIn;
 
         public ReadFromServer(DataInputStream in) {
@@ -131,7 +198,6 @@ public class GameFrame {
             } catch (IOException e) {
                 System.out.println("ReadFromServer error: " + e.getMessage());
             }
-
         }
 
         public void waitForPlayer() {
@@ -149,7 +215,6 @@ public class GameFrame {
     }
 
     private class WriteToServer implements Runnable {
-
         private DataOutputStream dataOut;
 
         public WriteToServer(DataOutputStream out) {
@@ -166,7 +231,7 @@ public class GameFrame {
                         dataOut.flush();
                     }
                     try {
-                        Thread.sleep(25);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         System.out.println("WriteToServer Thread sleep error: " + e.getMessage());
                     }
@@ -174,7 +239,6 @@ public class GameFrame {
             } catch (IOException e) {
                 System.out.println("WriteToServer error: " + e.getMessage());
             }
-
         }
     }
 

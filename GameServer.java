@@ -3,16 +3,12 @@ import java.net.*;
 
 public class GameServer {
 
-    private ServerSocket ss;
-    private int numPlayers;
-    private int maxPlayers;
-    private Socket player1Socket;
-    private Socket player2Socket;
-    private ReadFromClient player1RFC;
-    private ReadFromClient player2RFC;
-    private WriteToClient player1WTC;
-    private WriteToClient player2WTC;
+    private int numPlayers, maxPlayers;
     private double player1X, player1Y, player2X, player2Y;
+    private ServerSocket ss;
+    private Socket player1Socket, player2Socket;
+    private ReadFromClient player1RFC, player2RFC;
+    private WriteToClient player1WTC, player2WTC;
 
     public GameServer() {
         try {
@@ -31,6 +27,7 @@ public class GameServer {
             System.out.println("Waiting for players...");
             while (numPlayers < maxPlayers) {
                 Socket socket = ss.accept();
+                socket.setTcpNoDelay(true);
                 DataInputStream in = new DataInputStream(socket.getInputStream());
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 numPlayers++;
@@ -118,7 +115,7 @@ public class GameServer {
                         dataOut.flush();
                     }
                     try {
-                        Thread.sleep(25);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         System.out.println("WriteToClient Thread sleep error: " + e.getMessage());
                     }

@@ -4,8 +4,8 @@ import java.awt.*;
 public class GameCanvas extends JComponent {
 
     private Image backgroundImage;
-    private Platforms platforms;
     private Player player1, player2;
+    private Platforms platforms;
 
     public GameCanvas() {
         backgroundImage = new ImageIcon(getClass().getResource("/images/background.png")).getImage();
@@ -20,7 +20,8 @@ public class GameCanvas extends JComponent {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHints(rh);
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        platforms = new Platforms(g2d);
+        platforms = new Platforms();
+        platforms.draw(g2d);
         player1.draw(g2d);
         player2.draw(g2d);
     }
@@ -36,6 +37,10 @@ public class GameCanvas extends JComponent {
 
     public Player getPlayer2() {
         return player2;
+    }
+
+    public Platforms getPlatforms() {
+        return platforms;
     }
 
 }
