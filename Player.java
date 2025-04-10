@@ -7,6 +7,7 @@ public class Player {
     private boolean isDropping, isJumping;
     private Color color;
 
+    // Played around with the gravity and speed values
     public Player(int x, int y, int size, Color color) {
         this.x = x;
         this.y = y;
@@ -62,7 +63,6 @@ public class Player {
 
     public void stopDropping() {
         isDropping = false;
-        isJumping = false;
         speedY = 0;
     }
 

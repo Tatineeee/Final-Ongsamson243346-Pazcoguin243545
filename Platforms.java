@@ -7,9 +7,9 @@ public class Platforms {
     private Rectangle2D.Double[] platforms;
 
     public Platforms() {
-        platforms = new Rectangle2D.Double[7];
         width = 880;
         height = 20;
+        platforms = new Rectangle2D.Double[7];
         platforms[0] = new Rectangle2D.Double(144, 223, width, height);
         platforms[1] = new Rectangle2D.Double(144, 433, width, height);
         platforms[2] = new Rectangle2D.Double(144, 643, width, height);
@@ -32,25 +32,22 @@ public class Platforms {
 
     public double getPlatformY(int index) {
         return platforms[index].getY();
-
     }
 
     public double getPlatformWidth(int index) {
         return platforms[index].getWidth();
-
     }
 
     public double getPlatformHeight(int index) {
         return platforms[index].getHeight();
-
     }
 
     public Rectangle2D.Double getPlatform(int index) {
         return platforms[index];
-
     }
 
     public int getPlatformCount() {
         return platforms.length;
     }
+
 }

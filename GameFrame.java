@@ -74,26 +74,19 @@ public class GameFrame {
     private void checkPlatform() {
         Platforms platforms = gameCanvas.getPlatforms();
         for (int i = 0; i < platforms.getPlatformCount(); i++) {
-            double platformX = platforms.getPlatformX(i);
-            double platformY = platforms.getPlatformY(i);
-            double platformWidth = platforms.getPlatformWidth(i);
-            double platformHeight = platforms.getPlatformHeight(i);
-            Rectangle2D.Double platformBounds = new Rectangle2D.Double(
-                    platformX, platformY, platformWidth, platformHeight);
-            if (player.getHitbox().intersects(platformBounds)) {
-                handlePlatformCollision(platformY, platformHeight);
+            Rectangle2D.Double platform = platforms.getPlatform(i);
+            if (player.getHitbox().intersects(platform)) {
+                handlePlatformCollision(platform.getY(), platform.getHeight());
             }
         }
     }
 
     private void handlePlatformCollision(double platformY, double platformHeight) {
         double playerBottom = player.getY() + player.getSize();
-        double playerTop = player.getY();
-        double platformTop = platformY;
         double platformBottom = platformY + platformHeight;
-        if (playerBottom > platformTop && playerTop < platformBottom) {
+        if (playerBottom > platformY && player.getY() < platformBottom) {
             if (player.isDropping()) {
-                player.setY(platformTop - player.getSize());
+                player.setY(platformY - player.getSize());
                 player.stopDropping();
                 player.setSpeedY(0);
             } else if (player.isJumping()) {
@@ -106,6 +99,7 @@ public class GameFrame {
 
     private void setupKeyListener() {
         KeyListener keyListener = new KeyListener() {
+
             public void keyTyped(KeyEvent e) {
             }
 
