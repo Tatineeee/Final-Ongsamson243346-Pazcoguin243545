@@ -1,5 +1,11 @@
 Let's use this for the sources and other reminders
 
+HOW TO RUN THE PROGRAM:
+
+1. If testing the server, Open 3 terminals and run GameServer first in one, then GameStarter in the other 2
+2. If testing the GUI, just run GameStarter
+3. Controls are A for left, D for right, and SPACE for jump
+
 Storyboard: https://www.canva.com/design/DAGjq5vI1to/TUAA-fGCX2traosHSD_Cyw/edit?utm_content=DAGjq5vI1to&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 Sources:
