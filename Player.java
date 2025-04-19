@@ -1,42 +1,50 @@
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 
-public class Player {
+public abstract class Player {
 
     private double x, y, size, speedY, gravity, jumpSpeed;
-    private boolean isDropping, isJumping;
-    private Color color;
+    private boolean isDropping, isJumping, movingLeft, movingRight;
 
-    // Played around with the gravity and speed values
-    public Player(int x, int y, int size, Color color) {
+    public Player(double x, double y) {
         this.x = x;
         this.y = y;
-        this.size = size;
-        this.color = color;
-        gravity = 1.4;
-        speedY = 0;
+        size = 50;
+        gravity = 1.5;
         jumpSpeed = -20;
+        speedY = 0;
         isDropping = false;
         isJumping = false;
+        movingLeft = false;
+        movingRight = false;
     }
 
-    public void draw(Graphics2D g2d) {
-        Rectangle2D.Double player = new Rectangle2D.Double(x, y, size, size);
-        g2d.setColor(color);
-        g2d.fill(player);
-    }
+    public abstract void draw(Graphics2D g2d);
 
-    public void moveX(double n) {
-        if (x + n >= 0 && x + n + size < 1024) {
-            x += n;
+    public void moveX(double n, Level platforms) {
+        double newX = Math.max(0, Math.min(1024 - size, x + n));
+        x = newX;
+        Rectangle2D.Double bounds = getHitbox();
+        for (int i = 0; i < platforms.getPlatformCount(); i++) {
+            Rectangle2D.Double platform = platforms.getPlatform(i);
+            if (bounds.intersects(platform)) {
+                if (n > 0) {
+                    x = platform.getX() - size;
+                } else if (n < 0) {
+                    x = platform.getX() + platform.getWidth();
+                }
+                break;
+            }
         }
     }
 
     public void moveY(double n) {
-        if (y + n >= 0 && y + n + size <= 768) {
-            y += n;
-        } else if (y + n + size > 768) {
-            y -= 768 - size;
+        double newY = y + n;
+        if (newY >= 0 && newY + size <= 768) {
+            y = newY;
+        } else if (newY + size > 768) {
+            y = 768 - size;
         }
     }
 
@@ -44,16 +52,57 @@ public class Player {
         if (!isJumping && !isDropping) {
             speedY = jumpSpeed;
             isJumping = true;
-            isDropping = false;
         }
     }
 
-    public void updateVertical() {
+    public void update(Level platforms) {
+        int speed = 5;
+        if (movingLeft) {
+            moveX(-speed, platforms);
+        } else if (movingRight) {
+            moveX(speed, platforms);
+        }
+        updateVertical(platforms);
+    }
+
+    public void updateVertical(Level platforms) {
         speedY += gravity;
-        moveY(speedY);
-        if (speedY > 0) {
-            isDropping = true;
+        y += speedY;
+        Rectangle2D.Double bounds = getHitbox();
+        for (int i = 0; i < platforms.getPlatformCount(); i++) {
+            Rectangle2D.Double platform = platforms.getPlatform(i);
+            if (bounds.intersects(platform)) {
+                if (speedY > 0) {
+                    y = platform.getY() - size;
+                    stopDropping();
+                } else if (speedY < 0) {
+                    y = platform.getY() + platform.getHeight();
+                    stopJumping();
+                }
+                speedY = 0;
+                break;
+            }
+        }
+        isDropping = speedY > 0;
+        if (isDropping)
             isJumping = false;
+    }
+
+    public void handleKeyPressed(int keyCode) {
+        if (keyCode == KeyEvent.VK_A) {
+            movingLeft = true;
+        } else if (keyCode == KeyEvent.VK_D) {
+            movingRight = true;
+        } else if (keyCode == KeyEvent.VK_SPACE) {
+            jump();
+        }
+    }
+
+    public void handleKeyReleased(int keyCode) {
+        if (keyCode == KeyEvent.VK_A) {
+            movingLeft = false;
+        } else if (keyCode == KeyEvent.VK_D) {
+            movingRight = false;
         }
     }
 
@@ -100,6 +149,14 @@ public class Player {
 
     public boolean isJumping() {
         return isJumping;
+    }
+
+    public boolean isMovingLeft() {
+        return movingLeft;
+    }
+
+    public boolean isMovingRight() {
+        return movingRight;
     }
 
     public Rectangle2D.Double getHitbox() {

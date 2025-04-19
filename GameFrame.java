@@ -3,13 +3,12 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.io.*;
 import java.net.*;
-import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.sound.sampled.*;
 
 public class GameFrame {
 
     private int width, height, playerID;
-    private boolean left, right;
     private JFrame frame;
     private GameCanvas gameCanvas;
     private Timer timer;
@@ -35,9 +34,11 @@ public class GameFrame {
         if (playerID == 1) {
             player = gameCanvas.getPlayer1();
             playerOther = gameCanvas.getPlayer2();
-        } else {
+        } else if (playerID == 2) {
             player = gameCanvas.getPlayer2();
             playerOther = gameCanvas.getPlayer1();
+        } else {
+            player = gameCanvas.getPlayer1();
         }
     }
 
@@ -56,13 +57,7 @@ public class GameFrame {
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int speed = 8;
-                if (left) {
-                    player.moveX(-speed);
-                } else if (right) {
-                    player.moveX(speed);
-                }
-                player.updateVertical();
+                player.update(gameCanvas.getPlatforms());
                 checkPlatform();
                 gameCanvas.repaint();
             }
@@ -71,72 +66,53 @@ public class GameFrame {
         timer.start();
     }
 
+    private void setupKeyListener() {
+        KeyAdapter keyAdapter = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                player.handleKeyPressed(e.getKeyCode());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                player.handleKeyReleased(e.getKeyCode());
+            }
+        };
+        frame.addKeyListener(keyAdapter);
+        frame.setFocusable(true);
+    }
+
     private void checkPlatform() {
-        Platforms platforms = gameCanvas.getPlatforms();
+        Level platforms = gameCanvas.getPlatforms();
         for (int i = 0; i < platforms.getPlatformCount(); i++) {
             Rectangle2D.Double platform = platforms.getPlatform(i);
-            if (player.getHitbox().intersects(platform)) {
-                handlePlatformCollision(platform.getY(), platform.getHeight());
-            }
+            handlePlatformCollision(platform);
         }
     }
 
-    private void handlePlatformCollision(double platformY, double platformHeight) {
-        double playerBottom = player.getY() + player.getSize();
-        double platformBottom = platformY + platformHeight;
-        if (playerBottom > platformY && player.getY() < platformBottom) {
-            if (player.isDropping()) {
-                player.setY(platformY - player.getSize());
+    private void handlePlatformCollision(Rectangle2D.Double platform) {
+        double size = player.getSize();
+        double playerLeft = player.getX();
+        double playerTop = player.getY();
+        double playerBottom = playerTop + size;
+        double playerRight = playerLeft + size;
+        double platformLeft = platform.getX();
+        double platformTop = platform.getY();
+        double platformRight = platformLeft + platform.getWidth();
+        double platformBottom = platformTop + platform.getHeight();
+        boolean horizontallyAligned = playerRight > platformLeft && playerLeft < platformRight;
+        boolean verticallyAligned = playerBottom > platformTop && playerTop < platformBottom;
+        if (horizontallyAligned && verticallyAligned) {
+            double speedY = player.getSpeedY();
+            if (player.isDropping() && (playerBottom - speedY <= platformTop)) {
+                player.setY(platformTop - size);
                 player.stopDropping();
                 player.setSpeedY(0);
-            } else if (player.isJumping()) {
+            } else if (player.isJumping() && (playerTop - speedY >= platformBottom)) {
                 player.setY(platformBottom);
                 player.stopJumping();
                 player.setSpeedY(0);
             }
-        }
-    }
-
-    private void setupKeyListener() {
-        KeyListener keyListener = new KeyListener() {
-
-            public void keyTyped(KeyEvent e) {
-            }
-
-            public void keyPressed(KeyEvent e) {
-                handleKeyPressed(e.getKeyCode());
-            }
-
-            public void keyReleased(KeyEvent e) {
-                handleKeyReleased(e.getKeyCode());
-            }
-        };
-        frame.addKeyListener(keyListener);
-        frame.setFocusable(true);
-    }
-
-    private void handleKeyPressed(int keyCode) {
-        switch (keyCode) {
-            case KeyEvent.VK_A:
-                left = true;
-                break;
-            case KeyEvent.VK_D:
-                right = true;
-                break;
-            case KeyEvent.VK_SPACE:
-                player.jump();
-                break;
-        }
-    }
-
-    private void handleKeyReleased(int keyCode) {
-        switch (keyCode) {
-            case KeyEvent.VK_A:
-                left = false;
-                break;
-            case KeyEvent.VK_D:
-                right = false;
-                break;
         }
     }
 
@@ -146,15 +122,16 @@ public class GameFrame {
             if (musicUrl == null) {
                 throw new IOException("Music file not found: " + filePath);
             }
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicUrl);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            float dB = 20f * (float) Math.log10(volume);
-            gainControl.setValue(dB);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(musicUrl)) {
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioStream);
+                FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                float dB = 20f * (float) Math.log10(Math.max(volume, 0.0001f)); // prevent log(0)
+                gainControl.setValue(dB);
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
+            System.out.println("Error playing music: " + e.getMessage());
         }
     }
 
@@ -174,6 +151,7 @@ public class GameFrame {
     }
 
     private class ReadFromServer implements Runnable {
+
         private DataInputStream dataIn;
 
         public ReadFromServer(DataInputStream in) {
@@ -209,6 +187,7 @@ public class GameFrame {
     }
 
     private class WriteToServer implements Runnable {
+
         private DataOutputStream dataOut;
 
         public WriteToServer(DataOutputStream out) {
