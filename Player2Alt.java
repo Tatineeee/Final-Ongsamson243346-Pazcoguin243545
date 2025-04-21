@@ -2,13 +2,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class Player2 extends Player {
+public class Player2Alt extends Player {
 
     private int animationFrameCount;
     private boolean toggleFrame;
     private BufferedImage standing, right1, right2, left1, left2;
 
-    public Player2(int x, int y) {
+    public Player2Alt(int x, int y) {
         super(x, y);
         animationFrameCount = 0;
         toggleFrame = false;
@@ -38,11 +38,11 @@ public class Player2 extends Player {
 
     private void getPlayerImages() {
         try {
-            standing = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-standing.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-right2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-left2.png"));
+            standing = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-alt-standing.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-alt-right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-alt-right2.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-alt-left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/player-assets/girl-alt-left2.png"));
         } catch (Exception e) {
             System.out.println("Error loading player images: " + e.getMessage());
         }

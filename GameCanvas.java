@@ -7,9 +7,9 @@ public class GameCanvas extends JComponent {
     private Level platforms;
 
     public GameCanvas() {
-        player1 = new Player1(80, 758);
-        player2 = new Player2(900, 758);
-        platforms = new LevelThree(); // ! Change to desired level: LevelOne, LevelTwo, LevelThree
+        player1 = new Player1Alt(80, 758);
+        player2 = new Player2Alt(900, 758);
+        platforms = new LevelOne(); // ! Change to desired level: LevelOne, LevelTwo, LevelThree
     }
 
     @Override

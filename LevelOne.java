@@ -23,7 +23,7 @@ public class LevelOne extends Level {
                 new Rectangle2D.Double(771, 186, 253, 20),
                 new Rectangle2D.Double(803, 506, 85, 20)
         });
-        backgroundImage = new ImageIcon(getClass().getResource("/images/level1.png")).getImage();
+        backgroundImage = new ImageIcon(getClass().getResource("/level-assets/level1.png")).getImage();
     }
 
     @Override

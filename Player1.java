@@ -38,11 +38,11 @@ public class Player1 extends Player {
 
     private void getPlayerImages() {
         try {
-            standing = ImageIO.read(getClass().getResourceAsStream("/animations/boy-standing.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/animations/boy-right1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/animations/boy-right2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/animations/boy-left1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/animations/boy-left2.png"));
+            standing = ImageIO.read(getClass().getResourceAsStream("/player-assets/boy-standing.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/player-assets/boy-right1.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/player-assets/boy-right2.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/player-assets/boy-left1.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/player-assets/boy-left2.png"));
         } catch (Exception e) {
             System.out.println("Error loading player images: " + e.getMessage());
         }

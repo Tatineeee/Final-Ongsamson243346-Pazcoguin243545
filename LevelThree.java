@@ -25,7 +25,7 @@ public class LevelThree extends Level {
                 new Rectangle2D.Double(707, 651, 247, 20),
                 new Rectangle2D.Double(838, 127, 66, 10)
         });
-        backgroundImage = new ImageIcon(getClass().getResource("/images/level3.png")).getImage();
+        backgroundImage = new ImageIcon(getClass().getResource("/level-assets/level3.png")).getImage();
     }
 
     @Override
