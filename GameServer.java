@@ -9,6 +9,7 @@ public class GameServer {
     private Socket player1Socket, player2Socket;
     private ReadFromClient player1RFC, player2RFC;
     private WriteToClient player1WTC, player2WTC;
+	private int play1, play2;
 
     public GameServer() {
         try {
@@ -82,6 +83,7 @@ public class GameServer {
                         player2X = dataIn.readDouble();
                         player2Y = dataIn.readDouble();
                     }
+					play1 = dataIn.readInt();
                 }
             } catch (IOException e) {
                 System.out.println("ReadFromClient error: " + e.getMessage());
@@ -114,6 +116,7 @@ public class GameServer {
                         dataOut.writeDouble(player1Y);
                         dataOut.flush();
                     }
+					dataOut.writeInt(play1);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
