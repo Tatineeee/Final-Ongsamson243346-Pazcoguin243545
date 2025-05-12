@@ -31,6 +31,21 @@ public class LevelTwo extends Level {
 
     @Override
     public void draw(Graphics2D g2d) {
+		g2d.setColor(Color.BLACK);
+		Rectangle2D.Double door1 = new Rectangle2D.Double(800,250,70,80);
+		Rectangle2D.Double door2 = new Rectangle2D.Double(880,250,70,80);
+		Rectangle2D.Double lift2 = new Rectangle2D.Double(730,680,55,10);
+		Rectangle2D.Double lift3 = new Rectangle2D.Double(690,600,55,10);
+		Rectangle2D.Double lift4 = new Rectangle2D.Double(730,520,55,10);
+		Rectangle2D.Double lift5 = new Rectangle2D.Double(690,440,55,10);
+		Rectangle2D.Double lift6 = new Rectangle2D.Double(730,360,55,10);
+		g2d.fill(door1);
+		g2d.fill(door2);
+		g2d.fill(lift2);
+		g2d.fill(lift3);
+		g2d.fill(lift4);
+		g2d.fill(lift5);
+		g2d.fill(lift6);
         g2d.setColor(new Color(45, 45, 45));
         for (int i = 0; i < getPlatformCount(); i++) {
             g2d.fill(getPlatform(i));

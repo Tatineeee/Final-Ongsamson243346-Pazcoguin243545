@@ -5,16 +5,24 @@ public class GameCanvas extends JComponent {
 
     private Player player1, player2, player3, player4, playerChoose1, playerChoose2;
 	private int platforms;
+	private int itemChecker1, itemChecker2;
     private Level platform1, platform2, platform3;
     private MainScreen intro;
 	private Overlay overlayMaster;
-	private Image introImage, characterImage, characterImage1, characterImage2, characterImage3, characterImage4, characterImage5, option;
+	private Image introImage, characterImage, characterImage1, characterImage2, characterImage3, characterImage4, characterImage5, option, bufferImage;
 	private Image deadImage, option2;
 	private Image overlay1;
 	private Image finishImageA, finishImageB, finishImageC, finishImageF;
+	private Image book1, book2, book3, water1, water2, water3;
+	private Image cassette1, cassette2, cassette3, weapon1, weapon2, weapon3;
+	private Image liftLVL2;
 	private CharacterSelector character;
 	private EndScreenSelector end;
+	private Items item;
+	private Lift lift;
 	private boolean removeCharacterSelector, timeTorF;
+	
+	private int lifty;
 
     public GameCanvas() {
         player1 = new Player1Alt(80, 758);
@@ -33,6 +41,7 @@ public class GameCanvas extends JComponent {
 		overlayMaster = new Overlay();
 		
 		introImage = intro.getBackgroundImage();
+		bufferImage = intro.getBufferImage();
 		characterImage = character.getBackgroundImage();
 		characterImage1 = character.getBackgroundImage1();
 		characterImage2 = character.getBackgroundImage2();
@@ -41,6 +50,22 @@ public class GameCanvas extends JComponent {
 		characterImage5 = character.getBackgroundImage5();
 		option = introImage;
 		overlay1 = overlayMaster.getOverlayLVL1();
+		
+		item = new Items();
+		book1 = item.getBookImage1();
+		book2 = item.getBookImage2();
+		book3 = item.getBookImage3();
+		water1 = item.getWaterImage1();
+		water2 = item.getWaterImage2();
+		water3 = item.getWaterImage3();
+		cassette1 = item.getCassetteImage1();
+		cassette2 = item.getCassetteImage2();
+		cassette3 = item.getCassetteImage3();
+		weapon1 = item.getWeaponImage1();
+		weapon2 = item.getWeaponImage2();
+		weapon3 = item.getWeaponImage3();
+		itemChecker1 = 0;
+		itemChecker2 = 0;
 		
 		
 		end = new EndScreenSelector();
@@ -53,6 +78,11 @@ public class GameCanvas extends JComponent {
 		
 		removeCharacterSelector = true;
 		timeTorF = true;
+		
+		
+		lift = new Lift();
+		liftLVL2 = lift.getLiftImage();
+		lifty = 300;
     }
 	
 	public void switchScreen(int checker){
@@ -74,7 +104,9 @@ public class GameCanvas extends JComponent {
 			timeTorF = true;
 			removeCharacterSelector = false;
 			System.out.println("hi");
-		} 
+		} else if (checker == 9){
+			option = bufferImage;
+		}
 		repaint();
 	}
 	
@@ -86,7 +118,6 @@ public class GameCanvas extends JComponent {
 		} else if (checker == 3){
 			platforms = 3;
 		} 
-		
 		repaint();
 	}
 	
@@ -136,6 +167,21 @@ public class GameCanvas extends JComponent {
 			timeTorF = true;
 		}
 	}
+	
+	public void fixItemChecker1(int num){
+		itemChecker1 = num;
+		repaint();
+	}
+	
+	public void fixItemChecker2(int num){
+		itemChecker2 = num;
+		repaint();
+	}
+	
+	public void liftSetY(int num){
+		lifty = num;
+		repaint();
+	}
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -147,15 +193,50 @@ public class GameCanvas extends JComponent {
 			if (platforms == 1){
                 g2d.drawImage(platform1.getBackgroundImage(), 0, 0, getWidth(), getHeight(), this);
                 platform1.draw(g2d);
+				playerChoose1.draw(g2d);
+                playerChoose2.draw(g2d);
+				
 			} else if (platforms == 2){
 				g2d.drawImage(platform2.getBackgroundImage(), 0, 0, getWidth(), getHeight(), this);
                 platform2.draw(g2d);
+				playerChoose1.draw(g2d);
+                playerChoose2.draw(g2d);
 			} else if (platforms == 3){
 				g2d.drawImage(platform3.getBackgroundImage(), 0, 0, getWidth(), getHeight(), this);
                 platform3.draw(g2d);
+				playerChoose1.draw(g2d);
+                playerChoose2.draw(g2d);
 			}
-            playerChoose1.draw(g2d);
-            playerChoose2.draw(g2d); 
+			
+			
+			if (platforms == 1 && itemChecker1 == 1){
+				g2d.drawImage(book1, 0, 0, getWidth(), getHeight(), this);
+				g2d.drawImage(book3, 0, 0, getWidth(), getHeight(), this);
+			} else if (platforms == 1 && itemChecker1 == 0){
+				g2d.drawImage(book2, 0, 0, getWidth(), getHeight(), this);
+			}
+			if (platforms == 1 && itemChecker2 == 1){
+				g2d.drawImage(water1, 0, 0, getWidth(), getHeight(), this);
+				g2d.drawImage(water3, 0, 0, getWidth(), getHeight(), this);
+			} else if (platforms == 1 && itemChecker2 == 0){
+				g2d.drawImage(water2, 0, 0, getWidth(), getHeight(), this);
+			}
+			
+			if (platforms == 2 && itemChecker1 == 1){
+				g2d.drawImage(cassette1, 0, 0, getWidth(), getHeight(), this);
+				g2d.drawImage(cassette3, 0, 0, getWidth(), getHeight(), this);
+			} else if (platforms == 2 && itemChecker1 == 0){
+				g2d.drawImage(cassette2, 0, 0, getWidth(), getHeight(), this);
+			}
+			if (platforms == 2 && itemChecker2 == 1){
+				g2d.drawImage(weapon1, 0, 0, getWidth(), getHeight(), this);
+				g2d.drawImage(weapon3, 0, 0, getWidth(), getHeight(), this);
+			} else if (platforms == 2 && itemChecker2 == 0){
+				g2d.drawImage(weapon2, 0, 0, getWidth(), getHeight(), this);
+			}
+			 
+			
+			
 			g2d.drawImage(overlay1, 0, 0, getWidth(), getHeight(), this);
 			
 		} else if (removeCharacterSelector == true){
