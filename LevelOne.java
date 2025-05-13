@@ -1,10 +1,12 @@
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
+import java.util.*;
 
 public class LevelOne extends Level {
 
     private Image backgroundImage;
+	private Spikes spikeMaker;
 
     public LevelOne() {
         super(new Rectangle2D.Double[] {
@@ -24,23 +26,45 @@ public class LevelOne extends Level {
                 new Rectangle2D.Double(803, 506, 85, 20)
         });
         backgroundImage = new ImageIcon(getClass().getResource("/level-assets/level1.png")).getImage();
+		spikeMaker = new Spikes();
     }
 
     @Override
     public Image getBackgroundImage() {
         return backgroundImage;
     }
+	
+	public void spikeCreator(){
+		spikeMaker.addSpike(0,950);
+		spikeMaker.addSpike(60,950);
+		spikeMaker.addSpike(120,950);
+		spikeMaker.addSpike(700,360);
+		spikeMaker.addSpike(760,360);
+		spikeMaker.addSpike(820,360);
+		spikeMaker.addSpike(290,360);
+		spikeMaker.addSpike(350,360);
+		spikeMaker.addSpike(1300,770);
+		spikeMaker.addSpike(1360,770);
+	}
 
     @Override
     public void draw(Graphics2D g2d) {
 		g2d.setColor(Color.BLACK);
 		Rectangle2D.Double door1 = new Rectangle2D.Double(800,110,70,80);
 		Rectangle2D.Double door2 = new Rectangle2D.Double(880,110,70,80);
+		Rectangle2D.Double door3 = new Rectangle2D.Double(30,475,25,25);
+		Rectangle2D.Double door4 = new Rectangle2D.Double(350,180,25,25);
 		g2d.fill(door1);
 		g2d.fill(door2);
+		g2d.fill(door3);
+		g2d.fill(door4);
         g2d.setColor(new Color(45, 45, 45));
         for (int i = 0; i < getPlatformCount(); i++) {
             g2d.fill(getPlatform(i));
         }
+		
+		spikeCreator();
+		spikeMaker.draw(g2d);
     }
+
 }
