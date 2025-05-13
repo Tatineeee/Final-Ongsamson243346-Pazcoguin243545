@@ -3,13 +3,14 @@ import javax.swing.*;
 
 public class GameCanvas extends JComponent {
 
-    private Player player1, player2, player3, player4, playerChoose1, playerChoose2;
+	private Player player1, player2, player3, player4, playerChoose1, playerChoose2;
 	private int platforms;
 	private int itemChecker1, itemChecker2;
-    private Level platform1, platform2, platform3;
-    private MainScreen intro;
+	private Level platform1, platform2, platform3;
+	private MainScreen intro;
 	private Overlay overlayMaster;
-	private Image introImage, characterImage, characterImage1, characterImage2, characterImage3, characterImage4, characterImage5, option, bufferImage;
+	private Image introImage, characterImage, characterImage1, characterImage2, characterImage3, characterImage4,
+			characterImage5, option, bufferImage;
 	private Image deadImage, option2;
 	private Image overlay1;
 	private Image finishImageA, finishImageB, finishImageC, finishImageF;
@@ -22,25 +23,32 @@ public class GameCanvas extends JComponent {
 	private Items item;
 	private Lift lift;
 	private boolean removeCharacterSelector, timeTorF;
-	
+	private int player1X, player1Y, player2X, player2Y;
+	private int[] level1Coordinates, level2Coordinates, level3Coordinates;
+
 	private int lifty;
 
-    public GameCanvas() {
-        player1 = new Player1Alt(80, 758);
-        player2 = new Player2Alt(900, 758);
-		player3 = new Player1(80, 758);
-		player4 = new Player2(900, 758);
+	public GameCanvas() {
+		level1Coordinates = new int[] { 80, 758, 900, 758 };
+		level2Coordinates = new int[] { 97, 602, 175, 602 };
+		level3Coordinates = new int[] { 106, 626, 169, 626 };
+		player1X = level1Coordinates[0];
+		player1Y = level1Coordinates[1];
+		player2X = level1Coordinates[2];
+		player2Y = level1Coordinates[3];
+		player1 = new Player1Alt(player1X, player1Y);
+		player2 = new Player2Alt(player2X, player2Y);
+		player3 = new Player1(player1X, player1Y);
+		player4 = new Player2(player2X, player2Y);
 		playerChoose1 = player1;
 		playerChoose2 = player2;
 		platform1 = new LevelOne();
 		platform2 = new LevelTwo();
 		platform3 = new LevelThree();
-        platforms = 1; // ! Change to desired level: LevelOne, LevelTwo, LevelThree
-		
+		platforms = 1; // ! Change to desired level: LevelOne, LevelTwo, LevelThree
 		intro = new MainScreen();
 		character = new CharacterSelector();
 		overlayMaster = new Overlay();
-		
 		introImage = intro.getBackgroundImage();
 		bufferImage = intro.getBufferImage();
 		characterImage = character.getBackgroundImage();
@@ -51,7 +59,6 @@ public class GameCanvas extends JComponent {
 		characterImage5 = character.getBackgroundImage5();
 		option = introImage;
 		overlay1 = overlayMaster.getOverlayLVL1();
-		
 		item = new Items();
 		book1 = item.getBookImage1();
 		book2 = item.getBookImage2();
@@ -73,8 +80,6 @@ public class GameCanvas extends JComponent {
 		bear3 = item.getBearImage3();
 		itemChecker1 = 0;
 		itemChecker2 = 0;
-		
-		
 		end = new EndScreenSelector();
 		deadImage = end.getGameOverImage();
 		finishImageA = end.getFinishImageA();
@@ -82,211 +87,222 @@ public class GameCanvas extends JComponent {
 		finishImageC = end.getFinishImageC();
 		finishImageF = end.getFinishImageF();
 		option2 = deadImage;
-		
 		removeCharacterSelector = true;
 		timeTorF = true;
-		
-		
 		lift = new Lift();
 		liftLVL2 = lift.getLiftImage();
-    }
-	
-	public void switchScreen(int checker){
-		if(checker == 1){
+	}
+
+	public void switchScreen(int checker) {
+		if (checker == 1) {
 			option = introImage;
-		} else if (checker == 2){
+		} else if (checker == 2) {
 			option = characterImage;
-		} else if (checker == 3){
+		} else if (checker == 3) {
 			option = characterImage1;
-		} else if (checker == 4){
+		} else if (checker == 4) {
 			option = characterImage2;
-		} else if (checker == 5){
+		} else if (checker == 5) {
 			option = characterImage3;
-		} else if (checker == 6){
+		} else if (checker == 6) {
 			option = characterImage4;
-		} else if (checker == 7){
+		} else if (checker == 7) {
 			option = characterImage5;
-		} else if (checker == 8){
+		} else if (checker == 8) {
 			timeTorF = true;
 			removeCharacterSelector = false;
 			System.out.println("hi");
-		} else if (checker == 9){
+		} else if (checker == 9) {
 			option = bufferImage;
 		}
 		repaint();
 	}
-	
-	public void switchLevel(int checker){
-		if(checker == 1){
+
+	public void switchLevel(int checker) {
+		if (checker == 1) {
 			platforms = 1;
-		} else if (checker == 2){
+			player1X = level1Coordinates[0];
+			player1Y = level1Coordinates[1];
+			player2X = level1Coordinates[2];
+			player2Y = level1Coordinates[3];
+		} else if (checker == 2) {
 			platforms = 2;
-		} else if (checker == 3){
+			player1X = level2Coordinates[0];
+			player1Y = level2Coordinates[1];
+			player2X = level2Coordinates[2];
+			player2Y = level2Coordinates[3];
+		} else if (checker == 3) {
 			platforms = 3;
-		} 
+			player1X = level3Coordinates[0];
+			player1Y = level3Coordinates[1];
+			player2X = level3Coordinates[2];
+			player2Y = level3Coordinates[3];
+		}
+		playerChoose1.setX(player1X);
+		playerChoose1.setY(player1Y);
+		playerChoose2.setX(player2X);
+		playerChoose2.setY(player2Y);
 		repaint();
 	}
-	
-	public void switchEndScreen(int checker){
-		if(checker == 1){
+
+	public void switchEndScreen(int checker) {
+		if (checker == 1) {
 			option2 = deadImage;
-		} else if (checker == 2){
+		} else if (checker == 2) {
 			option2 = finishImageA;
-		} else if (checker == 3){
+		} else if (checker == 3) {
 			option2 = finishImageB;
-		} else if (checker == 4){
+		} else if (checker == 4) {
 			option2 = finishImageC;
-		} else if (checker == 5){
+		} else if (checker == 5) {
 			option2 = finishImageF;
 		}
 		repaint();
 	}
-	
-	public void playerChoose(int p1, int p2){
-		if (p1 == 1){
+
+	public void playerChoose(int p1, int p2) {
+		if (p1 == 1) {
 			playerChoose1 = player1;
-		} else if (p1 == 2){
+		} else if (p1 == 2) {
 			playerChoose1 = player3;
 		}
-		
-		if (p2 == 1){
+
+		if (p2 == 1) {
 			playerChoose2 = player2;
-		} else if (p2 == 2){
+		} else if (p2 == 2) {
 			playerChoose2 = player4;
 		}
-		
+
 		repaint();
 	}
-	
-	public void changeRemoveCharacterSelector(){
+
+	public void changeRemoveCharacterSelector() {
 		removeCharacterSelector = true;
 	}
-	
-	public void timesUp(int timeChecker){
-		if (timeChecker == 1){
+
+	public void timesUp(int timeChecker) {
+		if (timeChecker == 1) {
 			timeTorF = false;
 		}
 	}
-	
-	public void timesUpPositive(int timeChecker){
-		if (timeChecker == 1){
+
+	public void timesUpPositive(int timeChecker) {
+		if (timeChecker == 1) {
 			timeTorF = true;
 		}
 	}
-	
-	public void fixItemChecker1(int num){
+
+	public void fixItemChecker1(int num) {
 		itemChecker1 = num;
 		repaint();
 	}
-	
-	public void fixItemChecker2(int num){
+
+	public void fixItemChecker2(int num) {
 		itemChecker2 = num;
 		repaint();
 	}
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(
-                RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-		if (removeCharacterSelector == false && timeTorF == true){
-			if (platforms == 1){
-                g2d.drawImage(platform1.getBackgroundImage(), 0, 0, getWidth(), getHeight(), this);
-                platform1.draw(g2d);
+	@Override
+	protected void paintComponent(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		if (removeCharacterSelector == false && timeTorF == true) {
+			if (platforms == 1) {
+				g2d.drawImage(platform1.getBackgroundImage(), 0, 0, getWidth(), getHeight(), this);
+				platform1.draw(g2d);
 				playerChoose1.draw(g2d);
-                playerChoose2.draw(g2d);
-				
-			} else if (platforms == 2){
+				playerChoose2.draw(g2d);
+
+			} else if (platforms == 2) {
 				g2d.drawImage(platform2.getBackgroundImage(), 0, 0, getWidth(), getHeight(), this);
-                platform2.draw(g2d);
+				platform2.draw(g2d);
 				playerChoose1.draw(g2d);
-                playerChoose2.draw(g2d);
-			} else if (platforms == 3){
+				playerChoose2.draw(g2d);
+			} else if (platforms == 3) {
 				g2d.drawImage(platform3.getBackgroundImage(), 0, 0, getWidth(), getHeight(), this);
-                platform3.draw(g2d);
+				platform3.draw(g2d);
 				playerChoose1.draw(g2d);
-                playerChoose2.draw(g2d);
+				playerChoose2.draw(g2d);
 			}
-			
-			
-			if (platforms == 1 && itemChecker1 == 1){
+
+			if (platforms == 1 && itemChecker1 == 1) {
 				g2d.drawImage(book1, 0, 0, getWidth(), getHeight(), this);
 				g2d.drawImage(book3, 0, 0, getWidth(), getHeight(), this);
-			} else if (platforms == 1 && itemChecker1 == 0){
+			} else if (platforms == 1 && itemChecker1 == 0) {
 				g2d.drawImage(book2, 0, 0, getWidth(), getHeight(), this);
 			}
-			if (platforms == 1 && itemChecker2 == 1){
+			if (platforms == 1 && itemChecker2 == 1) {
 				g2d.drawImage(water1, 0, 0, getWidth(), getHeight(), this);
 				g2d.drawImage(water3, 0, 0, getWidth(), getHeight(), this);
-			} else if (platforms == 1 && itemChecker2 == 0){
+			} else if (platforms == 1 && itemChecker2 == 0) {
 				g2d.drawImage(water2, 0, 0, getWidth(), getHeight(), this);
 			}
-			
-			if (platforms == 2 && itemChecker1 == 1){
+
+			if (platforms == 2 && itemChecker1 == 1) {
 				g2d.drawImage(cassette1, 0, 0, getWidth(), getHeight(), this);
 				g2d.drawImage(cassette3, 0, 0, getWidth(), getHeight(), this);
-			} else if (platforms == 2 && itemChecker1 == 0){
+			} else if (platforms == 2 && itemChecker1 == 0) {
 				g2d.drawImage(cassette2, 0, 0, getWidth(), getHeight(), this);
 			}
-			if (platforms == 2 && itemChecker2 == 1){
+			if (platforms == 2 && itemChecker2 == 1) {
 				g2d.drawImage(weapon1, 0, 0, getWidth(), getHeight(), this);
 				g2d.drawImage(weapon3, 0, 0, getWidth(), getHeight(), this);
-			} else if (platforms == 2 && itemChecker2 == 0){
+			} else if (platforms == 2 && itemChecker2 == 0) {
 				g2d.drawImage(weapon2, 0, 0, getWidth(), getHeight(), this);
 			}
-			
-			if (platforms == 3 && itemChecker2 == 1){
+
+			if (platforms == 3 && itemChecker2 == 1) {
 				g2d.drawImage(painting1, 0, 0, getWidth(), getHeight(), this);
 				g2d.drawImage(painting3, 0, 0, getWidth(), getHeight(), this);
-			} else if (platforms == 3 && itemChecker2 == 0){
+			} else if (platforms == 3 && itemChecker2 == 0) {
 				g2d.drawImage(painting2, 0, 0, getWidth(), getHeight(), this);
 			}
-			if (platforms == 3 && itemChecker1 == 1){
+			if (platforms == 3 && itemChecker1 == 1) {
 				g2d.drawImage(bear1, 0, 0, getWidth(), getHeight(), this);
 				g2d.drawImage(bear3, 0, 0, getWidth(), getHeight(), this);
-			} else if (platforms == 3 && itemChecker1 == 0){
+			} else if (platforms == 3 && itemChecker1 == 0) {
 				g2d.drawImage(bear2, 0, 0, getWidth(), getHeight(), this);
 			}
-			 
-			
+
 			g2d.drawImage(overlay1, 0, 0, getWidth(), getHeight(), this);
-			
-		} else if (removeCharacterSelector == true){
-		    g2d.drawImage(option, 0, 0, 1024, 768, this);
-		} else if (timeTorF == false){
+
+		} else if (removeCharacterSelector == true) {
+			g2d.drawImage(option, 0, 0, 1024, 768, this);
+		} else if (timeTorF == false) {
 			g2d.drawImage(option2, 0, 0, 1024, 768, this);
 		}
-		
+
 		repaint();
-    }
+	}
 
-    public Player getPlayer1() {
-        return player1;
-    }
+	public Player getPlayer1() {
+		return player1;
+	}
 
-    public Player getPlayer2() {
-        return player2;
-    }
-	
+	public Player getPlayer2() {
+		return player2;
+	}
+
 	public Player getPlayer3() {
-        return player3;
-    }
-	
-	public Player getPlayer4() {
-        return player4;
-    }
+		return player3;
+	}
 
-    public Level getPlatforms() {
-		if (platforms == 1){
+	public Player getPlayer4() {
+		return player4;
+	}
+
+	public Level getPlatforms() {
+		if (platforms == 1) {
 			return platform1;
-		} else if (platforms == 2){
+		} else if (platforms == 2) {
 			return platform2;
-		} else if (platforms == 3){
+		} else if (platforms == 3) {
 			return platform3;
 		} else {
 			return platform1;
 		}
-    }
+	}
 
 }
