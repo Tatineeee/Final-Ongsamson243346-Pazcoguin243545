@@ -9,6 +9,8 @@ public class Items{
 	private Image water1, water2, water3;
 	private Image cassette1, cassette2, cassette3;
 	private Image weapon1, weapon2, weapon3;
+	private Image painting1, painting2, painting3;
+	private Image bear1, bear2, bear3;
 	
 	public Items(){
 		book1 = new ImageIcon(getClass().getResource("/items/book1.PNG")).getImage();
@@ -23,6 +25,14 @@ public class Items{
 		weapon1 = new ImageIcon(getClass().getResource("/items/weapon1.PNG")).getImage();
 		weapon2 = new ImageIcon(getClass().getResource("/items/weapon2.PNG")).getImage();
 		weapon3 = new ImageIcon(getClass().getResource("/items/weapon3.PNG")).getImage();
+		painting1 = new ImageIcon(getClass().getResource("/items/painting1.PNG")).getImage();
+		painting2 = new ImageIcon(getClass().getResource("/items/painting2.PNG")).getImage();
+		painting3 = new ImageIcon(getClass().getResource("/items/painting3.PNG")).getImage();
+		bear1 = new ImageIcon(getClass().getResource("/items/bear1.PNG")).getImage();
+		bear2 = new ImageIcon(getClass().getResource("/items/bear2.PNG")).getImage();
+		bear3 = new ImageIcon(getClass().getResource("/items/bear3.PNG")).getImage();
+
+		
 		
 	}
 	
@@ -72,5 +82,29 @@ public class Items{
 	
 	public Image getWeaponImage3(){
 		return weapon3;
+	}
+	
+	public Image getPaintingImage1(){
+		return painting1;
+	}
+	
+	public Image getPaintingImage2(){
+		return painting2;
+	}
+	
+	public Image getPaintingImage3(){
+		return painting3;
+	}
+	
+	public Image getBearImage1(){
+		return bear1;
+	}
+	
+	public Image getBearImage2(){
+		return bear2;
+	}
+	
+	public Image getBearImage3(){
+		return bear3;
 	}
 }

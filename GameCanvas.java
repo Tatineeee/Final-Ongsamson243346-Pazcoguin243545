@@ -15,6 +15,7 @@ public class GameCanvas extends JComponent {
 	private Image finishImageA, finishImageB, finishImageC, finishImageF;
 	private Image book1, book2, book3, water1, water2, water3;
 	private Image cassette1, cassette2, cassette3, weapon1, weapon2, weapon3;
+	private Image painting1, painting2, painting3, bear1, bear2, bear3;
 	private Image liftLVL2;
 	private CharacterSelector character;
 	private EndScreenSelector end;
@@ -64,6 +65,12 @@ public class GameCanvas extends JComponent {
 		weapon1 = item.getWeaponImage1();
 		weapon2 = item.getWeaponImage2();
 		weapon3 = item.getWeaponImage3();
+		painting1 = item.getPaintingImage1();
+		painting2 = item.getPaintingImage2();
+		painting3 = item.getPaintingImage3();
+		bear1 = item.getBearImage1();
+		bear2 = item.getBearImage2();
+		bear3 = item.getBearImage3();
 		itemChecker1 = 0;
 		itemChecker2 = 0;
 		
@@ -82,7 +89,6 @@ public class GameCanvas extends JComponent {
 		
 		lift = new Lift();
 		liftLVL2 = lift.getLiftImage();
-		lifty = 300;
     }
 	
 	public void switchScreen(int checker){
@@ -177,11 +183,6 @@ public class GameCanvas extends JComponent {
 		itemChecker2 = num;
 		repaint();
 	}
-	
-	public void liftSetY(int num){
-		lifty = num;
-		repaint();
-	}
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -234,8 +235,20 @@ public class GameCanvas extends JComponent {
 			} else if (platforms == 2 && itemChecker2 == 0){
 				g2d.drawImage(weapon2, 0, 0, getWidth(), getHeight(), this);
 			}
-			 
 			
+			if (platforms == 3 && itemChecker2 == 1){
+				g2d.drawImage(painting1, 0, 0, getWidth(), getHeight(), this);
+				g2d.drawImage(painting3, 0, 0, getWidth(), getHeight(), this);
+			} else if (platforms == 3 && itemChecker2 == 0){
+				g2d.drawImage(painting2, 0, 0, getWidth(), getHeight(), this);
+			}
+			if (platforms == 3 && itemChecker1 == 1){
+				g2d.drawImage(bear1, 0, 0, getWidth(), getHeight(), this);
+				g2d.drawImage(bear3, 0, 0, getWidth(), getHeight(), this);
+			} else if (platforms == 3 && itemChecker1 == 0){
+				g2d.drawImage(bear2, 0, 0, getWidth(), getHeight(), this);
+			}
+			 
 			
 			g2d.drawImage(overlay1, 0, 0, getWidth(), getHeight(), this);
 			

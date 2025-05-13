@@ -80,8 +80,6 @@ public class GameFrame {
 		character_determiner1 = 2;
 		character_determiner2 = 3;
 		character_determiner3 = 4;
-		/* character_or_alt1 = 0;
-		character_or_alt2 = 0; */
 		p1 = 0; 
 		p2 = 0;
 		lvlCounter = 0;
@@ -101,7 +99,7 @@ public class GameFrame {
 		liftCheck = false;
 		
 		test = new JButton();
-		test.setBounds(900,250,100,100);
+		test.setBounds(780,390,100,100);
 		test.setOpaque(false);
 		test.setContentAreaFilled(false);
 		test.setBorderPainted(true);
@@ -501,8 +499,8 @@ public class GameFrame {
 			
 			if (lvlp1 == 1 && lvlp2 == 2){
 				System.out.println("ew");
-				gameCanvas.switchLevel(2);
-				lvlCounter = 2;
+				gameCanvas.switchLevel(3);
+				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 	        	gameCanvas.fixItemChecker2(1);
 				stopTime();
@@ -512,8 +510,8 @@ public class GameFrame {
 				//resetItem();
 			} else if (lvlp1 == 2 && lvlp2 == 1){
 				System.out.println("ew");
-				gameCanvas.switchLevel(2);
-				lvlCounter = 2;
+				gameCanvas.switchLevel(3);
+				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 	        	gameCanvas.fixItemChecker2(1);
 				stopTime();
@@ -531,7 +529,7 @@ public class GameFrame {
 				System.out.println("LMAO");
 			}
 			
-			/* if (lvlp1 == 1 && lvlp2 == 2){
+			 if (lvlp1 == 1 && lvlp2 == 2){
 				System.out.println("ew");
 				gameCanvas.switchLevel(3);
 				lvlCounter = 3;
@@ -553,7 +551,52 @@ public class GameFrame {
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
 				check1 = 1;
 				//resetItem();
-			} */
+			} 
+	    } else if (lvlCounter == 3){ //500,20,70, 780,390,100,100
+			if (player.getX() > 500 && player.getX() < 570 && player.getY() < 100  && player.getY() > 20){
+				lvlp1 = 1;
+				System.out.println("ew");
+			} else if (player.getX() > 780 && player.getX() < 880 && player.getY() < 490 && player.getY() > 390){
+				lvlp1 = 2;
+				System.out.println("LMAO");
+			}
+			
+			if (lvlp1 == 1 && lvlp2 == 2){
+				System.out.println("ew");
+				gameCanvas.timesUp(1);
+                stopTime();
+				if (second <= 59 && second > 45){
+					gameCanvas.switchEndScreen(2);
+				} else if (second <= 45 && second > 30){
+					gameCanvas.switchEndScreen(3);
+				} else if (second <= 30 && second > 15){
+					gameCanvas.switchEndScreen(4);
+				} else if (second <= 15){
+					gameCanvas.switchEndScreen(5);
+				}
+				layeredPane.remove(counterLabel);
+				layeredPane.remove(tempbutton);
+				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
+				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
+			} else if (lvlp1 == 2 && lvlp2 == 1){
+				System.out.println("ew");
+				gameCanvas.timesUp(1);
+                stopTime();
+				if (second <= 59 && second > 45){
+					gameCanvas.switchEndScreen(2);
+				} else if (second <= 45 && second > 30){
+					gameCanvas.switchEndScreen(3);
+				} else if (second <= 30 && second > 15){
+					gameCanvas.switchEndScreen(4);
+				} else if (second <= 15){
+					gameCanvas.switchEndScreen(5);
+				}
+				layeredPane.remove(counterLabel);
+				layeredPane.remove(tempbutton);
+				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
+				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
+			} 
+			
 	    }
 	}
 	
@@ -581,6 +624,22 @@ public class GameFrame {
 				gameCanvas.fixItemChecker1(0);
 				obtainItem = 1;
 			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 350 && player.getY() > 250  && obtainItem == 0){
+				itemObtained3 = 1;
+				gameCanvas.fixItemChecker2(0);
+				obtainItem = 1;
+			}
+			
+			if (itemObtained2 == 1){
+				gameCanvas.fixItemChecker1(0);
+			} else if (itemObtained4 == 1){
+				gameCanvas.fixItemChecker2(0);
+			} 
+		} else if(lvlCounter == 3){ //860,250,100,100
+			if (player.getX() > 860 && player.getX() < 960 && player.getY() < 350 && player.getY() > 250 && obtainItem == 0){
+				itemObtained1 = 1;
+				gameCanvas.fixItemChecker1(0);
+				obtainItem = 1;
+			} else if (player.getX() > 0 && player.getX() < 1 && player.getY() < 1 && player.getY() > 0 && obtainItem == 0){
 				itemObtained3 = 1;
 				gameCanvas.fixItemChecker2(0);
 				obtainItem = 1;
