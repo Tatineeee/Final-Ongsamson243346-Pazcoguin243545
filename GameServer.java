@@ -9,7 +9,7 @@ public class GameServer {
     private Socket player1Socket, player2Socket;
     private ReadFromClient player1RFC, player2RFC;
     private WriteToClient player1WTC, player2WTC;
-    private int play1, play2, second, lvlPlayer, itemObtained, itemObtained2, check, liftChecker, liftChecker2;
+	private int play1, play2, second, lvlPlayer, itemObtained, itemObtained2, check, liftChecker, liftChecker2, spikeChecker;
 
     public GameServer() {
         try {
@@ -83,14 +83,15 @@ public class GameServer {
                         player2X = dataIn.readDouble();
                         player2Y = dataIn.readDouble();
                     }
-                    play1 = dataIn.readInt();
-                    second = dataIn.readInt();
-                    lvlPlayer = dataIn.readInt();
-                    itemObtained = dataIn.readInt();
-                    itemObtained2 = dataIn.readInt();
-                    check = dataIn.readInt();
-                    liftChecker = dataIn.readInt();
-                    liftChecker2 = dataIn.readInt();
+					play1 = dataIn.readInt();
+					second = dataIn.readInt();
+					lvlPlayer = dataIn.readInt();
+					itemObtained = dataIn.readInt();
+					itemObtained2 = dataIn.readInt();
+					check = dataIn.readInt();
+					liftChecker = dataIn.readInt();
+					liftChecker2 = dataIn.readInt();
+					spikeChecker = dataIn.readInt();
                 }
             } catch (IOException e) {
                 System.out.println("ReadFromClient error: " + e.getMessage());
@@ -123,14 +124,15 @@ public class GameServer {
                         dataOut.writeDouble(player1Y);
                         dataOut.flush();
                     }
-                    dataOut.writeInt(play1);
-                    dataOut.writeInt(second);
-                    dataOut.writeInt(lvlPlayer);
-                    dataOut.writeInt(itemObtained);
-                    dataOut.writeInt(itemObtained2);
-                    dataOut.writeInt(check);
-                    dataOut.writeInt(liftChecker);
-                    dataOut.writeInt(liftChecker2);
+					dataOut.writeInt(play1);
+					dataOut.writeInt(second);
+					dataOut.writeInt(lvlPlayer);
+					dataOut.writeInt(itemObtained);
+					dataOut.writeInt(itemObtained2);
+					dataOut.writeInt(check);
+					dataOut.writeInt(liftChecker);
+					dataOut.writeInt(liftChecker2);
+					dataOut.writeInt(spikeChecker);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {

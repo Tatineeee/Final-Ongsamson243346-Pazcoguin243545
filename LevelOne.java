@@ -6,7 +6,8 @@ import java.util.*;
 public class LevelOne extends Level {
 
     private Image backgroundImage;
-	private Spikes spikeMaker;
+	private Spikes NewSpike;
+	private AffineTransform standardPosition;
 
     public LevelOne() {
         super(new Rectangle2D.Double[] {
@@ -26,29 +27,17 @@ public class LevelOne extends Level {
                 new Rectangle2D.Double(803, 506, 85, 20)
         });
         backgroundImage = new ImageIcon(getClass().getResource("/level-assets/level1.png")).getImage();
-		spikeMaker = new Spikes();
+		NewSpike = new Spikes();
     }
 
     @Override
     public Image getBackgroundImage() {
         return backgroundImage;
     }
-	
-	public void spikeCreator(){
-		spikeMaker.addSpike(0,950);
-		spikeMaker.addSpike(60,950);
-		spikeMaker.addSpike(120,950);
-		spikeMaker.addSpike(700,360);
-		spikeMaker.addSpike(760,360);
-		spikeMaker.addSpike(820,360);
-		spikeMaker.addSpike(290,360);
-		spikeMaker.addSpike(350,360);
-		spikeMaker.addSpike(1300,770);
-		spikeMaker.addSpike(1360,770);
-	}
 
     @Override
     public void draw(Graphics2D g2d) {
+		standardPosition = g2d.getTransform();
 		g2d.setColor(Color.BLACK);
 		Rectangle2D.Double door1 = new Rectangle2D.Double(800,110,70,80);
 		Rectangle2D.Double door2 = new Rectangle2D.Double(880,110,70,80);
@@ -58,13 +47,44 @@ public class LevelOne extends Level {
 		g2d.fill(door2);
 		g2d.fill(door3);
 		g2d.fill(door4);
+		g2d.fill(new Rectangle2D.Double(410,180,25,25));
+		g2d.fill(new Rectangle2D.Double(650,385,25,25));
         g2d.setColor(new Color(45, 45, 45));
         for (int i = 0; i < getPlatformCount(); i++) {
             g2d.fill(getPlatform(i));
         }
-		
-		spikeCreator();
-		spikeMaker.draw(g2d);
+		g2d.setColor(Color.WHITE);
+		AffineTransform transform = AffineTransform.getTranslateInstance(0,950);
+		g2d.setTransform(transform);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform2 = AffineTransform.getTranslateInstance(60,950);
+		g2d.setTransform(transform2);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform3 = AffineTransform.getTranslateInstance(120,950);
+		g2d.setTransform(transform3);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform4 = AffineTransform.getTranslateInstance(700,360);
+		g2d.setTransform(transform4);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform5 = AffineTransform.getTranslateInstance(760,360);
+		g2d.setTransform(transform5);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform6 = AffineTransform.getTranslateInstance(820,360);
+		g2d.setTransform(transform6);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform7 = AffineTransform.getTranslateInstance(290,360);
+		g2d.setTransform(transform7);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform8 = AffineTransform.getTranslateInstance(350,360);
+		g2d.setTransform(transform8);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform9 = AffineTransform.getTranslateInstance(1300,770);
+		g2d.setTransform(transform9);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform10 = AffineTransform.getTranslateInstance(1360,770);
+		g2d.setTransform(transform10);
+		g2d.fill(NewSpike.SpikeDraw());
+		g2d.setTransform(standardPosition);
     }
 
 }

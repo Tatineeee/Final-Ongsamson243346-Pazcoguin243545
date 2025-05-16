@@ -14,6 +14,7 @@ public class GameFrame {
 	private int character_determiner1, character_determiner2, character_determiner3, determinerChecker;
 	private int p1, p2, lvlCounter, lvlp1, lvlp2, obtainItem, itemObtained1, itemObtained2, itemObtained3, itemObtained4;
 	private int check1, check2, liftChecker1, liftChecker2, liftChecker3, liftChecker4, liftChecker5;
+	private int spikeChecker1, spikeChecker2;
     private JFrame frame;
     private GameCanvas gameCanvas;
 	private JLayeredPane layeredPane;
@@ -112,20 +113,20 @@ public class GameFrame {
 		test2.setContentAreaFilled(true);
 		test2.setBorderPainted(true);
 		
-		counterLabel = new JLabel("0:15");
+		spikeChecker1 = 0;
+		spikeChecker2 = 0;
+		
+		counterLabel = new JLabel("2:0");
 		counterLabel.setBounds(900,0,200,100);
 		counterLabel.setFont(font1);
 		counterLabel.setForeground(Color.WHITE);
-		second = 15;
-		minute = 0;
-		countdownTimer();
-		timer2.start();
+		second = 0;
+		minute = 2;
 		
         connectToServer();
 		determineCharacter();
         initializePlayer();
         setupGUI();
-        setupTimer();
         setupKeyListener();
 		setUpButtonListeners();
         playMusic("/music/scarymusic.wav", 0.5f);
@@ -225,7 +226,7 @@ public class GameFrame {
     }
 
     private void setupTimer() {
-        int interval = 33;
+        int interval = 10;
         ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -237,9 +238,9 @@ public class GameFrame {
 				itemChecker();
 				}
 				
-			    if (lvlCounter == 1){
+			    if (lvlCounter == 1 || lvlCounter == 2 || lvlCounter == 3){
 					checkSpikes();
-				}
+				} 
 				
 				if (itemObtained1 == 1 && itemObtained4 == 1){
 					levelChecker();
@@ -317,7 +318,9 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent ae){
 				if (determinerChecker == 1 && p1 != 0 && p2 != 0){
 				    System.out.println("ew");
+					setupTimer();
 					resetPlayer();
+					countdownTimer();
 				    gameCanvas.switchScreen(8);
 					gameCanvas.fixItemChecker1(1);
 					gameCanvas.fixItemChecker2(1);
@@ -326,8 +329,7 @@ public class GameFrame {
 				    layeredPane.remove(characterExitButton);
 				    layeredPane.add(counterLabel, JLayeredPane.PALETTE_LAYER);
 				    layeredPane.add(tempbutton, JLayeredPane.PALETTE_LAYER);
-				//	areaChecker();
-				    resetAndStart(1,0);
+				    //resetAndStart(1,0);
 					lvlCounter = 1;
 				} else {
 					System.out.println("Choose a character.");
@@ -341,16 +343,21 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent ae){
 				gameCanvas.changeRemoveCharacterSelector();
                 gameCanvas.timesUpPositive(1);
+				gameCanvas.switchLevel(1);
+				resetAndStart();
+				setupTimer();
+				resetPlayer();
+				countdownTimer();
 				gameCanvas.switchScreen(8);
 				gameCanvas.fixItemChecker1(1);
 				gameCanvas.fixItemChecker2(1);
 				resetItem();
 				layeredPane.remove(startAgainButton);
 				layeredPane.remove(exitButton);
-				//areaChecker();
 				layeredPane.add(counterLabel, JLayeredPane.PALETTE_LAYER);
 				layeredPane.add(tempbutton, JLayeredPane.PALETTE_LAYER);
-				resetAndStart(1,0);
+				//resetAndStart(1,0);
+				spikeChecker1 = 0;
 				
 			}
 		};
@@ -362,6 +369,7 @@ public class GameFrame {
 				layeredPane.remove(startAgainButton);
 				layeredPane.remove(exitButton);
                 layeredPane.add(startButton, JLayeredPane.PALETTE_LAYER);
+				spikeChecker1 = 0;
 				
 			}
 		};
@@ -395,7 +403,7 @@ public class GameFrame {
 	        	gameCanvas.fixItemChecker2(1);
 				liftPlatform2();
 				stopTime();
-				resetAndStart(1,0);
+				//resetAndStart(1,0);
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
 				check1 = 1;
 				
@@ -430,7 +438,8 @@ public class GameFrame {
 				
 				if (second == -1){
 					second = 59;
-					minute--;
+					System.out.println(minute);
+					minute-- ;
 				    if (second2 > second){
 					    ddSecond = dFormat.format(second2);
 			    	} else if (second > second2){
@@ -451,21 +460,13 @@ public class GameFrame {
 				}
 			}
 		});
+		
+		timer2.start();
 	}
 	
-	public void resetAndStart(int min, int sec){
-		if (timer2.isRunning()){
-			timer2.stop();
-		}
-		minute = min;
-		second = sec;
-		if (second2 > second){
-			ddSecond = dFormat.format(second2);
-		} else if (second > second2){
-			ddSecond = dFormat.format(second);
-		}
-		counterLabel.setText(minute + ":" + ddSecond);
-		timer2.start();
+	public void resetAndStart(){
+		minute = 2;
+		second = 0;
 	}
 	
 	public void stopTime(){
@@ -482,28 +483,28 @@ public class GameFrame {
 			
 			if (lvlp1 == 1 && lvlp2 == 2){
 				System.out.println("ew");
-				gameCanvas.switchLevel(2);
-				lvlCounter = 2;
+				gameCanvas.switchLevel(3);
+				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 	        	gameCanvas.fixItemChecker2(1);
-				stopTime();
-				resetAndStart(1,0);
+				//stopTime();
+				//resetAndStart(1,0);
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
 				check1 = 1;
 				//resetItem();
 			} else if (lvlp1 == 2 && lvlp2 == 1){
 				System.out.println("ew");
-				gameCanvas.switchLevel(2);
-				lvlCounter = 2;
+				gameCanvas.switchLevel(3);
+				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 	        	gameCanvas.fixItemChecker2(1);
-				stopTime();
-				resetAndStart(1,0);
+				//stopTime();
+				//resetAndStart(1,0);
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
 				check1 = 1;
 				//resetItem();
 			}
-		}/* else if (lvlCounter == 2){
+		} /*else if (lvlCounter == 2){
 			if (player.getX() > 800 && player.getX() < 870 && player.getY() < 330  && player.getY() > 250){
 				lvlp1 = 1;
 				System.out.println("ew");
@@ -518,8 +519,8 @@ public class GameFrame {
 				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 	        	gameCanvas.fixItemChecker2(1);
-				stopTime();
-				resetAndStart(1,0);
+				//stopTime();
+				//resetAndStart(1,0);
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
 				check1 = 1;
 				//resetItem();
@@ -529,13 +530,13 @@ public class GameFrame {
 				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 	        	gameCanvas.fixItemChecker2(1);
-				stopTime();
-				resetAndStart(1,0);
+				//stopTime();
+				//resetAndStart(1,0);
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
 				check1 = 1;
 				//resetItem();
 			} 
-	    } else if (lvlCounter == 3){ //500,20,70, 780,390,100,100
+	    } /*else if (lvlCounter == 3){ //500,20,70, 780,390,100,100
 			if (player.getX() > 500 && player.getX() < 570 && player.getY() < 100  && player.getY() > 20){
 				lvlp1 = 1;
 				System.out.println("ew");
@@ -690,33 +691,86 @@ public class GameFrame {
 
 	public void checkSpikes(){
 		if (lvlCounter == 1){
-		ArrayList<Integer> lvl1X = gameCanvas.getSpikeX();
-		ArrayList<Integer> lvl1Y = gameCanvas.getSpikeY();
-		int count = Math.min(lvl1X.size(), lvl1Y.size());
-		for (int i = 0; i < lvl1X.size(); i++){
-			if (player.getX() > lvl1X.get(i) && player.getX() < (lvl1X.get(i)+25) && (player.getY()+25) > lvl1Y.get(i) && (player.getY()+25) < (lvl1Y.get(i)+25)){
+			if (((player.getX())+25 > 0 && (player.getX()+25) < (0+25) && (player.getY()+40) > 475 && (player.getY()+40) < (475+25)) ||
+			((player.getX()+25) > 30 && (player.getX()+25) < (30+25) && (player.getY()+40) > 475 && (player.getY()+40) < (475+25)) ||
+			((player.getX()+25) > 60 && (player.getX()+25) < (60+25) && (player.getY()+40) > 475 && (player.getY()+40) < (475+25)) ||
+			((player.getX()+25) > 350 && (player.getX()+25) < (350+25) && (player.getY()+40) > 180 && (player.getY()+40) < (180+25)) ||
+			((player.getX()+25) > 380 && (player.getX()+25) < (380+25) && (player.getY()+40) > 180 && (player.getY()+40) < (180+25)) ||
+			((player.getX()+25) > 410 && (player.getX()+25) < (410+25) && (player.getY()+40) > 180 && (player.getY()+40) < (180+25)) ||
+			((player.getX()+25) > 145 && (player.getX()+25) < (145+25) && (player.getY()+40) > 180 && (player.getY()+40) < (180+25)) ||
+			((player.getX()+25) > 175 && (player.getX()+25) < (175+25) && (player.getY()+40) > 180 && (player.getY()+40) < (180+25)) ||
+			((player.getX()+25) > 650 && (player.getX()+25) < (650+25) && (player.getY()+40) > 385 && (player.getY()+40) < (385+25)) ||
+			((player.getX()+25) > 680 && (player.getX()+25) < (680+25) && (player.getY()+40) > 385 && (player.getY()+40) < (385+25)) ||		
+			(spikeChecker2 == 1)){
 				timer2.stop();
 				gameCanvas.switchEndScreen(1);
 				gameCanvas.timesUp(1);
 				layeredPane.remove(counterLabel);
 				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
 				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
+				spikeChecker1 = 1;
 			}
-		}} else if (lvlCounter == 2){
-			ArrayList<Integer> lvl2X = gameCanvas.getSpikeX();
-		    ArrayList<Integer> lvl2Y = gameCanvas.getSpikeY();
-			int count = Math.min(lvl2X.size(), lvl2Y.size());
-			for (int i = 0; i <= lvl2X.size(); i++){
-				if (player.getX() > lvl2X.get(i) && player.getX() < (lvl2X.get(i)+25) && (player.getY()+25) > lvl2Y.get(i) && (player.getY()+25) < (lvl2Y.get(i)+25)){
+		} else if (lvlCounter == 2){
+			if (((player.getX())+25 > 150 && (player.getX()+25) < (150+25) && (player.getY()+40) > 630 && (player.getY()+40) < (630+25)) ||
+			((player.getX()+25) > 180 && (player.getX()+25) < (180+25) && (player.getY()+40) > 630 && (player.getY()+40) < (630+25)) ||
+			((player.getX()+25) > 250 && (player.getX()+25) < (250+25) && (player.getY()+40) > 90 && (player.getY()+40) < (90+25)) ||
+			((player.getX()+25) > 280 && (player.getX()+25) < (280+25) && (player.getY()+40) > 90 && (player.getY()+40) < (90+25)) ||
+			((player.getX()+25) > 310 && (player.getX()+25) < (310+25) && (player.getY()+40) > 90 && (player.getY()+40) < (90+25)) ||
+			((player.getX()+25) > 400 && (player.getX()+25) < (400+25) && (player.getY()+40) > 90 && (player.getY()+40) < (90+25)) ||
+			((player.getX()+25) > 430 && (player.getX()+25) < (430+25) && (player.getY()+40) > 90 && (player.getY()+40) < (90+25)) ||
+			((player.getX()+25) > 700 && (player.getX()+25) < (700+25) && (player.getY()+40) > 110 && (player.getY()+40) < (110+25)) ||
+			((player.getX()+25) > 730 && (player.getX()+25) < (730+25) && (player.getY()+40) > 110 && (player.getY()+40) < (110+25)) ||
+			((player.getX()+25) > 760 && (player.getX()+25) < (760+25) && (player.getY()+40) > 110 && (player.getY()+40) < (110+25)) ||
+			((player.getX()+25) > 790 && (player.getX()+25) < (790+25) && (player.getY()+40) > 110 && (player.getY()+40) < (110+25)) ||
+			(spikeChecker2 == 1)){
 				timer2.stop();
 				gameCanvas.switchEndScreen(1);
 				gameCanvas.timesUp(1);
 				layeredPane.remove(counterLabel);
 				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
 				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
-			    }
-		    }
-	    }
+				spikeChecker1 = 1;
+			}
+			
+		} else if (lvlCounter == 3){
+			if (((player.getX())+25 > 150 && (player.getX()+25) < (150+25) && (player.getY()+40) > 650 && (player.getY()+40) < (650+25)) ||
+			((player.getX()+25) > 800 && (player.getX()+25) < (800+25) && (player.getY()+40) > 625 && (player.getY()+40) < (625+25)) ||
+			((player.getX()+25) > 770 && (player.getX()+25) < (770+25) && (player.getY()+40) > 625 && (player.getY()+40) < (625+25)) ||
+			((player.getX()+25) > 830 && (player.getX()+25) < (830+25) && (player.getY()+40) > 625 && (player.getY()+40) < (625+25)) ||
+			((player.getX()+25) > 860 && (player.getX()+25) < (860+25) && (player.getY()+40) > 625 && (player.getY()+40) < (625+25)) ||
+			((player.getX()+25) > 360 && (player.getX()+25) < (360+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 390 && (player.getX()+25) < (390+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 460 && (player.getX()+25) < (460+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 490 && (player.getX()+25) < (490+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 520 && (player.getX()+25) < (520+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 100 && (player.getX()+25) < (100+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 70 && (player.getX()+25) < (70+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 130 && (player.getX()+25) < (130+25) && (player.getY()+40) > 535 && (player.getY()+40) < (535+25)) ||
+			((player.getX()+25) > 220 && (player.getX()+25) < (220+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 250 && (player.getX()+25) < (250+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 280 && (player.getX()+25) < (280+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 350 && (player.getX()+25) < (350+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 380 && (player.getX()+25) < (380+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 410 && (player.getX()+25) < (410+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 650 && (player.getX()+25) < (650+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 680 && (player.getX()+25) < (680+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 710 && (player.getX()+25) < (710+25) && (player.getY()+40) > 335 && (player.getY()+40) < (335+25)) ||
+			((player.getX()+25) > 300 && (player.getX()+25) < (300+25) && (player.getY()+40) > 160 && (player.getY()+40) < (160+25)) ||
+			((player.getX()+25) > 330 && (player.getX()+25) < (330+25) && (player.getY()+40) > 160 && (player.getY()+40) < (160+25)) ||
+			((player.getX()+25) > 900 && (player.getX()+25) < (900+25) && (player.getY()+40) > 160 && (player.getY()+40) < (160+25)) ||
+			((player.getX()+25) > 930 && (player.getX()+25) < (930+25) && (player.getY()+40) > 160 && (player.getY()+40) < (160+25)) ||
+			((player.getX()+25) > 960 && (player.getX()+25) < (960+25) && (player.getY()+40) > 160 && (player.getY()+40) < (160+25)) ||	
+			(spikeChecker2 == 1)){
+				timer2.stop();
+				gameCanvas.switchEndScreen(1);
+				gameCanvas.timesUp(1);
+				layeredPane.remove(counterLabel);
+				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
+				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
+				spikeChecker1 = 1;
+			}
+			
+		}
 	}
 	
     private void checkPlatform() {
@@ -810,6 +864,7 @@ public class GameFrame {
 						check2 = dataIn.readInt();
 						liftChecker2 = dataIn.readInt();
 						liftChecker5 = dataIn.readInt();
+						spikeChecker2 = dataIn.readInt();
                     }
                 }
             } catch (IOException e) {
@@ -854,6 +909,7 @@ public class GameFrame {
 						dataOut.writeInt(check1);
 						dataOut.writeInt(liftChecker1);
 						dataOut.writeInt(liftChecker4);
+						dataOut.writeInt(spikeChecker1);
                         dataOut.flush();
                     }
                     try {
