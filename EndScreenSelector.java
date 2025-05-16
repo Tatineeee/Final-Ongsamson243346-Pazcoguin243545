@@ -1,36 +1,40 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
-public class EndScreenSelector {
-
-	private Image gameoverImage, finishImageA, finishImageB, finishImageC, finishImageF;
-
-	public EndScreenSelector() {
+public class EndScreenSelector{
+	
+	private Image gameoverImage;
+	private Image finishImageA, finishImageB, finishImageC, finishImageF;
+	
+	public EndScreenSelector(){
 		gameoverImage = new ImageIcon(getClass().getResource("/intro/gameover.PNG")).getImage();
 		finishImageA = new ImageIcon(getClass().getResource("/intro/finished_A.PNG")).getImage();
 		finishImageB = new ImageIcon(getClass().getResource("/intro/finished_B.PNG")).getImage();
 		finishImageC = new ImageIcon(getClass().getResource("/intro/finished_C.PNG")).getImage();
 		finishImageF = new ImageIcon(getClass().getResource("/intro/finished_F.PNG")).getImage();
-	}
 
+	}
+	
 	public Image getGameOverImage() {
-		return gameoverImage;
-	}
-
+        return gameoverImage;
+    }
+	
 	public Image getFinishImageA() {
-		return finishImageA;
-	}
-
+        return finishImageA;
+    } 
+	
 	public Image getFinishImageB() {
-		return finishImageB;
-	}
-
+        return finishImageB;
+    } 
+	
 	public Image getFinishImageC() {
-		return finishImageC;
-	}
-
+        return finishImageC;
+    } 
+	
 	public Image getFinishImageF() {
-		return finishImageF;
-	}
-
+        return finishImageF;
+    } 
+	
 }
