@@ -1,14 +1,42 @@
 import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
-import java.util.*;
+
+/**
+ * This is the LevelOne class, the first level that extends the Level class.
+ * It draws various Rectangle2D.Double objects representing platforms and
+ * spikes.
+ * 
+ * @author Constantine P. Pazcoguin (243545)
+ * @author Liora T. Ongsamson (243346)
+ * @version May 20, 2025
+ * 
+ *          I have not discussed the Java language code in my program
+ *          with anyone other than my instructor or the teaching assistants
+ *          assigned to this course.
+ * 
+ *          I have not used Java language code obtained from another student,
+ *          or any other unauthorized source, either modified or unmodified.
+ * 
+ *          If any Java language code or documentation used in my program
+ *          was obtained from another source, such as a textbook or website,
+ *          that has been clearly noted with a proper citation in the comments
+ *          of my program.
+ */
 
 public class LevelOne extends Level {
 
 	private Image backgroundImage;
-	private Spikes NewSpike;
 	private AffineTransform standardPosition;
+	private Spikes newSpike;
 
+	/**
+	 * Constructor for the LevelOne class.
+	 * It initializes the platforms and background image.
+	 * 
+	 * @param platforms An array of Rectangle2D.Double objects representing the
+	 *                  platforms in the level.
+	 */
 	public LevelOne() {
 		super(new Rectangle2D.Double[] {
 				new Rectangle2D.Double(0, 758, 1024, 10),
@@ -27,14 +55,14 @@ public class LevelOne extends Level {
 				new Rectangle2D.Double(803, 506, 85, 20)
 		});
 		backgroundImage = new ImageIcon(getClass().getResource("/level-assets/level1.png")).getImage();
-		NewSpike = new Spikes();
+		newSpike = new Spikes();
 	}
 
-	@Override
-	public Image getBackgroundImage() {
-		return backgroundImage;
-	}
-
+	/**
+	 * Draws the level, including platforms, doors, and spikes.
+	 * 
+	 * @param g2d The Graphics2D object used for drawing.
+	 */
 	@Override
 	public void draw(Graphics2D g2d) {
 		standardPosition = g2d.getTransform();
@@ -56,35 +84,43 @@ public class LevelOne extends Level {
 		g2d.setColor(Color.WHITE);
 		AffineTransform transform = AffineTransform.getTranslateInstance(0, 950);
 		g2d.setTransform(transform);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform2 = AffineTransform.getTranslateInstance(60, 950);
 		g2d.setTransform(transform2);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform3 = AffineTransform.getTranslateInstance(120, 950);
 		g2d.setTransform(transform3);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform4 = AffineTransform.getTranslateInstance(700, 360);
 		g2d.setTransform(transform4);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform5 = AffineTransform.getTranslateInstance(760, 360);
 		g2d.setTransform(transform5);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform6 = AffineTransform.getTranslateInstance(820, 360);
 		g2d.setTransform(transform6);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform7 = AffineTransform.getTranslateInstance(290, 360);
 		g2d.setTransform(transform7);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform8 = AffineTransform.getTranslateInstance(350, 360);
 		g2d.setTransform(transform8);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform9 = AffineTransform.getTranslateInstance(1300, 770);
 		g2d.setTransform(transform9);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		AffineTransform transform10 = AffineTransform.getTranslateInstance(1360, 770);
 		g2d.setTransform(transform10);
-		g2d.fill(NewSpike.SpikeDraw());
+		g2d.fill(newSpike.SpikeDraw());
 		g2d.setTransform(standardPosition);
+	}
+
+	/**
+	 * Returns the background image of the level.
+	 */
+	@Override
+	public Image getBackgroundImage() {
+		return backgroundImage;
 	}
 
 }

@@ -2,11 +2,39 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 
+/**
+ * This is the Player abstract class, which handles the physics of the player.
+ * It contains methods for moving, jumping, and dropping.
+ * 
+ * @author Constantine P. Pazcoguin (243545)
+ * @author Liora T. Ongsamson (243346)
+ * @version May 20, 2025
+ * 
+ *          I have not discussed the Java language code in my program
+ *          with anyone other than my instructor or the teaching assistants
+ *          assigned to this course.
+ * 
+ *          I have not used Java language code obtained from another student,
+ *          or any other unauthorized source, either modified or unmodified.
+ * 
+ *          If any Java language code or documentation used in my program
+ *          was obtained from another source, such as a textbook or website,
+ *          that has been clearly noted with a proper citation in the comments
+ *          of my program.
+ */
+
 public abstract class Player {
 
     private double x, y, size, speedY, gravity, jumpSpeed;
     private boolean isDropping, isJumping, movingLeft, movingRight;
 
+    /**
+     * Constructor for the Player class.
+     * Initializes the player's position, size, and physics properties.
+     *
+     * @param x The initial x-coordinate of the player.
+     * @param y The initial y-coordinate of the player.
+     */
     public Player(double x, double y) {
         this.x = x;
         this.y = y;
@@ -20,6 +48,12 @@ public abstract class Player {
         movingRight = false;
     }
 
+    /**
+     * Abstract method to draw the player.
+     * This method handles the specific drawing of the player.
+     *
+     * @param g2d The Graphics2D object used for drawing.
+     */
     public abstract void draw(Graphics2D g2d);
 
     public void moveX(double n, Level platforms) {
@@ -39,6 +73,11 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Moves the player vertically.
+     * 
+     * @param n
+     */
     public void moveY(double n) {
         double newY = y + n;
         if (newY >= 0 && newY + size <= 768) {
@@ -48,6 +87,10 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Makes the player jump.
+     * The player can only jump if they are not already jumping or dropping.
+     */
     public void jump() {
         if (!isJumping && !isDropping) {
             speedY = jumpSpeed;
@@ -55,6 +98,11 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Updates the player's position based on their movement.
+     * 
+     * @param platforms The level containing the platforms.
+     */
     public void update(Level platforms) {
         int speed = 5;
         if (movingLeft) {
@@ -65,6 +113,12 @@ public abstract class Player {
         updateVertical(platforms);
     }
 
+    /**
+     * Updates the player's vertical position based on gravity and platform
+     * collision.
+     * 
+     * @param platforms The level containing the platforms.
+     */
     public void updateVertical(Level platforms) {
         speedY += gravity;
         y += speedY;
@@ -88,6 +142,11 @@ public abstract class Player {
             isJumping = false;
     }
 
+    /**
+     * Handles key pressed events for player movement and jumping.
+     * 
+     * @param keyCode The key code of the pressed key.
+     */
     public void handleKeyPressed(int keyCode) {
         if (keyCode == KeyEvent.VK_A) {
             movingLeft = true;
@@ -98,6 +157,11 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Handles key released events for player movement.
+     * 
+     * @param keyCode The key code of the released key.
+     */
     public void handleKeyReleased(int keyCode) {
         if (keyCode == KeyEvent.VK_A) {
             movingLeft = false;
@@ -106,15 +170,24 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Stops the player from jumping.
+     */
     public void stopJumping() {
         isJumping = false;
     }
 
+    /**
+     * Stops the player from dropping.
+     */
     public void stopDropping() {
         isDropping = false;
         speedY = 0;
     }
 
+    /**
+     * Setter methods for player properties.
+     */
     public void setX(double n) {
         x = n;
     }
@@ -127,6 +200,9 @@ public abstract class Player {
         speedY = speed;
     }
 
+    /**
+     * Getter methods for player properties.
+     */
     public double getX() {
         return x;
     }
@@ -159,6 +235,9 @@ public abstract class Player {
         return movingRight;
     }
 
+    /**
+     * Returns the hitbox of the player.
+     */
     public Rectangle2D.Double getHitbox() {
         return new Rectangle2D.Double(x, y, size, size);
     }

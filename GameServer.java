@@ -1,6 +1,28 @@
 import java.io.*;
 import java.net.*;
 
+/**
+ * This is the Server for the game that handles the connection between the
+ * players.
+ * It listens for incoming connections and manages the game state.
+ * 
+ * @author Constantine P. Pazcoguin (243545)
+ * @author Liora T. Ongsamson (243346)
+ * @version May 20, 2025
+ * 
+ *          I have not discussed the Java language code in my program
+ *          with anyone other than my instructor or the teaching assistants
+ *          assigned to this course.
+ * 
+ *          I have not used Java language code obtained from another student,
+ *          or any other unauthorized source, either modified or unmodified.
+ * 
+ *          If any Java language code or documentation used in my program
+ *          was obtained from another source, such as a textbook or website,
+ *          that has been clearly noted with a proper citation in the comments
+ *          of my program.
+ */
+
 public class GameServer {
 
     private int numPlayers, maxPlayers;
@@ -9,7 +31,8 @@ public class GameServer {
     private Socket player1Socket, player2Socket;
     private ReadFromClient player1RFC, player2RFC;
     private WriteToClient player1WTC, player2WTC;
-	private int play1, play2, second, lvlPlayer, itemObtained, itemObtained2, check, liftChecker, liftChecker2, spikeChecker;
+    private int play1, play2, second, lvlPlayer, itemObtained, itemObtained2, check, liftChecker, liftChecker2,
+            spikeChecker;
 
     public GameServer() {
         try {
@@ -83,15 +106,15 @@ public class GameServer {
                         player2X = dataIn.readDouble();
                         player2Y = dataIn.readDouble();
                     }
-					play1 = dataIn.readInt();
-					second = dataIn.readInt();
-					lvlPlayer = dataIn.readInt();
-					itemObtained = dataIn.readInt();
-					itemObtained2 = dataIn.readInt();
-					check = dataIn.readInt();
-					liftChecker = dataIn.readInt();
-					liftChecker2 = dataIn.readInt();
-					spikeChecker = dataIn.readInt();
+                    play1 = dataIn.readInt();
+                    second = dataIn.readInt();
+                    lvlPlayer = dataIn.readInt();
+                    itemObtained = dataIn.readInt();
+                    itemObtained2 = dataIn.readInt();
+                    check = dataIn.readInt();
+                    liftChecker = dataIn.readInt();
+                    liftChecker2 = dataIn.readInt();
+                    spikeChecker = dataIn.readInt();
                 }
             } catch (IOException e) {
                 System.out.println("ReadFromClient error: " + e.getMessage());
@@ -124,15 +147,15 @@ public class GameServer {
                         dataOut.writeDouble(player1Y);
                         dataOut.flush();
                     }
-					dataOut.writeInt(play1);
-					dataOut.writeInt(second);
-					dataOut.writeInt(lvlPlayer);
-					dataOut.writeInt(itemObtained);
-					dataOut.writeInt(itemObtained2);
-					dataOut.writeInt(check);
-					dataOut.writeInt(liftChecker);
-					dataOut.writeInt(liftChecker2);
-					dataOut.writeInt(spikeChecker);
+                    dataOut.writeInt(play1);
+                    dataOut.writeInt(second);
+                    dataOut.writeInt(lvlPlayer);
+                    dataOut.writeInt(itemObtained);
+                    dataOut.writeInt(itemObtained2);
+                    dataOut.writeInt(check);
+                    dataOut.writeInt(liftChecker);
+                    dataOut.writeInt(liftChecker2);
+                    dataOut.writeInt(spikeChecker);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
