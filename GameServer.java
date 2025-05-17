@@ -34,6 +34,10 @@ public class GameServer {
     private int play1, play2, second, lvlPlayer, itemObtained, itemObtained2, check, liftChecker, liftChecker2,
             spikeChecker;
 
+    /**
+     * Constructor for the GameServer class.
+     * It initializes the server socket and sets the maximum number of players.
+     */
     public GameServer() {
         try {
             ss = new ServerSocket(4444);
@@ -46,6 +50,10 @@ public class GameServer {
         maxPlayers = 2;
     }
 
+    /**
+     * This method accepts connections from players and starts the game.
+     * It creates a new thread for each player to handle their input and output.
+     */
     public void acceptConnections() {
         try {
             System.out.println("Waiting for players...");
@@ -85,6 +93,9 @@ public class GameServer {
         }
     }
 
+    /**
+     * This method closes the server socket and all player sockets.
+     */
     private class ReadFromClient implements Runnable {
 
         private int playerID;
@@ -124,6 +135,10 @@ public class GameServer {
 
     }
 
+    /**
+     * This method sends the game state to the clients.
+     * It runs in a separate thread for each player.
+     */
     private class WriteToClient implements Runnable {
 
         private int playerID;
@@ -177,6 +192,10 @@ public class GameServer {
 
     }
 
+    /**
+     * Main method to start the server.
+     * It creates an instance of GameServer and calls acceptConnections.
+     **/
     public static void main(String[] args) {
         GameServer gameServer = new GameServer();
         gameServer.acceptConnections();
