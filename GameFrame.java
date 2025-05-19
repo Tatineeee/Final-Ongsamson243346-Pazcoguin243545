@@ -1181,8 +1181,22 @@ public class GameFrame {
 						if (notDoor != 0) {
 							doorCheck2 = notDoor;
 						}
-						playerOther.setX(dataIn.readDouble());
+						double prevX = playerOther.getX();
+						double newX = dataIn.readDouble();
+						playerOther.setX(newX);
 						playerOther.setY(dataIn.readDouble());
+						if (newX < prevX) {
+							playerOther.setMovingLeft(true);
+							playerOther.setMovingRight(false);
+							playerOther.setLastDirection("left");
+						} else if (newX > prevX) {
+							playerOther.setMovingLeft(false);
+							playerOther.setMovingRight(true);
+							playerOther.setLastDirection("right");
+						} else {
+							playerOther.setMovingLeft(false);
+							playerOther.setMovingRight(false);
+						}
 						not2 = dataIn.readInt();
 						if (not2 != 0) {
 							p2 = not2;

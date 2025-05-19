@@ -27,6 +27,7 @@ public abstract class Player {
 
     private double x, y, size, speedY, gravity, jumpSpeed;
     private boolean isDropping, isJumping, movingLeft, movingRight;
+    private String lastDirection;
 
     /**
      * Initializes the player's position, size, and physics properties.
@@ -37,6 +38,7 @@ public abstract class Player {
     public Player(double x, double y) {
         this.x = x;
         this.y = y;
+        lastDirection = "right";
         size = 50;
         gravity = 1.5;
         jumpSpeed = -20;
@@ -203,6 +205,18 @@ public abstract class Player {
         speedY = speed;
     }
 
+    public void setMovingLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
+    }
+
+    public void setMovingRight(boolean movingRight) {
+        this.movingRight = movingRight;
+    }
+
+    public void setLastDirection(String dir) {
+        lastDirection = dir;
+    }
+
     /**
      * @return player properties.
      */
@@ -236,6 +250,10 @@ public abstract class Player {
 
     public boolean isMovingRight() {
         return movingRight;
+    }
+
+    public String getLastDirection() {
+        return lastDirection;
     }
 
     /**

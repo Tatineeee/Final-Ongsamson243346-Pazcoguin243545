@@ -65,6 +65,13 @@ public class Player1 extends Player {
         } else {
             animationFrameCount = 0;
             toggleFrame = false;
+            if (getLastDirection().equals("left")) {
+                currentImage = left1;
+            } else if (getLastDirection().equals("right")) {
+                currentImage = right1;
+            } else {
+                currentImage = standing;
+            }
         }
         g2d.drawImage(currentImage, (int) getX(), (int) getY(), (int) getSize(), (int) getSize(), null);
     }
