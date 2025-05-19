@@ -578,7 +578,7 @@ public class GameFrame {
 				resetItem();
 				lvlCounter = 0;
 				System.out.println("ew");
-				gameCanvas.switchLevel(3);
+				gameCanvas.switchLevel(2);
 				gameCanvas.fixItemChecker1(1);
 				gameCanvas.fixItemChecker2(1);
 				// stopTime();
