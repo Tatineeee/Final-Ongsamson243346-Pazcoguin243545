@@ -27,7 +27,6 @@ public class MainScreen {
 	private Image backgroundImage, bufferImage;
 
 	/**
-	 * Constructor for the MainScreen class.
 	 * It initializes the background and buffer images.
 	 */
 	public MainScreen() {
@@ -36,7 +35,7 @@ public class MainScreen {
 	}
 
 	/**
-	 * Returns the background and buffer images.
+	 * @return the background and buffer images.
 	 */
 	public Image getBackgroundImage() {
 		return backgroundImage;

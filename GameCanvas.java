@@ -5,6 +5,8 @@ import java.util.ArrayList;
 /**
  * This is the GameCanvas class that handles all the drawings and animations.
  * It contains the logic for the players, timer, items, and levels.
+ * It is where the clients connect to the server.
+ * It contains the various game elements.
  * 
  * @author Constantine P. Pazcoguin (243545)
  * @author Liora T. Ongsamson (243346)
@@ -43,23 +45,21 @@ public class GameCanvas extends JComponent {
 	private CharacterSelector character;
 	private EndScreenSelector end;
 	private Items item;
-	private Lift lift;
 	private boolean removeCharacterSelector, timeTorF;
 
 	private int lifty;
 	private ArrayList<Integer> spikeX;
 	private ArrayList<Integer> spikeY;
 	private int player1X, player1Y, player2X, player2Y;
-	private int[] level1Coordinates, level2Coordinates, level3Coordinates;
 
+	/**
+	 * Initializes the players, levels, and images.
+	 */
 	public GameCanvas() {
-		level1Coordinates = new int[] { 80, 758, 900, 758 };
-		level2Coordinates = new int[] { 97, 602, 175, 602 };
-		level3Coordinates = new int[] { 106, 626, 169, 626 };
-		player1X = level1Coordinates[0];
-		player1Y = level1Coordinates[1];
-		player2X = level1Coordinates[2];
-		player2Y = level1Coordinates[3];
+		player1X = 80;
+		player1Y = 758;
+		player2X = 900;
+		player2Y = 758;
 		player1 = new Player1Alt(player1X, player1Y);
 		player2 = new Player2Alt(player2X, player2Y);
 		player3 = new Player1(player1X, player1Y);
@@ -71,14 +71,11 @@ public class GameCanvas extends JComponent {
 		playerChoose1 = player1;
 		playerChoose2 = player2;
 		platform1 = new LevelOne();
-		// ! This is where LevelTwo was deleted
 		platform3 = new LevelTwo();
-		platforms = 1; // ! Change to desired level: LevelOne, LevelTwo, LevelThree
-
+		platforms = 1;
 		intro = new MainScreen();
 		character = new CharacterSelector();
 		overlayMaster = new Overlay();
-
 		introImage = intro.getBackgroundImage();
 		bufferImage = intro.getBufferImage();
 		characterImage = character.getBackgroundImage();
@@ -89,7 +86,6 @@ public class GameCanvas extends JComponent {
 		characterImage5 = character.getBackgroundImage5();
 		option = introImage;
 		overlay1 = overlayMaster.getOverlayLVL1();
-
 		item = new Items();
 		book1 = item.getBookImage1();
 		book2 = item.getBookImage2();
@@ -111,7 +107,6 @@ public class GameCanvas extends JComponent {
 		bear3 = item.getBearImage3();
 		itemChecker1 = 0;
 		itemChecker2 = 0;
-
 		end = new EndScreenSelector();
 		deadImage = end.getGameOverImage();
 		finishImageA = end.getFinishImageA();
@@ -119,16 +114,17 @@ public class GameCanvas extends JComponent {
 		finishImageC = end.getFinishImageC();
 		finishImageF = end.getFinishImageF();
 		option2 = deadImage;
-
 		removeCharacterSelector = true;
 		timeTorF = true;
-
-		lift = new Lift();
-		liftLVL2 = lift.getLiftImage();
 		spikeX = new ArrayList<>();
 		spikeY = new ArrayList<>();
 	}
 
+	/**
+	 * Switches the screen based on the given screen checker value.
+	 * 
+	 * @param checker The value to determine which screen to switch to.
+	 */
 	public void switchScreen(int checker) {
 		if (checker == 1) {
 			option = introImage;
@@ -154,25 +150,25 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Switches the level based on the given checker value.
+	 * Also switches the player positions based on the level.
+	 * 
+	 * @param checker The value to determine which level to switch to.
+	 */
 	public void switchLevel(int checker) {
 		if (checker == 1) {
 			platforms = 1;
-			player1X = level1Coordinates[0];
-			player1Y = level1Coordinates[1];
-			player2X = level1Coordinates[2];
-			player2Y = level1Coordinates[3];
+			player1X = 80;
+			player1Y = 758;
+			player2X = 900;
+			player2Y = 758;
 		} else if (checker == 2) {
-			platforms = 2;
-			player1X = level2Coordinates[0];
-			player1Y = level2Coordinates[1];
-			player2X = level2Coordinates[2];
-			player2Y = level2Coordinates[3];
-		} else if (checker == 3) {
 			platforms = 3;
-			player1X = level3Coordinates[0];
-			player1Y = level3Coordinates[1];
-			player2X = level3Coordinates[2];
-			player2Y = level3Coordinates[3];
+			player1X = 106;
+			player1Y = 626;
+			player2X = 169;
+			player2Y = 626;
 		}
 		playerChoose1.setX(player1X);
 		playerChoose1.setY(player1Y);
@@ -181,6 +177,11 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Switches the end screen based on the given checker value.
+	 * 
+	 * @param checker The value to determine which end screen to switch to.
+	 */
 	public void switchEndScreen(int checker) {
 		if (checker == 1) {
 			option2 = deadImage;
@@ -196,6 +197,12 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Sets the player variation based on which player is chosen.
+	 * 
+	 * @param p1 The player number for player 1.
+	 * @param p2 The player number for player 2.
+	 */
 	public void playerChoose(int p1, int p2) {
 		if (p1 == 1) {
 			playerChoose1 = player1;
@@ -212,10 +219,18 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Removes the character selector screen.
+	 */
 	public void changeRemoveCharacterSelector() {
 		removeCharacterSelector = true;
 	}
 
+	/**
+	 * Checks if there is still time for the game.
+	 * 
+	 * @param timeChcker checks the time.
+	 */
 	public void timesUp(int timeChecker) {
 		if (timeChecker == 1) {
 			timeTorF = false;
@@ -228,6 +243,11 @@ public class GameCanvas extends JComponent {
 		}
 	}
 
+	/**
+	 * Sets the item checker for the items
+	 * 
+	 * @param num
+	 */
 	public void fixItemChecker1(int num) {
 		itemChecker1 = num;
 		repaint();
@@ -238,6 +258,9 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Adds the spikes to the levels.
+	 */
 	public void fixSpikesX() {
 		if (platforms == 1) {
 			spikeX.add(0);
@@ -272,6 +295,9 @@ public class GameCanvas extends JComponent {
 		}
 	}
 
+	/**
+	 * Draws the elements.
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -349,6 +375,9 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * @return the player objects.
+	 */
 	public Player getPlayer1() {
 		return player1;
 	}
@@ -365,6 +394,9 @@ public class GameCanvas extends JComponent {
 		return player4;
 	}
 
+	/**
+	 * @return the platforms.
+	 */
 	public Level getPlatforms() {
 		if (platforms == 1) {
 			return platform1;
@@ -377,6 +409,9 @@ public class GameCanvas extends JComponent {
 		}
 	}
 
+	/**
+	 * @return the the x and y values for the spikes.
+	 */
 	public ArrayList<Integer> getSpikeX() {
 		return spikeX;
 	}

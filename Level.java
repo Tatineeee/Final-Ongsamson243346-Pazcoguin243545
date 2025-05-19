@@ -4,7 +4,7 @@ import java.awt.geom.*;
 /**
  * This is the Level abstract class that contains all the methods for the
  * levels.
- * It draws various Rectangle2D.Double objects representing platforms and
+ * It draws various Rectangle2D.Double objects representing platforms.
  * 
  * @author Constantine P. Pazcoguin (243545)
  * @author Liora T. Ongsamson (243346)
@@ -37,12 +37,18 @@ public abstract class Level {
         this.platforms = platforms;
     }
 
+    /**
+     * @return the background image of the level.
+     */
     public abstract Image getBackgroundImage();
 
+    /**
+     * Draw the platforms of the level.
+     */
     public abstract void draw(Graphics2D g2d);
 
     /**
-     * Start of the getters for the platforms.
+     * @return the properties of the platforms in each level.
      */
     public Rectangle2D.Double getPlatform(int index) {
         return platforms[index];

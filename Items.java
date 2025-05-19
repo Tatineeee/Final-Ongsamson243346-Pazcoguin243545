@@ -32,8 +32,7 @@ public class Items {
 	private Image bear1, bear2, bear3;
 
 	/**
-	 * Constructor for the Items class.
-	 * It initializes the images for all the items in the game.
+	 * Initializes the images for all the items in the game.
 	 */
 	public Items() {
 		book1 = new ImageIcon(getClass().getResource("/items/book1.PNG")).getImage();
@@ -57,7 +56,7 @@ public class Items {
 	}
 
 	/**
-	 * Returns the images for all the items in the game.
+	 * @return the images for all the items in the game.
 	 */
 	public Image getBookImage1() {
 		return book1;

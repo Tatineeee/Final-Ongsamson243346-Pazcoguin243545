@@ -2,8 +2,7 @@ import java.io.*;
 import java.net.*;
 
 /**
- * This is the Server for the game that handles the connection between the
- * players.
+ * The server for the game that handles the connection.
  * It listens for incoming connections and manages the game state.
  * 
  * @author Constantine P. Pazcoguin (243545)
@@ -35,8 +34,7 @@ public class GameServer {
             spikeChecker, doorCheck;
 
     /**
-     * Constructor for the GameServer class.
-     * It initializes the server socket and sets the maximum number of players.
+     * Initializes the server socket and sets the maximum number of players.
      */
     public GameServer() {
         try {
@@ -51,7 +49,7 @@ public class GameServer {
     }
 
     /**
-     * This method accepts connections from players and starts the game.
+     * Accepts connections from players and starts the game.
      * It creates a new thread for each player to handle their input and output.
      */
     public void acceptConnections() {
@@ -94,7 +92,8 @@ public class GameServer {
     }
 
     /**
-     * This method closes the server socket and all player sockets.
+     * This method handles the reading of data from the clients.
+     * It runs in a separate thread for each player.
      */
     private class ReadFromClient implements Runnable {
 
@@ -110,7 +109,7 @@ public class GameServer {
         public void run() {
             try {
                 while (true) {
-					doorCheck = dataIn.readInt();
+                    doorCheck = dataIn.readInt();
                     if (playerID == 1) {
                         player1X = dataIn.readDouble();
                         player1Y = dataIn.readDouble();
@@ -119,7 +118,7 @@ public class GameServer {
                         player2Y = dataIn.readDouble();
                     }
                     play1 = dataIn.readInt();
-					play2 = dataIn.readInt();
+                    play2 = dataIn.readInt();
                     second = dataIn.readInt();
                     lvlPlayer = dataIn.readInt();
                     itemObtained = dataIn.readInt();
@@ -138,7 +137,7 @@ public class GameServer {
     }
 
     /**
-     * This method sends the game state to the clients.
+     * Sends the game state to the clients.
      * It runs in a separate thread for each player.
      */
     private class WriteToClient implements Runnable {
@@ -155,7 +154,7 @@ public class GameServer {
         public void run() {
             try {
                 while (true) {
-					dataOut.writeInt(doorCheck);
+                    dataOut.writeInt(doorCheck);
                     if (playerID == 1) {
                         dataOut.writeDouble(player2X);
                         dataOut.writeDouble(player2Y);
@@ -166,7 +165,7 @@ public class GameServer {
                         dataOut.flush();
                     }
                     dataOut.writeInt(play1);
-					dataOut.writeInt(play2);
+                    dataOut.writeInt(play2);
                     dataOut.writeInt(second);
                     dataOut.writeInt(lvlPlayer);
                     dataOut.writeInt(itemObtained);
@@ -197,8 +196,8 @@ public class GameServer {
     }
 
     /**
-     * Main method to start the server.
-     * It creates an instance of GameServer and calls acceptConnections.
+     * Main method to start the server that creates an instance of GameServer and
+     * calls acceptConnections.
      **/
     public static void main(String[] args) {
         GameServer gameServer = new GameServer();

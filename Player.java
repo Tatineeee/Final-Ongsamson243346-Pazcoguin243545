@@ -29,7 +29,6 @@ public abstract class Player {
     private boolean isDropping, isJumping, movingLeft, movingRight;
 
     /**
-     * Constructor for the Player class.
      * Initializes the player's position, size, and physics properties.
      *
      * @param x The initial x-coordinate of the player.
@@ -49,13 +48,18 @@ public abstract class Player {
     }
 
     /**
-     * Abstract method to draw the player.
-     * This method handles the specific drawing of the player.
+     * Handles the drawing of the player.
      *
      * @param g2d The Graphics2D object used for drawing.
      */
     public abstract void draw(Graphics2D g2d);
 
+    /**
+     * Moves the player horizontally.
+     * 
+     * @param n         The distance to move the player.
+     * @param platforms The level containing the platforms.
+     */
     public void moveX(double n, Level platforms) {
         double newX = Math.max(0, Math.min(1024 - size, x + n));
         x = newX;
@@ -88,8 +92,7 @@ public abstract class Player {
     }
 
     /**
-     * Makes the player jump.
-     * The player can only jump if they are not already jumping or dropping.
+     * Makes the player jump if they are not already jumping or dropping.
      */
     public void jump() {
         if (!isJumping && !isDropping) {
@@ -201,7 +204,7 @@ public abstract class Player {
     }
 
     /**
-     * Getter methods for player properties.
+     * @return player properties.
      */
     public double getX() {
         return x;
@@ -236,7 +239,7 @@ public abstract class Player {
     }
 
     /**
-     * Returns the hitbox of the player.
+     * @return the hitbox of the player.
      */
     public Rectangle2D.Double getHitbox() {
         return new Rectangle2D.Double(x, y, size, size);

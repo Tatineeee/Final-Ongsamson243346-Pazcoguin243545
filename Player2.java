@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 /**
- * This class contains the Player2 class and extends the Player class
+ * This class extends the Player class for Player1.
  * It handles the animation and drawing of the player character in the game.
  * 
  * @author Constantine P. Pazcoguin (243545)
@@ -30,7 +30,6 @@ public class Player2 extends Player {
     private BufferedImage standing, right1, right2, left1, left2;
 
     /**
-     * Constructor for Player2 class.
      * Initializes the player position and loads images.
      * 
      * @param x The x-coordinate of the player.
@@ -72,7 +71,6 @@ public class Player2 extends Player {
 
     /**
      * Loads player images from the folder.
-     * Handles exceptions if images cannot be loaded.
      */
     private void getPlayerImages() {
         try {

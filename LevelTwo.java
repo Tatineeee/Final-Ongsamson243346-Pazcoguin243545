@@ -31,7 +31,6 @@ public class LevelTwo extends Level {
 	private Spikes newSpike;
 
 	/**
-	 * Constructor for the LevelTwo class.
 	 * It initializes the platforms and background image.
 	 * 
 	 * @param platforms An array of Rectangle2D.Double objects representing the
@@ -73,7 +72,7 @@ public class LevelTwo extends Level {
 		Rectangle2D.Double door2 = new Rectangle2D.Double(580, 20, 70, 80);
 		g2d.fill(door1);
 		g2d.fill(door2);
-		g2d.fill(new Rectangle2D.Double(890,260,100,100));
+		g2d.fill(new Rectangle2D.Double(890, 260, 100, 100));
 		g2d.fill(new Rectangle2D.Double(765, 415, 100, 100));
 		g2d.setColor(new Color(45, 45, 45));
 		for (int i = 0; i < getPlatformCount(); i++) {
@@ -165,7 +164,7 @@ public class LevelTwo extends Level {
 	}
 
 	/**
-	 * Returns the background image of the level.
+	 * @return the background image of the level.
 	 */
 	@Override
 	public Image getBackgroundImage() {

@@ -27,15 +27,14 @@ public class Overlay {
 	private Image lvl1Overlay;
 
 	/**
-	 * Constructor for the Overlay class.
-	 * It initializes the overlay image for level 1.
+	 * Initializes the overlay image for level 1.
 	 */
 	public Overlay() {
 		lvl1Overlay = new ImageIcon(getClass().getResource("/intro/overlay_lvl1.PNG")).getImage();
 	}
 
 	/**
-	 * Returns the overlay image for level 1.
+	 * @return the overlay image for level 1.
 	 */
 	public Image getOverlayLVL1() {
 		return lvl1Overlay;

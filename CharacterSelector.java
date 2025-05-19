@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * This class handles the screen for the character selection.
+ * This class handles character selection screen.
  * It includes the backgrounds for each player and each variation.
  * 
  * @author Constantine P. Pazcoguin (243545)
@@ -28,8 +28,7 @@ public class CharacterSelector {
 			backgroundImage5;
 
 	/**
-	 * Constructor for the CharacterSelector class.
-	 * It initializes the images for the character selection screen.
+	 * Initializes the images for the character selection screen.
 	 */
 	public CharacterSelector() {
 		backgroundImage = new ImageIcon(getClass().getResource("/intro/character.PNG")).getImage();
@@ -41,7 +40,7 @@ public class CharacterSelector {
 	}
 
 	/**
-	 * Returns the images for the character selection screen.
+	 * @return the images for the character selection screen.
 	 */
 	public Image getBackgroundImage() {
 		return backgroundImage;

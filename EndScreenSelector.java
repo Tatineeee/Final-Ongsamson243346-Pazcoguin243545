@@ -28,8 +28,7 @@ public class EndScreenSelector {
 	private Image finishImageA, finishImageB, finishImageC, finishImageF;
 
 	/**
-	 * Constructor for the EndScreenSelector class.
-	 * It initializes the images for the end screen and game over screen.
+	 * Initializes the images for the end screen and game over screen.
 	 */
 	public EndScreenSelector() {
 		gameoverImage = new ImageIcon(getClass().getResource("/intro/gameover.PNG")).getImage();
@@ -40,7 +39,7 @@ public class EndScreenSelector {
 	}
 
 	/**
-	 * Returns the images for the end screen and game over screen.
+	 * @return the images for the end screen and game over screen.
 	 */
 	public Image getGameOverImage() {
 		return gameoverImage;

@@ -1,5 +1,5 @@
 /**
- * this is the GameStarter class that starts the game.
+ * This is the GameStarter class that starts the game.
  * It creates a new GameFrame instance with dimensions of 1024x768.
  * 
  * @author Constantine P. Pazcoguin (243545)

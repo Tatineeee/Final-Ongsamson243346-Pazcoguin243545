@@ -3,8 +3,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 /**
- * This class contains the Player1Alt class and extends the Player class.
- * It is for the alternate version of Player1.
+ * This class extends the Player class for the alternate version of Player1.
  * It handles the animation and drawing of the player character in the game.
  * 
  * @author Constantine P. Pazcoguin (243545)
@@ -31,7 +30,6 @@ public class Player1Alt extends Player {
     private BufferedImage standing, right1, right2, left1, left2;
 
     /**
-     * Constructor for Player1Alt class.
      * Initializes the player position and loads images.
      * 
      * @param x The x-coordinate of the player.
@@ -73,7 +71,6 @@ public class Player1Alt extends Player {
 
     /**
      * Loads player images from the folder.
-     * Handles exceptions if images cannot be loaded.
      */
     private void getPlayerImages() {
         try {
