@@ -32,7 +32,7 @@ public class GameServer {
     private ReadFromClient player1RFC, player2RFC;
     private WriteToClient player1WTC, player2WTC;
     private int play1, play2, second, lvlPlayer, itemObtained, itemObtained2, check, liftChecker, liftChecker2,
-            spikeChecker;
+            spikeChecker, doorCheck;
 
     /**
      * Constructor for the GameServer class.
@@ -110,6 +110,7 @@ public class GameServer {
         public void run() {
             try {
                 while (true) {
+					doorCheck = dataIn.readInt();
                     if (playerID == 1) {
                         player1X = dataIn.readDouble();
                         player1Y = dataIn.readDouble();
@@ -118,6 +119,7 @@ public class GameServer {
                         player2Y = dataIn.readDouble();
                     }
                     play1 = dataIn.readInt();
+					play2 = dataIn.readInt();
                     second = dataIn.readInt();
                     lvlPlayer = dataIn.readInt();
                     itemObtained = dataIn.readInt();
@@ -153,6 +155,7 @@ public class GameServer {
         public void run() {
             try {
                 while (true) {
+					dataOut.writeInt(doorCheck);
                     if (playerID == 1) {
                         dataOut.writeDouble(player2X);
                         dataOut.writeDouble(player2Y);
@@ -163,6 +166,7 @@ public class GameServer {
                         dataOut.flush();
                     }
                     dataOut.writeInt(play1);
+					dataOut.writeInt(play2);
                     dataOut.writeInt(second);
                     dataOut.writeInt(lvlPlayer);
                     dataOut.writeInt(itemObtained);

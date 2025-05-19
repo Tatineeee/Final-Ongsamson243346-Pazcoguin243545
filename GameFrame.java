@@ -33,8 +33,9 @@ public class GameFrame {
 	private int character_determiner1, character_determiner2, character_determiner3, determinerChecker;
 	private int p1, p2, lvlCounter, lvlp1, lvlp2, obtainItem, itemObtained1, itemObtained2, itemObtained3,
 			itemObtained4;
+	private int p12, p22, not2, not22;
 	private int check1, check2, liftChecker1, liftChecker2, liftChecker3, liftChecker4, liftChecker5;
-	private int spikeChecker1, spikeChecker2;
+	private int spikeChecker1, spikeChecker2, testlol, doorCheck1, doorCheck2, notDoor;
 	private JFrame frame;
 	private GameCanvas gameCanvas;
 	private JLayeredPane layeredPane;
@@ -104,6 +105,15 @@ public class GameFrame {
 		character_determiner3 = 4;
 		p1 = 0;
 		p2 = 0;
+		p12 = 0;
+		p22 = 0;
+		not2 = 0;
+		not22 = 0;
+		doorCheck1 = 0;
+		doorCheck2 = 0;
+		
+		
+		
 		lvlCounter = 0;
 		lvlp1 = 0;
 		lvlp2 = 0;
@@ -171,19 +181,19 @@ public class GameFrame {
 	public void resetPlayer() {
 
 		if (playerID == 1) {
-			if (p1 == 1 && p2 == 1) {
+			if (p1 == 1 && p22 == 1) {
 				player = gameCanvas.getPlayer1();
 				playerOther = gameCanvas.getPlayer2();
 				gameCanvas.playerChoose(1, 1);
-			} else if (p1 == 2 && p2 == 1) {
+			} else if (p1 == 2 && p22 == 1) {
 				player = gameCanvas.getPlayer3();
 				playerOther = gameCanvas.getPlayer2();
 				gameCanvas.playerChoose(2, 1);
-			} else if (p1 == 1 && p2 == 2) {
+			} else if (p1 == 1 && p22 == 2) {
 				player = gameCanvas.getPlayer1();
 				playerOther = gameCanvas.getPlayer4();
 				gameCanvas.playerChoose(1, 2);
-			} else if (p1 == 2 && p2 == 2) {
+			} else if (p1 == 2 && p22 == 2) {
 				player = gameCanvas.getPlayer3();
 				playerOther = gameCanvas.getPlayer4();
 				gameCanvas.playerChoose(2, 2);
@@ -194,19 +204,19 @@ public class GameFrame {
 			}
 
 		} else if (playerID == 2) {
-			if (p1 == 1 && p2 == 1) {
+			if (p2 == 1 && p12 == 1) {
 				player = gameCanvas.getPlayer2();
 				playerOther = gameCanvas.getPlayer1();
 				gameCanvas.playerChoose(1, 1);
-			} else if (p1 == 2 && p2 == 1) {
-				player = gameCanvas.getPlayer4();
-				playerOther = gameCanvas.getPlayer1();
-				gameCanvas.playerChoose(1, 2);
-			} else if (p1 == 1 && p2 == 2) {
+			} else if (p2 == 2 && p12 == 1) {
 				player = gameCanvas.getPlayer2();
 				playerOther = gameCanvas.getPlayer3();
 				gameCanvas.playerChoose(2, 1);
-			} else if (p1 == 2 && p2 == 2) {
+			} else if (p2 == 1 && p12 == 2) {
+				player = gameCanvas.getPlayer4();
+				playerOther = gameCanvas.getPlayer1();
+				gameCanvas.playerChoose(1, 2);
+			} else if (p2 == 2 && p12 == 2) {
 				player = gameCanvas.getPlayer4();
 				playerOther = gameCanvas.getPlayer3();
 				gameCanvas.playerChoose(2, 2);
@@ -251,27 +261,32 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent e) {
 				player.update(gameCanvas.getPlatforms());
 
-				if (lvlCounter == 1 || lvlCounter == 2 || lvlCounter == 3) {
-					checkPlatform();
-					gameCanvas.repaint();
-					itemChecker();
-				}
-
-				if (lvlCounter == 1 || lvlCounter == 2 || lvlCounter == 3) {
+				if (lvlCounter == 1){
+                    checkPlatform();
+                    gameCanvas.repaint();
+				    itemChecker1();
+				    if ((itemObtained1 == 1 && itemObtained4 == 1) || doorCheck2 == 1){
+					    levelChecker();
+				    } else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 1){
+					    levelChecker();
+				    }
 					checkSpikes();
-				}
-
-				if (itemObtained1 == 1 && itemObtained4 == 1) {
-					levelChecker();
-					resetItem();
-				} else if (itemObtained2 == 1 && itemObtained3 == 1) {
-					levelChecker();
-					resetItem();
-				}
-
-				if (lvlCounter == 2) {
-					liftPlatform();
-					liftPlatform2();
+					
+				} else if (lvlCounter == 3){
+					checkPlatform();
+                    gameCanvas.repaint();
+					if (check1 != 0){
+						resetItem();
+					}
+					itemChecker3();
+				    if ((itemObtained1 == 1 && itemObtained4 == 1)  || doorCheck2 == 2){
+					    levelChecker();
+				    } else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 2){
+					    levelChecker();
+				    }
+					//itemChecker2();
+					checkSpikes();
+				
 				}
 
 			}
@@ -279,12 +294,24 @@ public class GameFrame {
 		timer = new Timer(interval, actionListener);
 		timer.start();
 	}
+	
+	public void mainTimerStop(){
+		timer.stop();
+	}
 
 	private void setupKeyListener() {
 		KeyAdapter keyAdapter = new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				player.handleKeyPressed(e.getKeyCode());
+				
+				if (e.getKeyCode() == KeyEvent.VK_S){
+					doorCheck1 = 1;
+				}
+				
+				if (e.getKeyCode() == KeyEvent.VK_W){
+					doorCheck1 = 2;
+				}
 			}
 
 			@Override
@@ -309,6 +336,8 @@ public class GameFrame {
 				layeredPane.repaint();
 				p1 = 0;
 				p2 = 0;
+				p12 = 0;
+				p22 = 0;
 
 			}
 		};
@@ -318,7 +347,8 @@ public class GameFrame {
 				System.out.println("YAY");
 				gameCanvas.switchScreen(character_determiner2);
 				determinerChecker = 1;
-				p1 = 1;
+				if (playerID == 1) p1 = 1;
+				else if (playerID == 2) p12 = 1;
 			}
 		};
 
@@ -327,19 +357,23 @@ public class GameFrame {
 				System.out.println("NAY");
 				gameCanvas.switchScreen(character_determiner3);
 				determinerChecker = 1;
-				p1 = 2;
+				if (playerID == 1) p1 = 2;
+				else if (playerID == 2) p12 = 2;
 
 			}
 		};
 
 		ActionListener buttonListener4 = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if (determinerChecker == 1 && p1 != 0 && p2 != 0) {
+				if (determinerChecker == 1 && ((p1 != 0  && p22 != 0) || (p2 !=0 && p12 != 0))) {
 					System.out.println("ew");
+					resetItem();
+					resetAndStart();
 					setupTimer();
 					resetPlayer();
 					countdownTimer();
 					gameCanvas.switchScreen(8);
+					gameCanvas.switchLevel(1);
 					gameCanvas.fixItemChecker1(1);
 					gameCanvas.fixItemChecker2(1);
 					layeredPane.remove(characterButton1);
@@ -498,30 +532,80 @@ public class GameFrame {
 				lvlp1 = 2;
 			}
 
-			if (lvlp1 == 1 && lvlp2 == 2) {
+			if (((lvlp1 == 1 && lvlp2 == 2) && doorCheck1==1) || doorCheck2 == 1) {
+				check1 = 1;
+				resetItem();
+				lvlCounter = 0;
 				System.out.println("ew");
 				gameCanvas.switchLevel(3);
-				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 				gameCanvas.fixItemChecker2(1);
 				// stopTime();
 				// resetAndStart(1,0);
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
+				lvlCounter = 3;
+			} else if (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1==1) || doorCheck2==1)  {
 				check1 = 1;
-				// resetItem();
-			} else if (lvlp1 == 2 && lvlp2 == 1) {
+				resetItem();
+				lvlCounter = 0;
 				System.out.println("ew");
 				gameCanvas.switchLevel(3);
-				lvlCounter = 3;
 				gameCanvas.fixItemChecker1(1);
 				gameCanvas.fixItemChecker2(1);
 				// stopTime();
 				// resetAndStart(1,0);
 				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
-				check1 = 1;
-				// resetItem();
+				lvlCounter = 3;
 			}
-		} /*
+		}   else if (lvlCounter == 3){ //500,20,70, 780,390,100,100
+			if (player.getX() > 500 && player.getX() < 570 && player.getY() < 100  && player.getY() > 20){
+				lvlp1 = 1;
+				System.out.println("ew");
+			} else if (player.getX() > 780 && player.getX() < 880 && player.getY() < 490 && player.getY() > 390){
+				lvlp1 = 2;
+				System.out.println("LMAO");
+			}
+			
+			if (((lvlp1 == 1 && lvlp2 == 2) && doorCheck1==2) || doorCheck2 == 2){
+				System.out.println("ew");
+				gameCanvas.timesUp(1);
+                stopTime();
+				if (second <= 59 && second > 45){
+					gameCanvas.switchEndScreen(2);
+				} else if (second <= 45 && second > 30){
+					gameCanvas.switchEndScreen(3);
+				} else if (second <= 30 && second > 15){
+					gameCanvas.switchEndScreen(4);
+				} else if (second <= 15){
+					gameCanvas.switchEndScreen(5);
+				}
+				layeredPane.remove(counterLabel);
+				layeredPane.remove(tempbutton);
+				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
+				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
+			} else if (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1==2) || doorCheck2==2){
+				System.out.println("ew");
+				gameCanvas.timesUp(1);
+                stopTime();
+				if (second <= 59 && second > 45){
+					gameCanvas.switchEndScreen(2);
+				} else if (second <= 45 && second > 30){
+					gameCanvas.switchEndScreen(3);
+				} else if (second <= 30 && second > 15){
+					gameCanvas.switchEndScreen(4);
+				} else if (second <= 15){
+					gameCanvas.switchEndScreen(5);
+				}
+				stopTime();
+				mainTimerStop();
+				layeredPane.remove(counterLabel);
+				layeredPane.remove(tempbutton);
+				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
+				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
+			} 
+		}	
+		
+		/*
 			 * else if (lvlCounter == 2){
 			 * if (player.getX() > 800 && player.getX() < 870 && player.getY() < 330 &&
 			 * player.getY() > 250){
@@ -607,7 +691,7 @@ public class GameFrame {
 			 */
 	}
 
-	public void itemChecker() {
+	/*public void itemChecker() {
 		if (lvlCounter == 1) {
 			if (player.getX() > 50 && player.getX() < 150 && player.getY() < 175 && obtainItem == 0) {
 				itemObtained1 = 1;
@@ -663,10 +747,58 @@ public class GameFrame {
 				gameCanvas.fixItemChecker2(0);
 			}
 		}
+	}*/
+	
+	public void itemChecker1(){
+		if (lvlCounter == 1){ 
+			if (player.getX() > 50 && player.getX() < 150 && player.getY() < 175 && obtainItem == 0){
+				itemObtained1 = 1;
+				gameCanvas.fixItemChecker1(0);
+				obtainItem = 1;
+			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 600 && player.getY() > 500 && obtainItem == 0){
+				itemObtained3 = 1;
+				gameCanvas.fixItemChecker2(0);
+				obtainItem = 1;
+			}
+			
+			if (itemObtained2 == 1){
+				gameCanvas.fixItemChecker1(0);
+			} else if (itemObtained4 == 1){
+				gameCanvas.fixItemChecker2(0);
+			} 
+			
+		} 
+	}	
+	
+		
+		
+	public void itemChecker3(){
+		/*if ((lvlp1 != 0 && lvlp2 !=0) && testlol == 0){
+			resetItem();
+			testlol = 1;
+		}*/
+		if (lvlCounter == 3){ 
+			if (player.getX() > 890 && player.getX() < 990 && player.getY() < 360 && player.getY() > 260 && obtainItem == 0){
+				itemObtained1 = 1;
+				gameCanvas.fixItemChecker1(0);
+				obtainItem = 1;
+			} else if (player.getX() > 765 && player.getX() < 865 && player.getY() < 515 && player.getY() > 415 && obtainItem == 0){
+				itemObtained3 = 1;
+				gameCanvas.fixItemChecker2(0);
+				obtainItem = 1;
+			}
+			
+			if (itemObtained2 == 1){
+				gameCanvas.fixItemChecker1(0);
+			} else if (itemObtained4 == 1){
+				gameCanvas.fixItemChecker2(0);
+			} 
+			
+		} 
 	}
 
 	public void resetItem() {
-		if (lvlp1 == 1 && lvlp2 == 2 && check1 == 1 && check2 == 1) {
+		if (check1 == 1) {
 			obtainItem = 0;
 			itemObtained1 = 0;
 			itemObtained2 = 0;
@@ -801,8 +933,7 @@ public class GameFrame {
 			}
 
 		} else if (lvlCounter == 3) {
-			if (((player.getX()) + 25 > 150 && (player.getX() + 25) < (150 + 25) && (player.getY() + 40) > 650
-					&& (player.getY() + 40) < (650 + 25)) ||
+			if (
 					((player.getX() + 25) > 800 && (player.getX() + 25) < (800 + 25) && (player.getY() + 40) > 625
 							&& (player.getY() + 40) < (625 + 25))
 					||
@@ -975,9 +1106,20 @@ public class GameFrame {
 			try {
 				while (true) {
 					if (player != null) {
+						notDoor	= dataIn.readInt();
+						if (notDoor != 0){
+							doorCheck2 = notDoor;
+						}
 						playerOther.setX(dataIn.readDouble());
 						playerOther.setY(dataIn.readDouble());
-						p2 = dataIn.readInt();
+						not2 = dataIn.readInt();
+						if (not2 != 0){
+							p2 = not2;
+						}
+						not22 = dataIn.readInt();
+						if (not22 != 0){
+							p22 = not22;
+						}
 						second2 = dataIn.readInt();
 						lvlp2 = dataIn.readInt();
 						itemObtained2 = dataIn.readInt();
@@ -1020,9 +1162,11 @@ public class GameFrame {
 			try {
 				while (true) {
 					if (player != null) {
+						dataOut.writeInt(doorCheck1);
 						dataOut.writeDouble(player.getX());
 						dataOut.writeDouble(player.getY());
 						dataOut.writeInt(p1);
+						dataOut.writeInt(p12);
 						dataOut.writeInt(second);
 						dataOut.writeInt(lvlp1);
 						dataOut.writeInt(itemObtained1);

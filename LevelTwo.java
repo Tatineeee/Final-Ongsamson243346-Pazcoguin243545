@@ -73,6 +73,8 @@ public class LevelTwo extends Level {
 		Rectangle2D.Double door2 = new Rectangle2D.Double(580, 20, 70, 80);
 		g2d.fill(door1);
 		g2d.fill(door2);
+		g2d.fill(new Rectangle2D.Double(890,260,100,100));
+		g2d.fill(new Rectangle2D.Double(765, 415, 100, 100));
 		g2d.setColor(new Color(45, 45, 45));
 		for (int i = 0; i < getPlatformCount(); i++) {
 			g2d.fill(getPlatform(i));
