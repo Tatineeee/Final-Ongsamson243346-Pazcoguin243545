@@ -48,7 +48,7 @@ public class LevelTwo extends Level {
 				new Rectangle2D.Double(170, 505, 119, 10),
 				new Rectangle2D.Double(245, 183, 779, 20),
 				new Rectangle2D.Double(255, 697, 67, 10),
-				new Rectangle2D.Double(371, 727, 67, 10),
+				new Rectangle2D.Double(0, 720, 1024, 10),
 				new Rectangle2D.Double(400, 0, 20, 92),
 				new Rectangle2D.Double(400, 92, 355, 20),
 				new Rectangle2D.Double(489, 305, 126, 10),

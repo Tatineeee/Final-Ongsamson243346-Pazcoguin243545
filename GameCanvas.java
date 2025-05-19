@@ -56,18 +56,14 @@ public class GameCanvas extends JComponent {
 	 * Initializes the players, levels, and images.
 	 */
 	public GameCanvas() {
-		player1X = 80;
-		player1Y = 758;
-		player2X = 900;
-		player2Y = 758;
 		player1 = new Player1Alt(player1X, player1Y);
 		player2 = new Player2Alt(player2X, player2Y);
 		player3 = new Player1(player1X, player1Y);
 		player4 = new Player2(player2X, player2Y);
-		player1 = new Player1Alt(80, 758);
-		player2 = new Player2Alt(900, 758);
-		player3 = new Player1(80, 758);
-		player4 = new Player2(900, 758);
+		player1 = new Player1Alt(80, 706);
+		player2 = new Player2Alt(900, 706);
+		player3 = new Player1(80, 706);
+		player4 = new Player2(900, 706);
 		playerChoose1 = player1;
 		playerChoose2 = player2;
 		platform1 = new LevelOne();
@@ -160,9 +156,9 @@ public class GameCanvas extends JComponent {
 		if (checker == 1) {
 			platforms = 1;
 			player1X = 80;
-			player1Y = 758;
+			player1Y = 706;
 			player2X = 900;
-			player2Y = 758;
+			player2Y = 706;
 		} else if (checker == 2) {
 			platforms = 3;
 			player1X = 106;

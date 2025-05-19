@@ -38,7 +38,7 @@ public class LevelOne extends Level {
 	 */
 	public LevelOne() {
 		super(new Rectangle2D.Double[] {
-				new Rectangle2D.Double(0, 758, 1024, 10),
+				new Rectangle2D.Double(0, 706, 1024, 70),
 				new Rectangle2D.Double(0, 502, 350, 20),
 				new Rectangle2D.Double(0, 206, 234, 20),
 				new Rectangle2D.Double(77, 410, 108, 20),
