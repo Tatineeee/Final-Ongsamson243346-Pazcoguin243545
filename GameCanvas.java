@@ -167,6 +167,8 @@ public class GameCanvas extends JComponent {
 			player1Y = 626;
 			player2X = 169;
 			player2Y = 626;
+			fixItemChecker1(1);
+			fixItemChecker2(1);
 		}
 		playerChoose1.setX(player1X);
 		playerChoose1.setY(player1Y);
@@ -238,6 +240,11 @@ public class GameCanvas extends JComponent {
 		}
 	}
 
+	/**
+	 * Fixes the item chcecker.
+	 * 
+	 * @param num
+	 */
 	public void fixItemChecker1(int num) {
 		itemChecker1 = num;
 		repaint();
