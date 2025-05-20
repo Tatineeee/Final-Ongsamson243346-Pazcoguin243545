@@ -48,15 +48,8 @@ public class GameCanvas extends JComponent {
 
 	private int lifty;
 	private int player1X, player1Y, player2X, player2Y;
-	private int[] level1Coordinates, level2Coordinates, level3Coordinates;
 
 	public GameCanvas() {
-		level1Coordinates = new int[] { 80, 758, 900, 758 };
-		level2Coordinates = new int[] { 106, 626, 169, 626 };
-		player1X = level1Coordinates[0];
-		player1Y = level1Coordinates[1];
-		player2X = level1Coordinates[2];
-		player2Y = level1Coordinates[3];
 		player1 = new Player1Alt(player1X, player1Y);
 		player2 = new Player2Alt(player2X, player2Y);
 		player3 = new Player1(player1X, player1Y);
@@ -68,19 +61,18 @@ public class GameCanvas extends JComponent {
 		playerChoose1 = player1;
 		playerChoose2 = player2;
 		platform1 = new LevelOne();
-		// ! This is where LevelTwo was deleted
 		platform2 = new LevelTwo();
-		platforms = 1; // ! Change to desired level: LevelOne, LevelTwo, LevelThree
+		platforms = 1;
 
 		intro = new MainScreen();
 		character = new CharacterSelector();
 		overlayMaster = new Overlay();
 		animationImages = new AnimationImages();
-		
+
 		animation1 = animationImages.getAnimationImage1();
 		animation2 = animationImages.getAnimationImage2();
 		animation3 = animationImages.getAnimationImage3();
-		x1 = -30; 
+		x1 = -30;
 		y1 = -30;
 		x2 = -30;
 		y2 = 30;
@@ -144,24 +136,24 @@ public class GameCanvas extends JComponent {
 		} else if (checker == 8) {
 			timeTorF = true;
 			removeCharacterSelector = false;
-		} 
+		}
 		repaint();
 	}
 
 	public void switchLevel(int checker) {
 		if (checker == 1) {
 			platforms = 1;
-			player1X = level1Coordinates[0];
-			player1Y = level1Coordinates[1];
-			player2X = level1Coordinates[2];
-			player2Y = level1Coordinates[3];
+			player1X = 80;
+			player1Y = 706;
+			player2X = 900;
+			player2Y = 706;
 		} else if (checker == 2) {
 			platforms = 2;
-			player1X = level2Coordinates[0];
-			player1Y = level2Coordinates[1];
-			player2X = level2Coordinates[2];
-			player2Y = level2Coordinates[3];
-		} 
+			player1X = 106;
+			player1Y = 626;
+			player2X = 169;
+			player2Y = 626;
+		}
 		playerChoose1.setX(player1X);
 		playerChoose1.setY(player1Y);
 		playerChoose2.setX(player2X);
@@ -225,39 +217,36 @@ public class GameCanvas extends JComponent {
 		itemChecker2 = num;
 		repaint();
 	}
-	
-	public void animationImage1X(int x){
+
+	public void animationImage1X(int x) {
 		x1 = x;
 		repaint();
 	}
-	
-	public void animationImage1Y(int y){
+
+	public void animationImage1Y(int y) {
 		y1 = y;
 		repaint();
 	}
-	
-	public void animationImage2X(int x){
+
+	public void animationImage2X(int x) {
 		x2 = x;
 		repaint();
 	}
-	
-	public void animationImage2Y(int y){
+
+	public void animationImage2Y(int y) {
 		y2 = y;
 		repaint();
 	}
-	
-	public void animationImage3X(int x){
+
+	public void animationImage3X(int x) {
 		x3 = x;
 		repaint();
 	}
-	
-	public void animationImage3Y(int y){
+
+	public void animationImage3Y(int y) {
 		y3 = y;
 		repaint();
 	}
-	
-
-
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -309,8 +298,8 @@ public class GameCanvas extends JComponent {
 
 		} else if (removeCharacterSelector == true) {
 			g2d.drawImage(option, 0, 0, 1024, 768, this);
-			
-			if (option == introImage){
+
+			if (option == introImage) {
 				g2d.drawImage(animation1, x1, y1, 1024, 768, this);
 				g2d.drawImage(animation2, x2, y2, 1024, 768, this);
 				g2d.drawImage(animation3, x3, y3, 1024, 768, this);
@@ -347,6 +336,5 @@ public class GameCanvas extends JComponent {
 			return platform1;
 		}
 	}
-
 
 }
