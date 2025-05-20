@@ -100,12 +100,12 @@ public class LevelOne extends Level {
 		AffineTransform transform8 = AffineTransform.getTranslateInstance(175,180);
 		g2d.setTransform(transform8);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform9 = AffineTransform.getTranslateInstance(750,770);
+		AffineTransform transform9 = AffineTransform.getTranslateInstance(650,385);
 		g2d.setTransform(transform9);
-		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform10 = AffineTransform.getTranslateInstance(780,770);
+		g2d.fill(NewSpike.SpikeDraw());
+		AffineTransform transform10 = AffineTransform.getTranslateInstance(680,385);
 		g2d.setTransform(transform10);
-		g2d.fill(newSpike.SpikeDraw());
+		g2d.fill(NewSpike.SpikeDraw());
 		g2d.setTransform(standardPosition);
 	}
 
