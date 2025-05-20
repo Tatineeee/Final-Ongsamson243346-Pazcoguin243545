@@ -1,10 +1,11 @@
 import java.awt.*;
 import javax.swing.*;
-import java.util.ArrayList;
 
 /**
  * This is the GameCanvas class that handles all the drawings and animations.
  * It contains the logic for the players, timer, items, and levels.
+ * It is where the clients connect to the server.
+ * It contains the various game elements.
  * 
  * @author Constantine P. Pazcoguin (243545)
  * @author Liora T. Ongsamson (243346)
@@ -46,18 +47,20 @@ public class GameCanvas extends JComponent {
 	private AnimationImages animationImages;
 	private boolean removeCharacterSelector, timeTorF;
 
-	private int lifty;
 	private int player1X, player1Y, player2X, player2Y;
 
+	/**
+	 * Initializes the players, levels, and images.
+	 */
 	public GameCanvas() {
 		player1 = new Player1Alt(player1X, player1Y);
 		player2 = new Player2Alt(player2X, player2Y);
 		player3 = new Player1(player1X, player1Y);
 		player4 = new Player2(player2X, player2Y);
-		player1 = new Player1Alt(80, 758);
-		player2 = new Player2Alt(900, 758);
-		player3 = new Player1(80, 758);
-		player4 = new Player2(900, 758);
+		player1 = new Player1Alt(80, 706);
+		player2 = new Player2Alt(900, 706);
+		player3 = new Player1(80, 706);
+		player4 = new Player2(900, 706);
 		playerChoose1 = player1;
 		playerChoose2 = player2;
 		platform1 = new LevelOne();
@@ -118,6 +121,11 @@ public class GameCanvas extends JComponent {
 
 	}
 
+	/**
+	 * Switches the screen based on the given screen checker value.
+	 * 
+	 * @param checker The value to determine which screen to switch to.
+	 */
 	public void switchScreen(int checker) {
 		if (checker == 1) {
 			option = introImage;
@@ -140,6 +148,12 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Switches the level based on the given checker value.
+	 * Also switches the player positions based on the level.
+	 * 
+	 * @param checker The value to determine which level to switch to.
+	 */
 	public void switchLevel(int checker) {
 		if (checker == 1) {
 			platforms = 1;
@@ -161,6 +175,11 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Switches the end screen based on the given checker value.
+	 * 
+	 * @param checker The value to determine which end screen to switch to.
+	 */
 	public void switchEndScreen(int checker) {
 		if (checker == 1) {
 			option2 = deadImage;
@@ -176,6 +195,12 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * Sets the player variation based on which player is chosen.
+	 * 
+	 * @param p1 The player number for player 1.
+	 * @param p2 The player number for player 2.
+	 */
 	public void playerChoose(int p1, int p2) {
 		if (p1 == 1) {
 			playerChoose1 = player1;
@@ -196,6 +221,11 @@ public class GameCanvas extends JComponent {
 		removeCharacterSelector = true;
 	}
 
+	/**
+	 * Checks if there is still time for the game.
+	 * 
+	 * @param timeChcker checks the time.
+	 */
 	public void timesUp(int timeChecker) {
 		if (timeChecker == 1) {
 			timeTorF = false;
@@ -311,6 +341,9 @@ public class GameCanvas extends JComponent {
 		repaint();
 	}
 
+	/**
+	 * @return the player objects.
+	 */
 	public Player getPlayer1() {
 		return player1;
 	}
@@ -327,6 +360,9 @@ public class GameCanvas extends JComponent {
 		return player4;
 	}
 
+	/**
+	 * @return the platforms.
+	 */
 	public Level getPlatforms() {
 		if (platforms == 1) {
 			return platform1;
