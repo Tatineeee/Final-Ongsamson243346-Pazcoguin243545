@@ -49,7 +49,7 @@ public class LevelTwo extends Level {
 				new Rectangle2D.Double(170, 505, 119, 10),
 				new Rectangle2D.Double(245, 183, 779, 20),
 				new Rectangle2D.Double(255, 697, 67, 10),
-				new Rectangle2D.Double(371, 727, 67, 10),
+				new Rectangle2D.Double(0, 720, 1024, 50),
 				new Rectangle2D.Double(400, 0, 20, 92),
 				new Rectangle2D.Double(400, 92, 355, 20),
 				new Rectangle2D.Double(489, 305, 126, 10),
@@ -73,68 +73,68 @@ public class LevelTwo extends Level {
 		Rectangle2D.Double door2 = new Rectangle2D.Double(580, 20, 70, 80);
 		g2d.fill(door1);
 		g2d.fill(door2);
-		g2d.fill(new Rectangle2D.Double(900,550,100,100));
+		g2d.fill(new Rectangle2D.Double(900, 550, 100, 100));
 		g2d.setColor(new Color(45, 45, 45));
 		for (int i = 0; i < getPlatformCount(); i++) {
 			g2d.fill(getPlatform(i));
 		}
 		g2d.setColor(Color.WHITE);
-		AffineTransform transform1 = AffineTransform.getTranslateInstance(360,535);
+		AffineTransform transform1 = AffineTransform.getTranslateInstance(360, 535);
 		g2d.setTransform(transform1);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform2 = AffineTransform.getTranslateInstance(390,535);
+		AffineTransform transform2 = AffineTransform.getTranslateInstance(390, 535);
 		g2d.setTransform(transform2);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform3 = AffineTransform.getTranslateInstance(460,535);
+		AffineTransform transform3 = AffineTransform.getTranslateInstance(460, 535);
 		g2d.setTransform(transform3);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform4 = AffineTransform.getTranslateInstance(490,535);
+		AffineTransform transform4 = AffineTransform.getTranslateInstance(490, 535);
 		g2d.setTransform(transform4);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform5 = AffineTransform.getTranslateInstance(520,535);
+		AffineTransform transform5 = AffineTransform.getTranslateInstance(520, 535);
 		g2d.setTransform(transform5);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform6 = AffineTransform.getTranslateInstance(100,535);
+		AffineTransform transform6 = AffineTransform.getTranslateInstance(100, 535);
 		g2d.setTransform(transform6);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform7 = AffineTransform.getTranslateInstance(70,535);
+		AffineTransform transform7 = AffineTransform.getTranslateInstance(70, 535);
 		g2d.setTransform(transform7);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform8 = AffineTransform.getTranslateInstance(130,535);
+		AffineTransform transform8 = AffineTransform.getTranslateInstance(130, 535);
 		g2d.setTransform(transform8);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform9 = AffineTransform.getTranslateInstance(220,335);
+		AffineTransform transform9 = AffineTransform.getTranslateInstance(220, 335);
 		g2d.setTransform(transform9);
 		g2d.fill(newSpike.SpikeDraw());
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform10 = AffineTransform.getTranslateInstance(380,335);
+		AffineTransform transform10 = AffineTransform.getTranslateInstance(380, 335);
 		g2d.setTransform(transform10);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform11 = AffineTransform.getTranslateInstance(410,335);
+		AffineTransform transform11 = AffineTransform.getTranslateInstance(410, 335);
 		g2d.setTransform(transform11);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform12 = AffineTransform.getTranslateInstance(770,335);
+		AffineTransform transform12 = AffineTransform.getTranslateInstance(770, 335);
 		g2d.setTransform(transform12);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform13 = AffineTransform.getTranslateInstance(740,335);
+		AffineTransform transform13 = AffineTransform.getTranslateInstance(740, 335);
 		g2d.setTransform(transform13);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform14 = AffineTransform.getTranslateInstance(710,335);
+		AffineTransform transform14 = AffineTransform.getTranslateInstance(710, 335);
 		g2d.setTransform(transform14);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform15 = AffineTransform.getTranslateInstance(300,160);
+		AffineTransform transform15 = AffineTransform.getTranslateInstance(300, 160);
 		g2d.setTransform(transform15);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform16 = AffineTransform.getTranslateInstance(330,160);
+		AffineTransform transform16 = AffineTransform.getTranslateInstance(330, 160);
 		g2d.setTransform(transform16);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform17 = AffineTransform.getTranslateInstance(900,160);
+		AffineTransform transform17 = AffineTransform.getTranslateInstance(900, 160);
 		g2d.setTransform(transform17);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform18 = AffineTransform.getTranslateInstance(930,160);
+		AffineTransform transform18 = AffineTransform.getTranslateInstance(930, 160);
 		g2d.setTransform(transform18);
 		g2d.fill(newSpike.SpikeDraw());
-		AffineTransform transform19 = AffineTransform.getTranslateInstance(960,160);
+		AffineTransform transform19 = AffineTransform.getTranslateInstance(960, 160);
 		g2d.setTransform(transform19);
 		g2d.fill(newSpike.SpikeDraw());
 		g2d.setTransform(standardPosition);

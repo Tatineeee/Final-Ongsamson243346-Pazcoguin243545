@@ -8,9 +8,13 @@ import javax.sound.sampled.*;
 import java.text.*;
 
 /**
- * This file contains the GameFrame for the game where it encasulates the buttons and the key listeners that are needed for the progression of the game.
- * It also contains the countdown timer, animation for the title screen, item logic, and collision of tiles with the player in game. 
- * Lastly, it contains the gamecanvas which is placed in layered pane in order to allow buttons to be placed on top of the image.
+ * This file contains the GameFrame for the game where it encasulates the
+ * buttons and the key listeners that are needed for the progression of the
+ * game.
+ * It also contains the countdown timer, animation for the title screen, item
+ * logic, and collision of tiles with the player in game.
+ * Lastly, it contains the gamecanvas which is placed in layered pane in order
+ * to allow buttons to be placed on top of the image.
  * 
  * @author Constantine P. Pazcoguin (243545)
  * @author Liora T. Ongsamson (243346)
@@ -57,11 +61,13 @@ public class GameFrame {
 	private String ddSecond;
 	private Font font1 = new Font("Arial", Font.PLAIN, 50);
 
-    /**
-     * Constructor for the GameFrame class.
-     * It initializes the variables for all the actions and conditions needed by this class for the game.
-	 * it also creates the several JButtons and JLable alongside calling several methods.
-     */
+	/**
+	 * Constructor for the GameFrame class.
+	 * It initializes the variables for all the actions and conditions needed by
+	 * this class for the game.
+	 * it also creates the several JButtons and JLable alongside calling several
+	 * methods.
+	 */
 	public GameFrame(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -107,8 +113,7 @@ public class GameFrame {
 		not22 = 0;
 		doorCheck1 = 0;
 		doorCheck2 = 0;
-		
-		
+
 		lvlCounter = 0;
 		lvlp1 = 0;
 		lvlp2 = 0;
@@ -133,7 +138,7 @@ public class GameFrame {
 		counterLabel.setForeground(Color.WHITE);
 		second = 0;
 		minute = 2;
-		
+
 		x1 = -30;
 		y1 = -30;
 		x2 = -30;
@@ -150,7 +155,7 @@ public class GameFrame {
 		playMusic("/music/scarymusic.wav", 0.5f);
 
 	}
-	
+
 	/**
 	 * Initializes the player depending on their playerID.
 	 * This is to ensure that the player does not start as null.
@@ -168,10 +173,12 @@ public class GameFrame {
 
 		gameCanvas.playerChoose(2, 2);
 	}
-	
-    /**
-	 * Sets which version of the character and their art will be played by the player.
-	 * This is used in the Character Selector and contains two different types of checking, depending on the playerID.
+
+	/**
+	 * Sets which version of the character and their art will be played by the
+	 * player.
+	 * This is used in the Character Selector and contains two different types of
+	 * checking, depending on the playerID.
 	 */
 	public void resetPlayer() {
 
@@ -225,10 +232,9 @@ public class GameFrame {
 		}
 
 	}
-	
-	
-    /**
-	 * Used to show the screen for player 2's character selector. 
+
+	/**
+	 * Used to show the screen for player 2's character selector.
 	 */
 	private void determineCharacter() {
 		if (playerID == 2) {
@@ -237,11 +243,12 @@ public class GameFrame {
 			character_determiner3 = 7;
 		}
 	}
-	
-	
-    /**
-	 * Sets up the GUI of the Game where the initial buttons and the gameCanvas class are added.
-	 * The frame is set to a JLayeredPane in order to accomodate both the image and buttons on top of each other.
+
+	/**
+	 * Sets up the GUI of the Game where the initial buttons and the gameCanvas
+	 * class are added.
+	 * The frame is set to a JLayeredPane in order to accomodate both the image and
+	 * buttons on top of each other.
 	 */
 	private void setupGUI() {
 		layeredPane.add(gameCanvas);
@@ -254,11 +261,13 @@ public class GameFrame {
 		frame.setVisible(true);
 		gameCanvas.repaint();
 	}
-	
+
 	/**
 	 * This is the main timer that runs during the game play of the game.
-	 * It is responsible for consistenly updating the player's location, checking the platforms for collision, checking if the player has touched an item,
-	 * if both players are on the doors and have pressed a key, and check if a player has touched a spike.
+	 * It is responsible for consistenly updating the player's location, checking
+	 * the platforms for collision, checking if the player has touched an item,
+	 * if both players are on the doors and have pressed a key, and check if a
+	 * player has touched a spike.
 	 */
 	private void setupTimer() {
 		int interval = 10;
@@ -267,32 +276,32 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent e) {
 				player.update(gameCanvas.getPlatforms());
 
-				if (lvlCounter == 1){
-                    checkPlatform();
-                    gameCanvas.repaint();
-				    itemChecker1();
-				    if ((itemObtained1 == 1 && itemObtained4 == 1) || doorCheck2 == 1){
-					    levelChecker();
-				    } else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 1){
-					    levelChecker();
-				    }
-					checkSpikes();
-					
-				} else if (lvlCounter == 2){
+				if (lvlCounter == 1) {
 					checkPlatform();
-                    gameCanvas.repaint();
-					if (check1 != 0){
+					gameCanvas.repaint();
+					itemChecker1();
+					if ((itemObtained1 == 1 && itemObtained4 == 1) || doorCheck2 == 1) {
+						levelChecker();
+					} else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 1) {
+						levelChecker();
+					}
+					checkSpikes();
+
+				} else if (lvlCounter == 2) {
+					checkPlatform();
+					gameCanvas.repaint();
+					if (check1 != 0) {
 						resetItem();
 					}
 					itemChecker2();
-				    if ((itemObtained1 == 1 && itemObtained4 == 1)  || doorCheck2 == 2){
-					    levelChecker();
-				    } else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 2){
-					    levelChecker();
-				    }
+					if ((itemObtained1 == 1 && itemObtained4 == 1) || doorCheck2 == 2) {
+						levelChecker();
+					} else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 2) {
+						levelChecker();
+					}
 					itemChecker2();
 					checkSpikes();
-				
+
 				}
 
 			}
@@ -300,7 +309,7 @@ public class GameFrame {
 		timer = new Timer(interval, actionListener);
 		timer.start();
 	}
-	
+
 	/**
 	 * Responsible for making the animation art play in the title screen.
 	 */
@@ -309,99 +318,99 @@ public class GameFrame {
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				if (animationCheck1 == true){
-					if (x1 <= 0){
+
+				if (animationCheck1 == true) {
+					if (x1 <= 0) {
 						x1++;
 					}
-					if (y1 <= 0){
+					if (y1 <= 0) {
 						y1++;
 					}
-					
-					if (x1 > 0){
+
+					if (x1 > 0) {
 						animationCheck1 = false;
 					}
 				} else if (animationCheck1 == false) {
 					x1--;
 					y1--;
-					if (x1 < -30){
+					if (x1 < -30) {
 						animationCheck1 = true;
 					}
 				}
 				gameCanvas.animationImage1X(x1);
 				gameCanvas.animationImage1Y(y1);
-				
-				if (animationCheck2 == true){
-					if (x2 <= 0){
+
+				if (animationCheck2 == true) {
+					if (x2 <= 0) {
 						x2++;
 					}
-					if (y2 <= 30){
+					if (y2 <= 30) {
 						y2++;
 					}
-					
-					if (x2 > 0){
+
+					if (x2 > 0) {
 						animationCheck2 = false;
 					}
 				} else if (animationCheck2 == false) {
 					x2--;
 					y2--;
-					if (x2 < -30){
+					if (x2 < -30) {
 						animationCheck2 = true;
 					}
 				}
 				gameCanvas.animationImage2X(x2);
 				gameCanvas.animationImage2Y(y2);
-				
-				if (animationCheck2 == true){
-					if (x3 >= 0){
+
+				if (animationCheck2 == true) {
+					if (x3 >= 0) {
 						x3--;
 					}
-					
-					if (x3 < 0){
+
+					if (x3 < 0) {
 						animationCheck2 = false;
 					}
 				} else if (animationCheck2 == false) {
 					x3++;
-					if (x3 > 30){
+					if (x3 > 30) {
 						animationCheck2 = true;
 					}
 				}
 				gameCanvas.animationImage3X(x3);
-				
-				if (animationChecker == 1){
-			        timer3.stop();
-	        	}
+
+				if (animationChecker == 1) {
+					timer3.stop();
+				}
 
 			}
-			
 
 		};
 		timer3 = new Timer(interval, actionListener);
 		timer3.start();
-		
+
 	}
-	
+
 	/**
 	 * Stops the setupTimer method.
 	 */
-	public void mainTimerStop(){
+	public void mainTimerStop() {
 		timer.stop();
 	}
-	
-   /**
-	 * Sets up the keylisteners for the movement (left & right, jumping) and going to the next level once both players are on the door.
+
+	/**
+	 * Sets up the keylisteners for the movement (left & right, jumping) and going
+	 * to the next level once both players are on the door.
 	 */
 	private void setupKeyListener() {
 		KeyAdapter keyAdapter = new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				player.handleKeyPressed(e.getKeyCode());
-				
-				if (e.getKeyCode() == KeyEvent.VK_S){
+
+				if (e.getKeyCode() == KeyEvent.VK_S) {
 					doorCheck1 = 1;
 				}
-				
-				if (e.getKeyCode() == KeyEvent.VK_W){
+
+				if (e.getKeyCode() == KeyEvent.VK_W) {
 					doorCheck1 = 2;
 				}
 			}
@@ -414,7 +423,7 @@ public class GameFrame {
 		frame.addKeyListener(keyAdapter);
 		frame.setFocusable(true);
 	}
-	
+
 	/**
 	 * Sets up the buttons for the title screen and character selector.
 	 */
@@ -440,8 +449,10 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent ae) {
 				gameCanvas.switchScreen(character_determiner2);
 				determinerChecker = 1;
-				if (playerID == 1) p1 = 1;
-				else if (playerID == 2) p12 = 1;
+				if (playerID == 1)
+					p1 = 1;
+				else if (playerID == 2)
+					p12 = 1;
 			}
 		};
 
@@ -449,15 +460,17 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent ae) {
 				gameCanvas.switchScreen(character_determiner3);
 				determinerChecker = 1;
-				if (playerID == 1) p1 = 2;
-				else if (playerID == 2) p12 = 2;
+				if (playerID == 1)
+					p1 = 2;
+				else if (playerID == 2)
+					p12 = 2;
 
 			}
 		};
 
 		ActionListener buttonListener4 = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if (determinerChecker == 1 && ((p1 != 0  && p22 != 0) || (p2 !=0 && p12 != 0))) {
+				if (determinerChecker == 1 && ((p1 != 0 && p22 != 0) || (p2 != 0 && p12 != 0))) {
 					resetItem();
 					resetAndStart();
 					setupTimer();
@@ -486,10 +499,11 @@ public class GameFrame {
 		characterExitButton.addActionListener(buttonListener4);
 
 	}
-	
+
 	/**
 	 * Sets up the timer for the countdown timer in the game.
-	 * It formats the time as well as fix the connection between the countdown timers of the two players.
+	 * It formats the time as well as fix the connection between the countdown
+	 * timers of the two players.
 	 * It takes into account the what will happen if the time hits 0.
 	 */
 	public void countdownTimer() {
@@ -530,7 +544,7 @@ public class GameFrame {
 
 		timer2.start();
 	}
-	
+
 	/**
 	 * Resets the time back to 2 minutes to account to any possible error.
 	 */
@@ -538,17 +552,19 @@ public class GameFrame {
 		minute = 2;
 		second = 0;
 	}
-	
+
 	/**
 	 * Resets the time back to 2 minutes to account to any possible error.
 	 */
 	public void stopTime() {
 		timer2.stop();
 	}
-	
+
 	/**
-	 * Responsible for checking if both players are on the door (regardless what position the two are, as long as they are in them door.
-	 * It also checks if the "s" key for level 1, and "w" key for level 2 is pressed by one player.
+	 * Responsible for checking if both players are on the door (regardless what
+	 * position the two are, as long as they are in them door.
+	 * It also checks if the "s" key for level 1, and "w" key for level 2 is pressed
+	 * by one player.
 	 * This causes the switch of the level or results screen.
 	 */
 	public void levelChecker() {
@@ -559,8 +575,8 @@ public class GameFrame {
 				lvlp1 = 2;
 			}
 
-			if ((((lvlp1 == 1 && lvlp2 == 2) && doorCheck1==1) || doorCheck2 == 1) ||
- 			   (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1==1) || doorCheck2==1)){
+			if ((((lvlp1 == 1 && lvlp2 == 2) && doorCheck1 == 1) || doorCheck2 == 1) ||
+					(((lvlp1 == 2 && lvlp2 == 1) && doorCheck1 == 1) || doorCheck2 == 1)) {
 				gameCanvas.switchLevel(2);
 				check1 = 1;
 				resetItem();
@@ -569,88 +585,94 @@ public class GameFrame {
 				gameCanvas.fixItemChecker2(1);
 				itemObtained2 = 0;
 				lvlCounter = 2;
-			} 
-		}   else if (lvlCounter == 2){ 
-			if (player.getX() > 200 && player.getX() < 300 && player.getY() < 200  && player.getY() > 100){
+			}
+		} else if (lvlCounter == 2) {
+			if (player.getX() > 200 && player.getX() < 300 && player.getY() < 200 && player.getY() > 100) {
 				lvlp1 = 1;
-			} else if (player.getX() > 780 && player.getX() < 880 && player.getY() < 490 && player.getY() > 390){
+			} else if (player.getX() > 780 && player.getX() < 880 && player.getY() < 490 && player.getY() > 390) {
 				lvlp1 = 2;
 			}
-			
-			if ((((lvlp1 == 1 && lvlp2 == 2) && doorCheck1==2) || doorCheck2 == 2) ||
-			   (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1==2) || doorCheck2==2)){
+
+			if ((((lvlp1 == 1 && lvlp2 == 2) && doorCheck1 == 2) || doorCheck2 == 2) ||
+					(((lvlp1 == 2 && lvlp2 == 1) && doorCheck1 == 2) || doorCheck2 == 2)) {
 				System.out.println("ew");
 				gameCanvas.timesUp(1);
-                stopTime();
-				if ((second <= 59 && second > 45) || (minute > 0)){
+				stopTime();
+				if ((second <= 59 && second > 45) || (minute > 0)) {
 					gameCanvas.switchEndScreen(2);
-				} else if (second <= 45 && second > 30){
+				} else if (second <= 45 && second > 30) {
 					gameCanvas.switchEndScreen(3);
-				} else if (second <= 30 && second > 15){
+				} else if (second <= 30 && second > 15) {
 					gameCanvas.switchEndScreen(4);
-				} else if (second <= 15){
+				} else if (second <= 15) {
 					gameCanvas.switchEndScreen(5);
 				}
 				stopTime();
 				mainTimerStop();
 				layeredPane.remove(counterLabel);
 			}
-		}	
+		}
 
 	}
-	
+
 	/**
-	 * Checks if the player is inside the bounds of the object in level 1 and makes the object dissapear into the items collected area.
-	 * Likewise, it also ensures that this is properly printed on the opposing player's screen.
+	 * Checks if the player is inside the bounds of the object in level 1 and makes
+	 * the object dissapear into the items collected area.
+	 * Likewise, it also ensures that this is properly printed on the opposing
+	 * player's screen.
 	 */
-	public void itemChecker1(){
-		if (lvlCounter == 1){ 
-			if (player.getX() > 50 && player.getX() < 150 && player.getY() < 175 && obtainItem == 0){
+	public void itemChecker1() {
+		if (lvlCounter == 1) {
+			if (player.getX() > 50 && player.getX() < 150 && player.getY() < 175 && obtainItem == 0) {
 				itemObtained1 = 1;
 				gameCanvas.fixItemChecker1(0);
 				obtainItem = 1;
-			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 600 && player.getY() > 500 && obtainItem == 0){
+			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 600 && player.getY() > 500
+					&& obtainItem == 0) {
 				itemObtained3 = 1;
 				gameCanvas.fixItemChecker2(0);
 				obtainItem = 1;
 			}
-			
-			if (itemObtained2 == 1){
+
+			if (itemObtained2 == 1) {
 				gameCanvas.fixItemChecker1(0);
-			} else if (itemObtained4 == 1){
+			} else if (itemObtained4 == 1) {
 				gameCanvas.fixItemChecker2(0);
-			} 
-			
-		} 
-	}	
-	
-		
-	/**
-	 * Checks if the player is inside the bounds of the object in level 1 and makes the object dissapear into the items collected area.
-	 * Likewise, it also ensures that this is properly printed on the opposing player's screen.
-	 */	
-	public void itemChecker2(){
-		if (lvlCounter == 2){ 
-			if (player.getX() > 600 && player.getX() < 700 && player.getY() < 360 && player.getY() > 260 && obtainItem == 0){
-				itemObtained1 = 1;
-				gameCanvas.fixItemChecker1(0);
-				obtainItem = 1;
-			
-			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 650 && player.getY() > 550 && obtainItem == 0){
-				itemObtained3 = 1;
-				gameCanvas.fixItemChecker2(0);
-				obtainItem = 1;
 			}
-			
-			if (itemObtained2 == 1){
-				gameCanvas.fixItemChecker1(0);
-			} else if (itemObtained4 == 1){
-				gameCanvas.fixItemChecker2(0);
-			} 
-			
-		} 
+
+		}
 	}
-	
+
+	/**
+	 * Checks if the player is inside the bounds of the object in level 1 and makes
+	 * the object dissapear into the items collected area.
+	 * Likewise, it also ensures that this is properly printed on the opposing
+	 * player's screen.
+	 */
+	public void itemChecker2() {
+		if (lvlCounter == 2) {
+			if (player.getX() > 600 && player.getX() < 700 && player.getY() < 360 && player.getY() > 260
+					&& obtainItem == 0) {
+				itemObtained1 = 1;
+				gameCanvas.fixItemChecker1(0);
+				obtainItem = 1;
+
+			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 650 && player.getY() > 550
+					&& obtainItem == 0) {
+				itemObtained3 = 1;
+				gameCanvas.fixItemChecker2(0);
+				obtainItem = 1;
+			}
+
+			if (itemObtained2 == 1) {
+				gameCanvas.fixItemChecker1(0);
+			} else if (itemObtained4 == 1) {
+				gameCanvas.fixItemChecker2(0);
+			}
+
+		}
+	}
+
 	/**
 	 * Resets all of the variables that are used for checking.
 	 */
@@ -665,12 +687,14 @@ public class GameFrame {
 			lvlp2 = 0;
 			check1 = 0;
 			check2 = 0;
-		} 
+		}
 	}
-	
+
 	/**
-	 * Checks if the player is touching the spike for each individual spike in both levels.
-	 * The game will switch to the game over screen once either player touches a spike.
+	 * Checks if the player is touching the spike for each individual spike in both
+	 * levels.
+	 * The game will switch to the game over screen once either player touches a
+	 * spike.
 	 */
 	public void checkSpikes() {
 		if (lvlCounter == 1) {
@@ -712,20 +736,26 @@ public class GameFrame {
 			}
 		} else if (lvlCounter == 2) {
 			if (
-					/*((player.getX() + 25) > 800 && (player.getX() + 25) < (800 + 25) && (player.getY() + 40) > 625
-							&& (player.getY() + 40) < (625 + 25))
-					||
-					((player.getX() + 25) > 770 && (player.getX() + 25) < (770 + 25) && (player.getY() + 40) > 625
-							&& (player.getY() + 40) < (625 + 25))
-					||
-					((player.getX() + 25) > 830 && (player.getX() + 25) < (830 + 25) && (player.getY() + 40) > 625
-							&& (player.getY() + 40) < (625 + 25))
-					||
-					((player.getX() + 25) > 860 && (player.getX() + 25) < (860 + 25) && (player.getY() + 40) > 625
-							&& (player.getY() + 40) < (625 + 25))
-					|| */
-					((player.getX() + 25) > 360 && (player.getX() + 25) < (360 + 25) && (player.getY() + 40) > 535
-							&& (player.getY() + 40) < (535 + 25))
+			/*
+			 * ((player.getX() + 25) > 800 && (player.getX() + 25) < (800 + 25) &&
+			 * (player.getY() + 40) > 625
+			 * && (player.getY() + 40) < (625 + 25))
+			 * ||
+			 * ((player.getX() + 25) > 770 && (player.getX() + 25) < (770 + 25) &&
+			 * (player.getY() + 40) > 625
+			 * && (player.getY() + 40) < (625 + 25))
+			 * ||
+			 * ((player.getX() + 25) > 830 && (player.getX() + 25) < (830 + 25) &&
+			 * (player.getY() + 40) > 625
+			 * && (player.getY() + 40) < (625 + 25))
+			 * ||
+			 * ((player.getX() + 25) > 860 && (player.getX() + 25) < (860 + 25) &&
+			 * (player.getY() + 40) > 625
+			 * && (player.getY() + 40) < (625 + 25))
+			 * ||
+			 */
+			((player.getX() + 25) > 360 && (player.getX() + 25) < (360 + 25) && (player.getY() + 40) > 535
+					&& (player.getY() + 40) < (535 + 25))
 					||
 					((player.getX() + 25) > 390 && (player.getX() + 25) < (390 + 25) && (player.getY() + 40) > 535
 							&& (player.getY() + 40) < (535 + 25))
@@ -751,15 +781,22 @@ public class GameFrame {
 					((player.getX() + 25) > 220 && (player.getX() + 25) < (220 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
-					/*((player.getX() + 25) > 250 && (player.getX() + 25) < (250 + 25) && (player.getY() + 40) > 335
-							&& (player.getY() + 40) < (335 + 25))
-					||*/
-					/*((player.getX() + 25) > 280 && (player.getX() + 25) < (280 + 25) && (player.getY() + 40) > 335
-							&& (player.getY() + 40) < (335 + 25))
-					||
-					/*((player.getX() + 25) > 350 && (player.getX() + 25) < (350 + 25) && (player.getY() + 40) > 335
-							&& (player.getY() + 40) < (335 + 25))
-					||*/
+					/*
+					 * ((player.getX() + 25) > 250 && (player.getX() + 25) < (250 + 25) &&
+					 * (player.getY() + 40) > 335
+					 * && (player.getY() + 40) < (335 + 25))
+					 * ||
+					 */
+					/*
+					 * ((player.getX() + 25) > 280 && (player.getX() + 25) < (280 + 25) &&
+					 * (player.getY() + 40) > 335
+					 * && (player.getY() + 40) < (335 + 25))
+					 * ||
+					 * /*((player.getX() + 25) > 350 && (player.getX() + 25) < (350 + 25) &&
+					 * (player.getY() + 40) > 335
+					 * && (player.getY() + 40) < (335 + 25))
+					 * ||
+					 */
 					((player.getX() + 25) > 380 && (player.getX() + 25) < (380 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
@@ -800,7 +837,7 @@ public class GameFrame {
 
 		}
 	}
-	
+
 	/**
 	 * Obtains every platform for each level and checked them for collision.
 	 */
@@ -811,10 +848,11 @@ public class GameFrame {
 			handlePlatformCollision(platform);
 		}
 	}
-	
+
 	/**
-	 * Checks for collision of all sides of the player and the platform. 
-	 * It also check if a player is dropping or jumping to adjust their position and their speed.
+	 * Checks for collision of all sides of the player and the platform.
+	 * It also check if a player is dropping or jumping to adjust their position and
+	 * their speed.
 	 */
 	private void handlePlatformCollision(Rectangle2D.Double platform) {
 		double size = player.getSize();
@@ -841,9 +879,10 @@ public class GameFrame {
 			}
 		}
 	}
-	
+
 	/**
-	 * Plays the music that runs in a loop throughout the whole game, from title screen to the end screen.
+	 * Plays the music that runs in a loop throughout the whole game, from title
+	 * screen to the end screen.
 	 */
 	private void playMusic(String filePath, float volume) {
 		try {
@@ -863,7 +902,7 @@ public class GameFrame {
 			System.out.println("Error playing music: " + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Creates the connection from the player to the server.
 	 * It also ensures that the output and input streams are properly created.
@@ -882,7 +921,7 @@ public class GameFrame {
 			System.out.println("connectToServer error: " + e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Reads the input from the server as long as the player is not null.
 	 */
@@ -899,18 +938,32 @@ public class GameFrame {
 			try {
 				while (true) {
 					if (player != null) {
-						notDoor	= dataIn.readInt();
-						if (notDoor != 0){
+						notDoor = dataIn.readInt();
+						if (notDoor != 0) {
 							doorCheck2 = notDoor;
 						}
-						playerOther.setX(dataIn.readDouble());
+						double prevX = playerOther.getX();
+						double newX = dataIn.readDouble();
+						playerOther.setX(newX);
 						playerOther.setY(dataIn.readDouble());
+						if (newX < prevX) {
+							playerOther.setMovingLeft(true);
+							playerOther.setMovingRight(false);
+							playerOther.setLastDirection("left");
+						} else if (newX > prevX) {
+							playerOther.setMovingLeft(false);
+							playerOther.setMovingRight(true);
+							playerOther.setLastDirection("right");
+						} else {
+							playerOther.setMovingLeft(false);
+							playerOther.setMovingRight(false);
+						}
 						not2 = dataIn.readInt();
-						if (not2 != 0){
+						if (not2 != 0) {
 							p2 = not2;
 						}
 						not22 = dataIn.readInt();
-						if (not22 != 0){
+						if (not22 != 0) {
 							p22 = not22;
 						}
 						second2 = dataIn.readInt();
@@ -941,9 +994,10 @@ public class GameFrame {
 			}
 		}
 	}
-	
-    /**
-	 * Writes the output of the player to the server as long as the player is not null.
+
+	/**
+	 * Writes the output of the player to the server as long as the player is not
+	 * null.
 	 */
 	private class WriteToServer implements Runnable {
 
