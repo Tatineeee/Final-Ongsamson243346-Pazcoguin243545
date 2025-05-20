@@ -24,25 +24,22 @@ import javax.swing.*;
 
 public class MainScreen {
 
-	private Image backgroundImage, bufferImage;
+	private Image backgroundImage;
 
 	/**
-	 * It initializes the background and buffer images.
+	 * Constructor for the MainScreen class.
+	 * It initializes the background image.
 	 */
 	public MainScreen() {
 		backgroundImage = new ImageIcon(getClass().getResource("/intro/intro.png")).getImage();
-		bufferImage = new ImageIcon(getClass().getResource("/intro/buffer.jpg")).getImage();
 	}
 
 	/**
-	 * @return the background and buffer images.
+	 * Returns the background image.
 	 */
 	public Image getBackgroundImage() {
 		return backgroundImage;
 	}
 
-	public Image getBufferImage() {
-		return bufferImage;
-	}
 
 }

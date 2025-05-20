@@ -8,7 +8,9 @@ import javax.sound.sampled.*;
 import java.text.*;
 
 /**
- * lorem
+ * This file contains the GameFrame for the game where it encasulates the buttons and the key listeners that are needed for the progression of the game.
+ * It also contains the countdown timer, animation for the title screen, item logic, and collision of tiles with the player in game. 
+ * Lastly, it contains the gamecanvas which is placed in layered pane in order to allow buttons to be placed on top of the image.
  * 
  * @author Constantine P. Pazcoguin (243545)
  * @author Liora T. Ongsamson (243346)
@@ -34,21 +36,20 @@ public class GameFrame {
 	private int p1, p2, lvlCounter, lvlp1, lvlp2, obtainItem, itemObtained1, itemObtained2, itemObtained3,
 			itemObtained4;
 	private int p12, p22, not2, not22;
+	private int x1, y1, x2, y2, x3;
 	private int check1, check2, liftChecker1, liftChecker2, liftChecker3, liftChecker4, liftChecker5;
-	private int spikeChecker1, spikeChecker2, testlol, doorCheck1, doorCheck2, notDoor;
+	private int spikeChecker1, spikeChecker2, doorCheck1, doorCheck2, notDoor, animationChecker;
 	private JFrame frame;
 	private GameCanvas gameCanvas;
 	private JLayeredPane layeredPane;
-	private Timer timer, timer2;
+	private Timer timer, timer2, timer3;
 	private JButton startButton, characterButton1, characterButton2, characterExitButton;
-	private JButton startAgainButton, exitButton, tempbutton;
-	private JButton test, test2;
 	private Socket socket;
 	private Player player, playerOther;
 	private ReadFromServer playerRFS;
 	private WriteToServer playerWTS;
 
-	private boolean liftCheck;
+	private boolean animationCheck1, animationCheck2, animationCheck3;
 
 	private JLabel counterLabel;
 	private int second, minute, second2;
@@ -56,12 +57,11 @@ public class GameFrame {
 	private String ddSecond;
 	private Font font1 = new Font("Arial", Font.PLAIN, 50);
 
-	/**
-	 * Constructs the GUI of the game and initializes the various values.
-	 * 
-	 * @param width  width of the screen.
-	 * @param height height of the screen.
-	 */
+    /**
+     * Constructor for the GameFrame class.
+     * It initializes the variables for all the actions and conditions needed by this class for the game.
+	 * it also creates the several JButtons and JLable alongside calling several methods.
+     */
 	public GameFrame(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -70,9 +70,6 @@ public class GameFrame {
 		layeredPane = new JLayeredPane();
 		layeredPane.setBounds(0, 0, width, height);
 
-		tempbutton = new JButton();
-		tempbutton.setBounds(0, 0, 100, 100);
-
 		startButton = new JButton();
 		characterButton1 = new JButton();
 		characterButton2 = new JButton();
@@ -80,7 +77,7 @@ public class GameFrame {
 		startButton.setBounds(310, 540, 400, 100);
 		characterButton1.setBounds(590, 240, 300, 165);
 		characterButton2.setBounds(585, 480, 300, 165);
-		characterExitButton.setBounds(585, 100, 300, 100);
+		characterExitButton.setBounds(160, 570, 265, 60);
 		startButton.setOpaque(false);
 		startButton.setContentAreaFilled(false);
 		startButton.setBorderPainted(false);
@@ -90,21 +87,14 @@ public class GameFrame {
 		characterButton2.setOpaque(false);
 		characterButton2.setContentAreaFilled(false);
 		characterButton2.setBorderPainted(false);
-		characterExitButton.setOpaque(true);
+		characterExitButton.setOpaque(false);
 		characterExitButton.setContentAreaFilled(false);
-		characterExitButton.setBorderPainted(true);
+		characterExitButton.setBorderPainted(false);
 		determinerChecker = 0;
-
-		startAgainButton = new JButton();
-		exitButton = new JButton();
-		startAgainButton.setBounds(25, 590, 520, 60);
-		exitButton.setBounds(25, 680, 520, 60);
-		startAgainButton.setOpaque(false);
-		startAgainButton.setContentAreaFilled(false);
-		startAgainButton.setBorderPainted(false);
-		exitButton.setOpaque(false);
-		exitButton.setContentAreaFilled(false);
-		exitButton.setBorderPainted(false);
+		animationChecker = 0;
+		animationCheck1 = true;
+		animationCheck2 = true;
+		animationCheck3 = true;
 
 		character_determiner1 = 2;
 		character_determiner2 = 3;
@@ -117,7 +107,8 @@ public class GameFrame {
 		not22 = 0;
 		doorCheck1 = 0;
 		doorCheck2 = 0;
-
+		
+		
 		lvlCounter = 0;
 		lvlp1 = 0;
 		lvlp2 = 0;
@@ -132,29 +123,22 @@ public class GameFrame {
 		liftChecker3 = 1;
 		liftChecker4 = 0;
 		liftChecker5 = 0;
-		liftCheck = false;
-
-		test = new JButton();
-		test.setBounds(780, 390, 100, 100);
-		test.setOpaque(false);
-		test.setContentAreaFilled(false);
-		test.setBorderPainted(true);
-
-		test2 = new JButton();
-		test2.setBounds(100, 100, 100, 100);
-		test2.setOpaque(false);
-		test2.setContentAreaFilled(true);
-		test2.setBorderPainted(true);
 
 		spikeChecker1 = 0;
 		spikeChecker2 = 0;
 
-		counterLabel = new JLabel("2:0");
+		counterLabel = new JLabel("2:00");
 		counterLabel.setBounds(900, 0, 200, 100);
 		counterLabel.setFont(font1);
 		counterLabel.setForeground(Color.WHITE);
 		second = 0;
 		minute = 2;
+		
+		x1 = -30;
+		y1 = -30;
+		x2 = -30;
+		y2 = 30;
+		x3 = 30;
 
 		connectToServer();
 		determineCharacter();
@@ -162,14 +146,14 @@ public class GameFrame {
 		setupGUI();
 		setupKeyListener();
 		setUpButtonListeners();
+		setupAnimationTimer();
 		playMusic("/music/scarymusic.wav", 0.5f);
 
-		// areaChecker();
-		// timer3.start();
 	}
-
+	
 	/**
-	 * Initiazlies the players based on playerID and which variation was chosen.
+	 * Initializes the player depending on their playerID.
+	 * This is to ensure that the player does not start as null.
 	 */
 	private void initializePlayer() {
 		if (playerID == 1) {
@@ -184,9 +168,10 @@ public class GameFrame {
 
 		gameCanvas.playerChoose(2, 2);
 	}
-
-	/**
-	 * Resets the player.
+	
+    /**
+	 * Sets which version of the character and their art will be played by the player.
+	 * This is used in the Character Selector and contains two different types of checking, depending on the playerID.
 	 */
 	public void resetPlayer() {
 
@@ -240,9 +225,10 @@ public class GameFrame {
 		}
 
 	}
-
-	/**
-	 * Determines the player based on the playerID
+	
+	
+    /**
+	 * Used to show the screen for player 2's character selector. 
 	 */
 	private void determineCharacter() {
 		if (playerID == 2) {
@@ -251,27 +237,28 @@ public class GameFrame {
 			character_determiner3 = 7;
 		}
 	}
-
-	/**
-	 * Sets up the GUI for the game.
+	
+	
+    /**
+	 * Sets up the GUI of the Game where the initial buttons and the gameCanvas class are added.
+	 * The frame is set to a JLayeredPane in order to accomodate both the image and buttons on top of each other.
 	 */
 	private void setupGUI() {
 		layeredPane.add(gameCanvas);
 		layeredPane.add(startButton, JLayeredPane.PALETTE_LAYER);
 		gameCanvas.setBounds(0, 0, width, height);
-		// layeredPane.setPreferredSize(new Dimension(width,height));
 		frame.setContentPane(layeredPane);
-		// gameCanvas.setPreferredSize(new Dimension(width, height));
-		// frame.pack();
 		frame.setSize(width, height);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		gameCanvas.repaint();
 	}
-
+	
 	/**
-	 * Set up the timer for the game.
+	 * This is the main timer that runs during the game play of the game.
+	 * It is responsible for consistenly updating the player's location, checking the platforms for collision, checking if the player has touched an item,
+	 * if both players are on the doors and have pressed a key, and check if a player has touched a spike.
 	 */
 	private void setupTimer() {
 		int interval = 10;
@@ -280,32 +267,32 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent e) {
 				player.update(gameCanvas.getPlatforms());
 
-				if (lvlCounter == 1) {
-					checkPlatform();
-					gameCanvas.repaint();
-					itemChecker1();
-					if ((itemObtained1 == 1 && itemObtained4 == 1) || doorCheck2 == 1) {
-						levelChecker();
-					} else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 1) {
-						levelChecker();
-					}
+				if (lvlCounter == 1){
+                    checkPlatform();
+                    gameCanvas.repaint();
+				    itemChecker1();
+				    if ((itemObtained1 == 1 && itemObtained4 == 1) || doorCheck2 == 1){
+					    levelChecker();
+				    } else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 1){
+					    levelChecker();
+				    }
 					checkSpikes();
-
-				} else if (lvlCounter == 3) {
+					
+				} else if (lvlCounter == 2){
 					checkPlatform();
-					gameCanvas.repaint();
-					if (check1 != 0) {
+                    gameCanvas.repaint();
+					if (check1 != 0){
 						resetItem();
 					}
-					itemChecker3();
-					if ((itemObtained1 == 1 && itemObtained4 == 1) || doorCheck2 == 2) {
-						levelChecker();
-					} else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 2) {
-						levelChecker();
-					}
-					// itemChecker2();
+					itemChecker2();
+				    if ((itemObtained1 == 1 && itemObtained4 == 1)  || doorCheck2 == 2){
+					    levelChecker();
+				    } else if ((itemObtained2 == 1 && itemObtained3 == 1) || doorCheck2 == 2){
+					    levelChecker();
+				    }
+					itemChecker2();
 					checkSpikes();
-
+				
 				}
 
 			}
@@ -313,25 +300,108 @@ public class GameFrame {
 		timer = new Timer(interval, actionListener);
 		timer.start();
 	}
+	
+	/**
+	 * Responsible for making the animation art play in the title screen.
+	 */
+	private void setupAnimationTimer() {
+		int interval = 100;
+		ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (animationCheck1 == true){
+					if (x1 <= 0){
+						x1++;
+					}
+					if (y1 <= 0){
+						y1++;
+					}
+					
+					if (x1 > 0){
+						animationCheck1 = false;
+					}
+				} else if (animationCheck1 == false) {
+					x1--;
+					y1--;
+					if (x1 < -30){
+						animationCheck1 = true;
+					}
+				}
+				gameCanvas.animationImage1X(x1);
+				gameCanvas.animationImage1Y(y1);
+				
+				if (animationCheck2 == true){
+					if (x2 <= 0){
+						x2++;
+					}
+					if (y2 <= 30){
+						y2++;
+					}
+					
+					if (x2 > 0){
+						animationCheck2 = false;
+					}
+				} else if (animationCheck2 == false) {
+					x2--;
+					y2--;
+					if (x2 < -30){
+						animationCheck2 = true;
+					}
+				}
+				gameCanvas.animationImage2X(x2);
+				gameCanvas.animationImage2Y(y2);
+				
+				if (animationCheck2 == true){
+					if (x3 >= 0){
+						x3--;
+					}
+					
+					if (x3 < 0){
+						animationCheck2 = false;
+					}
+				} else if (animationCheck2 == false) {
+					x3++;
+					if (x3 > 30){
+						animationCheck2 = true;
+					}
+				}
+				gameCanvas.animationImage3X(x3);
+				
+				if (animationChecker == 1){
+			        timer3.stop();
+	        	}
 
-	public void mainTimerStop() {
+			}
+			
+
+		};
+		timer3 = new Timer(interval, actionListener);
+		timer3.start();
+		
+	}
+	
+	/**
+	 * Stops the setupTimer method.
+	 */
+	public void mainTimerStop(){
 		timer.stop();
 	}
-
-	/**
-	 * Sets up the various key listeners in the game.
+	
+   /**
+	 * Sets up the keylisteners for the movement (left & right, jumping) and going to the next level once both players are on the door.
 	 */
 	private void setupKeyListener() {
 		KeyAdapter keyAdapter = new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				player.handleKeyPressed(e.getKeyCode());
-
-				if (e.getKeyCode() == KeyEvent.VK_S) {
+				
+				if (e.getKeyCode() == KeyEvent.VK_S){
 					doorCheck1 = 1;
 				}
-
-				if (e.getKeyCode() == KeyEvent.VK_W) {
+				
+				if (e.getKeyCode() == KeyEvent.VK_W){
 					doorCheck1 = 2;
 				}
 			}
@@ -344,14 +414,13 @@ public class GameFrame {
 		frame.addKeyListener(keyAdapter);
 		frame.setFocusable(true);
 	}
-
+	
 	/**
-	 * Set up the various button listeners.
+	 * Sets up the buttons for the title screen and character selector.
 	 */
 	public void setUpButtonListeners() {
 		ActionListener buttonListener = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				System.out.println("LFG");
 				gameCanvas.switchScreen(character_determiner1);
 				layeredPane.add(characterButton1, JLayeredPane.PALETTE_LAYER);
 				layeredPane.add(characterButton2, JLayeredPane.PALETTE_LAYER);
@@ -369,33 +438,26 @@ public class GameFrame {
 
 		ActionListener buttonListener2 = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				System.out.println("YAY");
 				gameCanvas.switchScreen(character_determiner2);
 				determinerChecker = 1;
-				if (playerID == 1)
-					p1 = 1;
-				else if (playerID == 2)
-					p12 = 1;
+				if (playerID == 1) p1 = 1;
+				else if (playerID == 2) p12 = 1;
 			}
 		};
 
 		ActionListener buttonListener3 = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				System.out.println("NAY");
 				gameCanvas.switchScreen(character_determiner3);
 				determinerChecker = 1;
-				if (playerID == 1)
-					p1 = 2;
-				else if (playerID == 2)
-					p12 = 2;
+				if (playerID == 1) p1 = 2;
+				else if (playerID == 2) p12 = 2;
 
 			}
 		};
 
 		ActionListener buttonListener4 = new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				if (determinerChecker == 1 && ((p1 != 0 && p22 != 0) || (p2 != 0 && p12 != 0))) {
-					System.out.println("ew");
+				if (determinerChecker == 1 && ((p1 != 0  && p22 != 0) || (p2 !=0 && p12 != 0))) {
 					resetItem();
 					resetAndStart();
 					setupTimer();
@@ -409,8 +471,6 @@ public class GameFrame {
 					layeredPane.remove(characterButton2);
 					layeredPane.remove(characterExitButton);
 					layeredPane.add(counterLabel, JLayeredPane.PALETTE_LAYER);
-					layeredPane.add(tempbutton, JLayeredPane.PALETTE_LAYER);
-					// resetAndStart(1,0);
 					lvlCounter = 1;
 				} else {
 					System.out.println("Choose a character.");
@@ -420,90 +480,17 @@ public class GameFrame {
 			}
 		};
 
-		ActionListener buttonListener5 = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				gameCanvas.changeRemoveCharacterSelector();
-				gameCanvas.timesUpPositive(1);
-				gameCanvas.switchLevel(1);
-				resetAndStart();
-				setupTimer();
-				resetPlayer();
-				countdownTimer();
-				gameCanvas.switchScreen(8);
-				gameCanvas.fixItemChecker1(1);
-				gameCanvas.fixItemChecker2(1);
-				resetItem();
-				layeredPane.remove(startAgainButton);
-				layeredPane.remove(exitButton);
-				layeredPane.add(counterLabel, JLayeredPane.PALETTE_LAYER);
-				layeredPane.add(tempbutton, JLayeredPane.PALETTE_LAYER);
-				// resetAndStart(1,0);
-				spikeChecker1 = 0;
-
-			}
-		};
-
-		ActionListener buttonListener6 = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				gameCanvas.changeRemoveCharacterSelector();
-				gameCanvas.switchScreen(1);
-				layeredPane.remove(startAgainButton);
-				layeredPane.remove(exitButton);
-				layeredPane.add(startButton, JLayeredPane.PALETTE_LAYER);
-				spikeChecker1 = 0;
-
-			}
-		};
-
-		ActionListener buttonListener7 = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				gameCanvas.timesUp(1);
-				stopTime();
-				if (second <= 59 && second > 45) {
-					gameCanvas.switchEndScreen(2);
-				} else if (second <= 45 && second > 30) {
-					gameCanvas.switchEndScreen(3);
-				} else if (second <= 30 && second > 15) {
-					gameCanvas.switchEndScreen(4);
-				} else if (second <= 15) {
-					gameCanvas.switchEndScreen(5);
-				}
-				layeredPane.remove(counterLabel);
-				layeredPane.remove(tempbutton);
-				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
-
-			}
-		};
-
-		ActionListener buttonListener8 = new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				gameCanvas.switchLevel(2);
-				lvlCounter = 2;
-				gameCanvas.fixItemChecker1(1);
-				gameCanvas.fixItemChecker2(1);
-				liftPlatform2();
-				stopTime();
-				// resetAndStart(1,0);
-				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
-				check1 = 1;
-
-			}
-		};
-
 		startButton.addActionListener(buttonListener);
 		characterButton1.addActionListener(buttonListener2);
 		characterButton2.addActionListener(buttonListener3);
 		characterExitButton.addActionListener(buttonListener4);
-		startAgainButton.addActionListener(buttonListener5);
-		exitButton.addActionListener(buttonListener6);
-		tempbutton.addActionListener(buttonListener7);
-		test2.addActionListener(buttonListener8);
 
 	}
-
+	
 	/**
-	 * Sets up the timer for the game.
+	 * Sets up the timer for the countdown timer in the game.
+	 * It formats the time as well as fix the connection between the countdown timers of the two players.
+	 * It takes into account the what will happen if the time hits 0.
 	 */
 	public void countdownTimer() {
 		timer2 = new Timer(1000, new ActionListener() {
@@ -521,7 +508,6 @@ public class GameFrame {
 
 				if (second == -1) {
 					second = 59;
-					System.out.println(minute);
 					minute--;
 					if (second2 > second) {
 						ddSecond = dFormat.format(second2);
@@ -537,8 +523,6 @@ public class GameFrame {
 					gameCanvas.switchEndScreen(1);
 					gameCanvas.timesUp(1);
 					layeredPane.remove(counterLabel);
-					layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-					layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
 
 				}
 			}
@@ -546,309 +530,130 @@ public class GameFrame {
 
 		timer2.start();
 	}
-
+	
 	/**
-	 * Start and reset the timer.
+	 * Resets the time back to 2 minutes to account to any possible error.
 	 */
 	public void resetAndStart() {
 		minute = 2;
 		second = 0;
 	}
-
+	
 	/**
-	 * Stops the timer.
+	 * Resets the time back to 2 minutes to account to any possible error.
 	 */
 	public void stopTime() {
 		timer2.stop();
 	}
-
+	
 	/**
-	 * Checks the current level.
+	 * Responsible for checking if both players are on the door (regardless what position the two are, as long as they are in them door.
+	 * It also checks if the "s" key for level 1, and "w" key for level 2 is pressed by one player.
+	 * This causes the switch of the level or results screen.
 	 */
 	public void levelChecker() {
 		if (lvlCounter == 1) {
-			if (player.getX() > 800 && player.getX() < 870 && player.getY() < 190) {
+			if (player.getX() > 790 && player.getX() < 840 && player.getY() < 190 && 110 < player.getY()) {
 				lvlp1 = 1;
-			} else if (player.getX() > 880 && player.getX() < 950 && player.getY() < 190) {
+			} else if (player.getX() > 850 && player.getX() < 890 && player.getY() < 190 && 110 < player.getY()) {
 				lvlp1 = 2;
 			}
 
-			if (((lvlp1 == 1 && lvlp2 == 2) && doorCheck1 == 1) || doorCheck2 == 1) {
-				check1 = 1;
-				resetItem();
-				lvlCounter = 0;
-				System.out.println("ew");
+			if ((((lvlp1 == 1 && lvlp2 == 2) && doorCheck1==1) || doorCheck2 == 1) ||
+ 			   (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1==1) || doorCheck2==1)){
 				gameCanvas.switchLevel(2);
-				gameCanvas.fixItemChecker1(1);
-				gameCanvas.fixItemChecker2(1);
-				// stopTime();
-				// resetAndStart(1,0);
-				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
-				lvlCounter = 3;
-			} else if (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1 == 1) || doorCheck2 == 1) {
 				check1 = 1;
 				resetItem();
 				lvlCounter = 0;
-				System.out.println("ew");
-				gameCanvas.switchLevel(3);
 				gameCanvas.fixItemChecker1(1);
 				gameCanvas.fixItemChecker2(1);
-				// stopTime();
-				// resetAndStart(1,0);
-				layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
-				lvlCounter = 3;
-			}
-		} else if (lvlCounter == 3) { // 500,20,70, 780,390,100,100
-			if (player.getX() > 500 && player.getX() < 570 && player.getY() < 100 && player.getY() > 20) {
+				itemObtained2 = 0;
+				lvlCounter = 2;
+			} 
+		}   else if (lvlCounter == 2){ 
+			if (player.getX() > 200 && player.getX() < 300 && player.getY() < 200  && player.getY() > 100){
 				lvlp1 = 1;
-				System.out.println("ew");
-			} else if (player.getX() > 780 && player.getX() < 880 && player.getY() < 490 && player.getY() > 390) {
+			} else if (player.getX() > 780 && player.getX() < 880 && player.getY() < 490 && player.getY() > 390){
 				lvlp1 = 2;
-				System.out.println("LMAO");
 			}
-
-			if (((lvlp1 == 1 && lvlp2 == 2) && doorCheck1 == 2) || doorCheck2 == 2) {
+			
+			if ((((lvlp1 == 1 && lvlp2 == 2) && doorCheck1==2) || doorCheck2 == 2) ||
+			   (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1==2) || doorCheck2==2)){
 				System.out.println("ew");
 				gameCanvas.timesUp(1);
-				stopTime();
-				if (second <= 59 && second > 45) {
+                stopTime();
+				if ((second <= 59 && second > 45) || (minute > 0)){
 					gameCanvas.switchEndScreen(2);
-				} else if (second <= 45 && second > 30) {
+				} else if (second <= 45 && second > 30){
 					gameCanvas.switchEndScreen(3);
-				} else if (second <= 30 && second > 15) {
+				} else if (second <= 30 && second > 15){
 					gameCanvas.switchEndScreen(4);
-				} else if (second <= 15) {
-					gameCanvas.switchEndScreen(5);
-				}
-				layeredPane.remove(counterLabel);
-				layeredPane.remove(tempbutton);
-				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
-			} else if (((lvlp1 == 2 && lvlp2 == 1) && doorCheck1 == 2) || doorCheck2 == 2) {
-				System.out.println("ew");
-				gameCanvas.timesUp(1);
-				stopTime();
-				if (second <= 59 && second > 45) {
-					gameCanvas.switchEndScreen(2);
-				} else if (second <= 45 && second > 30) {
-					gameCanvas.switchEndScreen(3);
-				} else if (second <= 30 && second > 15) {
-					gameCanvas.switchEndScreen(4);
-				} else if (second <= 15) {
+				} else if (second <= 15){
 					gameCanvas.switchEndScreen(5);
 				}
 				stopTime();
 				mainTimerStop();
 				layeredPane.remove(counterLabel);
-				layeredPane.remove(tempbutton);
-				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
 			}
-		}
+		}	
 
-		/*
-		 * else if (lvlCounter == 2){
-		 * if (player.getX() > 800 && player.getX() < 870 && player.getY() < 330 &&
-		 * player.getY() > 250){
-		 * lvlp1 = 1;
-		 * System.out.println("ew");
-		 * } else if (player.getX() > 880 && player.getX() < 950 && player.getY() < 330
-		 * && player.getY() > 250){
-		 * lvlp1 = 2;
-		 * System.out.println("LMAO");
-		 * }
-		 * 
-		 * if (lvlp1 == 1 && lvlp2 == 2){
-		 * System.out.println("ew");
-		 * gameCanvas.switchLevel(3);
-		 * lvlCounter = 3;
-		 * gameCanvas.fixItemChecker1(1);
-		 * gameCanvas.fixItemChecker2(1);
-		 * //stopTime();
-		 * //resetAndStart(1,0);
-		 * layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
-		 * check1 = 1;
-		 * //resetItem();
-		 * } else if (lvlp1 == 2 && lvlp2 == 1){
-		 * System.out.println("ew");
-		 * gameCanvas.switchLevel(3);
-		 * lvlCounter = 3;
-		 * gameCanvas.fixItemChecker1(1);
-		 * gameCanvas.fixItemChecker2(1);
-		 * //stopTime();
-		 * //resetAndStart(1,0);
-		 * layeredPane.add(test, JLayeredPane.PALETTE_LAYER);
-		 * check1 = 1;
-		 * //resetItem();
-		 * }
-		 * } /*else if (lvlCounter == 3){ //500,20,70, 780,390,100,100
-		 * if (player.getX() > 500 && player.getX() < 570 && player.getY() < 100 &&
-		 * player.getY() > 20){
-		 * lvlp1 = 1;
-		 * System.out.println("ew");
-		 * } else if (player.getX() > 780 && player.getX() < 880 && player.getY() < 490
-		 * && player.getY() > 390){
-		 * lvlp1 = 2;
-		 * System.out.println("LMAO");
-		 * }
-		 * 
-		 * if (lvlp1 == 1 && lvlp2 == 2){
-		 * System.out.println("ew");
-		 * gameCanvas.timesUp(1);
-		 * stopTime();
-		 * if (second <= 59 && second > 45){
-		 * gameCanvas.switchEndScreen(2);
-		 * } else if (second <= 45 && second > 30){
-		 * gameCanvas.switchEndScreen(3);
-		 * } else if (second <= 30 && second > 15){
-		 * gameCanvas.switchEndScreen(4);
-		 * } else if (second <= 15){
-		 * gameCanvas.switchEndScreen(5);
-		 * }
-		 * layeredPane.remove(counterLabel);
-		 * layeredPane.remove(tempbutton);
-		 * layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-		 * layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
-		 * } else if (lvlp1 == 2 && lvlp2 == 1){
-		 * System.out.println("ew");
-		 * gameCanvas.timesUp(1);
-		 * stopTime();
-		 * if (second <= 59 && second > 45){
-		 * gameCanvas.switchEndScreen(2);
-		 * } else if (second <= 45 && second > 30){
-		 * gameCanvas.switchEndScreen(3);
-		 * } else if (second <= 30 && second > 15){
-		 * gameCanvas.switchEndScreen(4);
-		 * } else if (second <= 15){
-		 * gameCanvas.switchEndScreen(5);
-		 * }
-		 * layeredPane.remove(counterLabel);
-		 * layeredPane.remove(tempbutton);
-		 * layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-		 * layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
-		 * }
-		 * 
-		 * }
-		 */
 	}
-
-	/*
-	 * public void itemChecker() {
-	 * if (lvlCounter == 1) {
-	 * if (player.getX() > 50 && player.getX() < 150 && player.getY() < 175 &&
-	 * obtainItem == 0) {
-	 * itemObtained1 = 1;
-	 * gameCanvas.fixItemChecker1(0);
-	 * obtainItem = 1;
-	 * } else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 600
-	 * && player.getY() > 500
-	 * && obtainItem == 0) {
-	 * itemObtained3 = 1;
-	 * gameCanvas.fixItemChecker2(0);
-	 * obtainItem = 1;
-	 * }
-	 * 
-	 * if (itemObtained2 == 1) {
-	 * gameCanvas.fixItemChecker1(0);
-	 * } else if (itemObtained4 == 1) {
-	 * gameCanvas.fixItemChecker2(0);
-	 * }
-	 * 
-	 * } else if (lvlCounter == 2) { // 500,25,100,100 900,250,100,100
-	 * if (player.getX() > 500 && player.getX() < 600 && player.getY() < 125 &&
-	 * player.getY() > 25
-	 * && obtainItem == 0) {
-	 * itemObtained1 = 1;
-	 * gameCanvas.fixItemChecker1(0);
-	 * obtainItem = 1;
-	 * } else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 350
-	 * && player.getY() > 250
-	 * && obtainItem == 0) {
-	 * itemObtained3 = 1;
-	 * gameCanvas.fixItemChecker2(0);
-	 * obtainItem = 1;
-	 * }
-	 * 
-	 * if (itemObtained2 == 1) {
-	 * gameCanvas.fixItemChecker1(0);
-	 * } else if (itemObtained4 == 1) {
-	 * gameCanvas.fixItemChecker2(0);
-	 * }
-	 * } else if (lvlCounter == 3) { // 860,250,100,100
-	 * if (player.getX() > 860 && player.getX() < 960 && player.getY() < 350 &&
-	 * player.getY() > 250
-	 * && obtainItem == 0) {
-	 * itemObtained1 = 1;
-	 * gameCanvas.fixItemChecker1(0);
-	 * obtainItem = 1;
-	 * } else if (player.getX() > 0 && player.getX() < 1 && player.getY() < 1 &&
-	 * player.getY() > 0
-	 * && obtainItem == 0) {
-	 * itemObtained3 = 1;
-	 * gameCanvas.fixItemChecker2(0);
-	 * obtainItem = 1;
-	 * }
-	 * 
-	 * if (itemObtained2 == 1) {
-	 * gameCanvas.fixItemChecker1(0);
-	 * } else if (itemObtained4 == 1) {
-	 * gameCanvas.fixItemChecker2(0);
-	 * }
-	 * }
-	 * }
+	
+	/**
+	 * Checks if the player is inside the bounds of the object in level 1 and makes the object dissapear into the items collected area.
+	 * Likewise, it also ensures that this is properly printed on the opposing player's screen.
 	 */
-
-	public void itemChecker1() {
-		if (lvlCounter == 1) {
-			if (player.getX() > 50 && player.getX() < 150 && player.getY() < 175 && obtainItem == 0) {
+	public void itemChecker1(){
+		if (lvlCounter == 1){ 
+			if (player.getX() > 50 && player.getX() < 150 && player.getY() < 175 && obtainItem == 0){
 				itemObtained1 = 1;
 				gameCanvas.fixItemChecker1(0);
 				obtainItem = 1;
-			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 600 && player.getY() > 500
-					&& obtainItem == 0) {
+			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 600 && player.getY() > 500 && obtainItem == 0){
 				itemObtained3 = 1;
 				gameCanvas.fixItemChecker2(0);
 				obtainItem = 1;
 			}
-
-			if (itemObtained2 == 1) {
+			
+			if (itemObtained2 == 1){
 				gameCanvas.fixItemChecker1(0);
-			} else if (itemObtained4 == 1) {
+			} else if (itemObtained4 == 1){
 				gameCanvas.fixItemChecker2(0);
-			}
-
-		}
-	}
-
-	public void itemChecker3() {
-		/*
-		 * if ((lvlp1 != 0 && lvlp2 !=0) && testlol == 0){
-		 * resetItem();
-		 * testlol = 1;
-		 * }
-		 */
-		if (lvlCounter == 3) {
-			if (player.getX() > 890 && player.getX() < 990 && player.getY() < 360 && player.getY() > 260
-					&& obtainItem == 0) {
+			} 
+			
+		} 
+	}	
+	
+		
+	/**
+	 * Checks if the player is inside the bounds of the object in level 1 and makes the object dissapear into the items collected area.
+	 * Likewise, it also ensures that this is properly printed on the opposing player's screen.
+	 */	
+	public void itemChecker2(){
+		if (lvlCounter == 2){ 
+			if (player.getX() > 600 && player.getX() < 700 && player.getY() < 360 && player.getY() > 260 && obtainItem == 0){
 				itemObtained1 = 1;
 				gameCanvas.fixItemChecker1(0);
 				obtainItem = 1;
-			} else if (player.getX() > 765 && player.getX() < 865 && player.getY() < 515 && player.getY() > 415
-					&& obtainItem == 0) {
+			
+			} else if (player.getX() > 900 && player.getX() < 1000 && player.getY() < 650 && player.getY() > 550 && obtainItem == 0){
 				itemObtained3 = 1;
 				gameCanvas.fixItemChecker2(0);
 				obtainItem = 1;
 			}
-
-			if (itemObtained2 == 1) {
+			
+			if (itemObtained2 == 1){
 				gameCanvas.fixItemChecker1(0);
-			} else if (itemObtained4 == 1) {
+			} else if (itemObtained4 == 1){
 				gameCanvas.fixItemChecker2(0);
-			}
-
-		}
+			} 
+			
+		} 
 	}
-
+	
+	/**
+	 * Resets all of the variables that are used for checking.
+	 */
 	public void resetItem() {
 		if (check1 == 1) {
 			obtainItem = 0;
@@ -860,49 +665,12 @@ public class GameFrame {
 			lvlp2 = 0;
 			check1 = 0;
 			check2 = 0;
-		} else if (lvlp1 == 2 && lvlp2 == 1 && check1 == 1 && check2 == 1) {
-			obtainItem = 0;
-			itemObtained1 = 0;
-			itemObtained2 = 0;
-			itemObtained3 = 0;
-			itemObtained4 = 0;
-			// gameCanvas.fixItemChecker1(1);
-			// gameCanvas.fixItemChecker2(1);
-			lvlp1 = 0;
-			lvlp2 = 0;
-			check1 = 0;
-			check2 = 0;
-		}
+		} 
 	}
-
-	public void liftPlatform() {
-		if (player.getX() > 500 && player.getX() < 600 && player.getY() < 125 && player.getY() > 25) {
-			liftChecker1 = 1;
-		}
-
-		if (liftChecker1 == 1 || liftChecker2 == 1) {
-			liftCheck = true;
-		}
-
-	}
-
-	public void liftPlatform2() {
-		Rectangle2D.Double lift2 = new Rectangle2D.Double(730, 680, 55, 10);
-		Rectangle2D.Double lift3 = new Rectangle2D.Double(690, 600, 55, 10);
-		Rectangle2D.Double lift4 = new Rectangle2D.Double(730, 520, 55, 10);
-		Rectangle2D.Double lift5 = new Rectangle2D.Double(690, 440, 55, 10);
-		Rectangle2D.Double lift6 = new Rectangle2D.Double(730, 360, 55, 10);
-		if (liftChecker1 == 1 || liftChecker2 == 1) {
-			handlePlatformCollision(lift2);
-			handlePlatformCollision(lift3);
-			handlePlatformCollision(lift4);
-			handlePlatformCollision(lift5);
-			handlePlatformCollision(lift6);
-		}
-	}
-
+	
 	/**
-	 * Handles player and spike collision.
+	 * Checks if the player is touching the spike for each individual spike in both levels.
+	 * The game will switch to the game over screen once either player touches a spike.
 	 */
 	public void checkSpikes() {
 		if (lvlCounter == 1) {
@@ -940,56 +708,12 @@ public class GameFrame {
 				gameCanvas.switchEndScreen(1);
 				gameCanvas.timesUp(1);
 				layeredPane.remove(counterLabel);
-				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
 				spikeChecker1 = 1;
 			}
 		} else if (lvlCounter == 2) {
-			if (((player.getX()) + 25 > 150 && (player.getX() + 25) < (150 + 25) && (player.getY() + 40) > 630
-					&& (player.getY() + 40) < (630 + 25)) ||
-					((player.getX() + 25) > 180 && (player.getX() + 25) < (180 + 25) && (player.getY() + 40) > 630
-							&& (player.getY() + 40) < (630 + 25))
-					||
-					((player.getX() + 25) > 250 && (player.getX() + 25) < (250 + 25) && (player.getY() + 40) > 90
-							&& (player.getY() + 40) < (90 + 25))
-					||
-					((player.getX() + 25) > 280 && (player.getX() + 25) < (280 + 25) && (player.getY() + 40) > 90
-							&& (player.getY() + 40) < (90 + 25))
-					||
-					((player.getX() + 25) > 310 && (player.getX() + 25) < (310 + 25) && (player.getY() + 40) > 90
-							&& (player.getY() + 40) < (90 + 25))
-					||
-					((player.getX() + 25) > 400 && (player.getX() + 25) < (400 + 25) && (player.getY() + 40) > 90
-							&& (player.getY() + 40) < (90 + 25))
-					||
-					((player.getX() + 25) > 430 && (player.getX() + 25) < (430 + 25) && (player.getY() + 40) > 90
-							&& (player.getY() + 40) < (90 + 25))
-					||
-					((player.getX() + 25) > 700 && (player.getX() + 25) < (700 + 25) && (player.getY() + 40) > 110
-							&& (player.getY() + 40) < (110 + 25))
-					||
-					((player.getX() + 25) > 730 && (player.getX() + 25) < (730 + 25) && (player.getY() + 40) > 110
-							&& (player.getY() + 40) < (110 + 25))
-					||
-					((player.getX() + 25) > 760 && (player.getX() + 25) < (760 + 25) && (player.getY() + 40) > 110
-							&& (player.getY() + 40) < (110 + 25))
-					||
-					((player.getX() + 25) > 790 && (player.getX() + 25) < (790 + 25) && (player.getY() + 40) > 110
-							&& (player.getY() + 40) < (110 + 25))
-					||
-					(spikeChecker2 == 1)) {
-				timer2.stop();
-				gameCanvas.switchEndScreen(1);
-				gameCanvas.timesUp(1);
-				layeredPane.remove(counterLabel);
-				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
-				spikeChecker1 = 1;
-			}
-
-		} else if (lvlCounter == 3) {
-			if (((player.getX() + 25) > 800 && (player.getX() + 25) < (800 + 25) && (player.getY() + 40) > 625
-					&& (player.getY() + 40) < (625 + 25))
+			if (
+					/*((player.getX() + 25) > 800 && (player.getX() + 25) < (800 + 25) && (player.getY() + 40) > 625
+							&& (player.getY() + 40) < (625 + 25))
 					||
 					((player.getX() + 25) > 770 && (player.getX() + 25) < (770 + 25) && (player.getY() + 40) > 625
 							&& (player.getY() + 40) < (625 + 25))
@@ -999,7 +723,7 @@ public class GameFrame {
 					||
 					((player.getX() + 25) > 860 && (player.getX() + 25) < (860 + 25) && (player.getY() + 40) > 625
 							&& (player.getY() + 40) < (625 + 25))
-					||
+					|| */
 					((player.getX() + 25) > 360 && (player.getX() + 25) < (360 + 25) && (player.getY() + 40) > 535
 							&& (player.getY() + 40) < (535 + 25))
 					||
@@ -1027,25 +751,25 @@ public class GameFrame {
 					((player.getX() + 25) > 220 && (player.getX() + 25) < (220 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
-					((player.getX() + 25) > 250 && (player.getX() + 25) < (250 + 25) && (player.getY() + 40) > 335
+					/*((player.getX() + 25) > 250 && (player.getX() + 25) < (250 + 25) && (player.getY() + 40) > 335
+							&& (player.getY() + 40) < (335 + 25))
+					||*/
+					/*((player.getX() + 25) > 280 && (player.getX() + 25) < (280 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
-					((player.getX() + 25) > 280 && (player.getX() + 25) < (280 + 25) && (player.getY() + 40) > 335
+					/*((player.getX() + 25) > 350 && (player.getX() + 25) < (350 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
-					||
-					((player.getX() + 25) > 350 && (player.getX() + 25) < (350 + 25) && (player.getY() + 40) > 335
-							&& (player.getY() + 40) < (335 + 25))
-					||
+					||*/
 					((player.getX() + 25) > 380 && (player.getX() + 25) < (380 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
 					((player.getX() + 25) > 410 && (player.getX() + 25) < (410 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
-					((player.getX() + 25) > 650 && (player.getX() + 25) < (650 + 25) && (player.getY() + 40) > 335
+					((player.getX() + 25) > 770 && (player.getX() + 25) < (650 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
-					((player.getX() + 25) > 680 && (player.getX() + 25) < (680 + 25) && (player.getY() + 40) > 335
+					((player.getX() + 25) > 740 && (player.getX() + 25) < (740 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
 					((player.getX() + 25) > 710 && (player.getX() + 25) < (710 + 25) && (player.getY() + 40) > 335
@@ -1071,16 +795,14 @@ public class GameFrame {
 				gameCanvas.switchEndScreen(1);
 				gameCanvas.timesUp(1);
 				layeredPane.remove(counterLabel);
-				layeredPane.add(startAgainButton, JLayeredPane.PALETTE_LAYER);
-				layeredPane.add(exitButton, JLayeredPane.PALETTE_LAYER);
 				spikeChecker1 = 1;
 			}
 
 		}
 	}
-
+	
 	/**
-	 * Checks for collisions with platforms and handles them.
+	 * Obtains every platform for each level and checked them for collision.
 	 */
 	private void checkPlatform() {
 		Level platforms = gameCanvas.getPlatforms();
@@ -1089,11 +811,10 @@ public class GameFrame {
 			handlePlatformCollision(platform);
 		}
 	}
-
+	
 	/**
-	 * Handles the collision between the player and a platform.
-	 * 
-	 * @param platform The platform to check for collision with.
+	 * Checks for collision of all sides of the player and the platform. 
+	 * It also check if a player is dropping or jumping to adjust their position and their speed.
 	 */
 	private void handlePlatformCollision(Rectangle2D.Double platform) {
 		double size = player.getSize();
@@ -1120,9 +841,9 @@ public class GameFrame {
 			}
 		}
 	}
-
+	
 	/**
-	 * Plays background music.
+	 * Plays the music that runs in a loop throughout the whole game, from title screen to the end screen.
 	 */
 	private void playMusic(String filePath, float volume) {
 		try {
@@ -1142,9 +863,10 @@ public class GameFrame {
 			System.out.println("Error playing music: " + e.getMessage());
 		}
 	}
-
+	
 	/**
-	 * Connects to the server and initializes input/output streams.
+	 * Creates the connection from the player to the server.
+	 * It also ensures that the output and input streams are properly created.
 	 */
 	private void connectToServer() {
 		try {
@@ -1160,9 +882,9 @@ public class GameFrame {
 			System.out.println("connectToServer error: " + e.getMessage());
 		}
 	}
-
+	
 	/**
-	 * Receives player data from the server.
+	 * Reads the input from the server as long as the player is not null.
 	 */
 	private class ReadFromServer implements Runnable {
 
@@ -1177,32 +899,18 @@ public class GameFrame {
 			try {
 				while (true) {
 					if (player != null) {
-						notDoor = dataIn.readInt();
-						if (notDoor != 0) {
+						notDoor	= dataIn.readInt();
+						if (notDoor != 0){
 							doorCheck2 = notDoor;
 						}
-						double prevX = playerOther.getX();
-						double newX = dataIn.readDouble();
-						playerOther.setX(newX);
+						playerOther.setX(dataIn.readDouble());
 						playerOther.setY(dataIn.readDouble());
-						if (newX < prevX) {
-							playerOther.setMovingLeft(true);
-							playerOther.setMovingRight(false);
-							playerOther.setLastDirection("left");
-						} else if (newX > prevX) {
-							playerOther.setMovingLeft(false);
-							playerOther.setMovingRight(true);
-							playerOther.setLastDirection("right");
-						} else {
-							playerOther.setMovingLeft(false);
-							playerOther.setMovingRight(false);
-						}
 						not2 = dataIn.readInt();
-						if (not2 != 0) {
+						if (not2 != 0){
 							p2 = not2;
 						}
 						not22 = dataIn.readInt();
-						if (not22 != 0) {
+						if (not22 != 0){
 							p22 = not22;
 						}
 						second2 = dataIn.readInt();
@@ -1233,9 +941,9 @@ public class GameFrame {
 			}
 		}
 	}
-
-	/**
-	 * Sends player data to the server.
+	
+    /**
+	 * Writes the output of the player to the server as long as the player is not null.
 	 */
 	private class WriteToServer implements Runnable {
 

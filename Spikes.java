@@ -23,10 +23,11 @@ import java.awt.geom.*;
 
 public class Spikes {
 
-	int translateX, translateY;
-	Path2D.Double path;
+	private int translateX, translateY;
+	private Path2D.Double path;
 
 	/**
+	 * Constructor for the Spikes class.
 	 * Initializes the translation values and creates the spike shape.
 	 */
 	public Spikes() {
@@ -40,14 +41,18 @@ public class Spikes {
 	}
 
 	/**
-	 * @return the Path2D.Double for the spikes.
+	 * Constructor for the Spikes class with translation values.
+	 * Initializes the translation values and creates the spike shape.
 	 */
 	public Path2D.Double SpikeDraw() {
 		return path;
 	}
 
 	/**
-	 * @return the x and y translation values for the spikes.
+	 * Gets the translation values for the spikes.
+	 * 
+	 * @param x The x-coordinate for translation.
+	 * @param y The y-coordinate for translation.
 	 */
 	public int getPathX() {
 		return translateX;
