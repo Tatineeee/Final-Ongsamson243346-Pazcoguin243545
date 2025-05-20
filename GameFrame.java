@@ -71,7 +71,7 @@ public class GameFrame {
 	public GameFrame(int width, int height) {
 		this.width = width;
 		this.height = height;
-		frame = new JFrame("Final Project");
+		frame = new JFrame("Tiny Terrors");
 		gameCanvas = new GameCanvas();
 		layeredPane = new JLayeredPane();
 		layeredPane.setBounds(0, 0, width, height);
@@ -595,7 +595,6 @@ public class GameFrame {
 
 			if ((((lvlp1 == 1 && lvlp2 == 2) && doorCheck1 == 2) || doorCheck2 == 2) ||
 					(((lvlp1 == 2 && lvlp2 == 1) && doorCheck1 == 2) || doorCheck2 == 2)) {
-				System.out.println("ew");
 				gameCanvas.timesUp(1);
 				stopTime();
 				if ((second <= 59 && second > 45) || (minute > 0)) {
@@ -735,26 +734,7 @@ public class GameFrame {
 				spikeChecker1 = 1;
 			}
 		} else if (lvlCounter == 2) {
-			if (
-			/*
-			 * ((player.getX() + 25) > 800 && (player.getX() + 25) < (800 + 25) &&
-			 * (player.getY() + 40) > 625
-			 * && (player.getY() + 40) < (625 + 25))
-			 * ||
-			 * ((player.getX() + 25) > 770 && (player.getX() + 25) < (770 + 25) &&
-			 * (player.getY() + 40) > 625
-			 * && (player.getY() + 40) < (625 + 25))
-			 * ||
-			 * ((player.getX() + 25) > 830 && (player.getX() + 25) < (830 + 25) &&
-			 * (player.getY() + 40) > 625
-			 * && (player.getY() + 40) < (625 + 25))
-			 * ||
-			 * ((player.getX() + 25) > 860 && (player.getX() + 25) < (860 + 25) &&
-			 * (player.getY() + 40) > 625
-			 * && (player.getY() + 40) < (625 + 25))
-			 * ||
-			 */
-			((player.getX() + 25) > 360 && (player.getX() + 25) < (360 + 25) && (player.getY() + 40) > 535
+			if (((player.getX() + 25) > 360 && (player.getX() + 25) < (360 + 25) && (player.getY() + 40) > 535
 					&& (player.getY() + 40) < (535 + 25))
 					||
 					((player.getX() + 25) > 390 && (player.getX() + 25) < (390 + 25) && (player.getY() + 40) > 535
@@ -781,22 +761,7 @@ public class GameFrame {
 					((player.getX() + 25) > 220 && (player.getX() + 25) < (220 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
-					/*
-					 * ((player.getX() + 25) > 250 && (player.getX() + 25) < (250 + 25) &&
-					 * (player.getY() + 40) > 335
-					 * && (player.getY() + 40) < (335 + 25))
-					 * ||
-					 */
-					/*
-					 * ((player.getX() + 25) > 280 && (player.getX() + 25) < (280 + 25) &&
-					 * (player.getY() + 40) > 335
-					 * && (player.getY() + 40) < (335 + 25))
-					 * ||
-					 * /*((player.getX() + 25) > 350 && (player.getX() + 25) < (350 + 25) &&
-					 * (player.getY() + 40) > 335
-					 * && (player.getY() + 40) < (335 + 25))
-					 * ||
-					 */
+
 					((player.getX() + 25) > 380 && (player.getX() + 25) < (380 + 25) && (player.getY() + 40) > 335
 							&& (player.getY() + 40) < (335 + 25))
 					||
